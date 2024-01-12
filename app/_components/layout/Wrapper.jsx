@@ -1,16 +1,9 @@
 "use client";
-import React from "react";
-import LeftSideProfile from "./LeftSideProfile";
-import RightSideTrend from "./RightSideTrend";
-import MainContainer from "./MainContainer";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 import ResponsiveHook from "../common/ResponsiveHook";
-import useWindowDimensions from "../../_hooks/useWindowDimensions";
 
 const Wrapper = ({ childs }) => {
-    const { w } = useWindowDimensions();
-    console.log(w);
     const { isDesktop, isLaptop, isTablet, isMobile } = ResponsiveHook();
 
     console.log("isDesktop", isDesktop, "isLaptop", isLaptop, "isTablet", isTablet, "isMobile", isMobile);
@@ -18,9 +11,8 @@ const Wrapper = ({ childs }) => {
     return (
         <main className="wrapper container mx-auto">
             <TopBar />
-
+            {childs}
             {/* Skeleton */}
-
             {/* <div class="max-w-lg mx-auto">
                 {" "}
                 <div role="status" class="my-7 animate-pulse">
@@ -89,29 +81,7 @@ const Wrapper = ({ childs }) => {
                     <span class="sr-only">Loading...</span>{" "}
                 </div>
             </div> */}
-
-            {isDesktop ? (
-                <div className="flex flex-row gap-4">
-                    <LeftSideProfile />
-                    <MainContainer>{childs}</MainContainer>
-                    <RightSideTrend />
-                </div>
-            ) : isLaptop ? (
-                <div className="flex flex-row gap-4">
-                    <MainContainer>{childs}</MainContainer>
-                    <div className="flex flex-col gap-4">
-                        <LeftSideProfile />
-                        <RightSideTrend />
-                    </div>
-                </div>
-            ) : (
-                <>
-                    <div className="max-[660px]:px-4">
-                        <MainContainer>{childs}</MainContainer>
-                    </div>
-                </>
-            )}
-            {isMobile && <BottomBar />}
+            <BottomBar />
         </main>
     );
 };

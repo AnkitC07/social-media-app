@@ -2,11 +2,15 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Profile from "../_components/common/Profile";
 
 export const menu = [
+    {
+        path: "/",
+        icon: <HomeOutlinedIcon />,
+        lable: <p className=" ">Home</p>,
+    },
     {
         path: "/explore",
         icon: <VisibilityOutlinedIcon sx={{ fontSize: "20px" }} />,
@@ -36,7 +40,7 @@ export const menu = [
 export const bottomMenu = [
     {
         path: "/",
-        icon: <HomeOutlinedIcon sx={{ fontSize: "30px" }} className="text-tweet-blue" />,
+        icon: <HomeOutlinedIcon sx={{ fontSize: "30px" }} />,
     },
     {
         path: "/explore",

@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import Card from "../common/Card";
 import Profile from "../common/Profile";
 
@@ -12,7 +11,6 @@ const LeftSideProfile = () => {
                     <div className="flex flex-col gap-4 items-center ">
                         <Link href="#">
                             <Profile src={"/assets/User.jpeg"} w={50} h={50} />
-                            {/* <Image src="" alt="Profle Photo" width={50} height={50} className="rounded-full" /> */}
                         </Link>
                         <div className="flex flex-col gap-1">
                             <p className="text-sm font-bold">User Name</p>
