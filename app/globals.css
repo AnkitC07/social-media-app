@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #06141D;
+    color: #D9D9D9;
+    /* @apply bg-bg-purple  */
+}
