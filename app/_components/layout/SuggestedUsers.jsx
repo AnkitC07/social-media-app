@@ -10,7 +10,7 @@ const SuggestedUsers = () => {
         <Card>
             <div className=" w-[300px] flex flex-col gap-8 py-4 px-8">
                 <h2 className="font-bold text-lg">People you may know...</h2>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-5">
                     {!loading && [0, 1].map((user) => <SuggestedUser key={user._id} user={user} />)}
                     {loading &&
                         [0, 1, 2, 3].map((_, i) => (
