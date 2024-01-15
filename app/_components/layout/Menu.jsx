@@ -11,10 +11,6 @@ const Menu = () => {
     const pathname = usePathname();
     return (
         <>
-            {/* <div className={"flex gap-1 items-center" + (pathname == "/" ? " text-tweet-blue" : "")}>
-                <HomeOutlinedIcon />
-                <p className="font-medium flex ">Home</p>
-            </div> */}
             {menu.map((item) => {
                 return (
                     <Link

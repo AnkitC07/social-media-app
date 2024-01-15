@@ -1,13 +1,7 @@
-"use client";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
-import ResponsiveHook from "../common/ResponsiveHook";
 
 const Wrapper = ({ childs }) => {
-    const { isDesktop, isLaptop, isTablet, isMobile } = ResponsiveHook();
-
-    console.log("isDesktop", isDesktop, "isLaptop", isLaptop, "isTablet", isTablet, "isMobile", isMobile);
-
     return (
         <main className="wrapper container mx-auto">
             <TopBar />

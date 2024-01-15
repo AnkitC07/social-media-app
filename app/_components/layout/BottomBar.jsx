@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import BottomMenu from "./BottomMenu";
 import ResponsiveHook from "../common/ResponsiveHook";

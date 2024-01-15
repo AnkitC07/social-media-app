@@ -9,7 +9,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-    // const width = useWindowDimensions();
     return (
         <html lang="en">
             <body className={inter.className + "mx-10 md:px-[15px]"}>
