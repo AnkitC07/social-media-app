@@ -6,6 +6,9 @@ module.exports = {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
+        fontFamily: {
+            body: ["League Spartan", "sans-serif"],
+        },
         container: {
             center: true,
             screens: {

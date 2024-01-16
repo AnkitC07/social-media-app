@@ -6,6 +6,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "pbs.twimg.com",
             },
+            {
+                protocol: "https",
+                hostname: "inc42.com",
+            },
         ],
         // domains: ["pbs.twimg.com"],
     },

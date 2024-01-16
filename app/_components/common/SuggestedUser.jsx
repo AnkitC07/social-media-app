@@ -13,16 +13,11 @@ const SuggestedUser = ({ user }) => {
             {/* <div className="flex gap-2 "> */}
             <Link href="#" className="md:flex-shrink flex-shrink-0 group block">
                 <div className="flex gap-6 items-start">
-                    {/* <img
-                            className="inline-block h-10 w-10 rounded-full"
-                            src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"
-                            alt=""
-                        /> */}
                     <Image
                         className="inline-block rounded-sm"
-                        src={"https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"}
-                        width={40}
-                        height={40}
+                        src={"https://inc42.com/wp-content/uploads/2023/11/Elon-Musk-Web-760x570.jpg"}
+                        width={50}
+                        height={50}
                         alt=""
                     />
                     {/* <Profile
@@ -32,7 +27,7 @@ const SuggestedUser = ({ user }) => {
                     /> */}
 
                     <div className="">
-                        <p className=" flex flex-wrap  items-baseline text-lg leading-6 font-semibold text-white ">
+                        <p className=" flex flex-wrap  items-baseline text-md leading-6 font-semibold text-white ">
                             <span className="mr-2">Elon Musk</span>
                             <span className="text-xs leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
                                 @elonmusk
@@ -41,6 +36,7 @@ const SuggestedUser = ({ user }) => {
                     </div>
                 </div>
             </Link>
+            {/* right side */}
             <FollowButton
                 handleClick={() => {}}
                 size={"xs"}

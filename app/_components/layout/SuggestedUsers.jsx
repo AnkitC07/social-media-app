@@ -3,15 +3,18 @@ import React, { useState } from "react";
 import Card from "../common/Card";
 import SuggestedUser from "../common/SuggestedUser";
 
-const SuggestedUsers = () => {
-    const [loading, setLoading] = useState(false);
+const SuggestedUsers = ({ style }) => {
+    const [loading, setLoading] = useState(true);
+    setTimeout(() => {
+        setLoading(false);
+    }, [2000]);
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     return (
-        <Card>
-            <div className=" w-[300px] flex flex-col gap-8 py-4 px-8">
+        <Card style={style}>
+            <div className={"w-[300px] flex flex-col gap-8 py-3 px-5 "}>
                 <h2 className="font-bold text-lg">People you may know...</h2>
                 <div className="flex flex-col gap-5">
-                    {!loading && [0, 1].map((user) => <SuggestedUser key={user._id} user={user} />)}
+                    {!loading && [0, 1, 2, 3].map((user, i) => <SuggestedUser key={i} user={user} />)}
                     {loading &&
                         [0, 1, 2, 3].map((_, i) => (
                             <div

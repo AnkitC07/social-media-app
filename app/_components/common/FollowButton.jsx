@@ -1,6 +1,6 @@
 import React from "react";
 
-const FollowButton = ({ handleClick, textColor, bgColor, size, text }) => {
+const FollowButton = ({ handleClick, textColor = "white", bgColor = "blue-400", size, text }) => {
     return (
         <button
             onClick={handleClick}
