@@ -1,12 +1,22 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { axios } from "axios";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-const page = () => {
+const LoginPage = () => {
+    const [user, setUser] = useState({
+        email: "",
+        password: "",
+    });
+
+    const onLogin = async () => {};
     return (
         <div className="flex justify-center items-center min-h-screen flex-col bg-z">
             <div className="w-full max-w-md rounded-xl box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform hover:-translate-y-3 hover:-translate-x-3 px-4 py-14">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold">Login</h1>
-                    <p className="text-sm mt-1">Please login to continue</p>
+                    <p className="text-sm mt-1">Please login toPage continue</p>
                 </div>
 
                 <div className="flex flex-col justify-center items-end my-8 px-10">
@@ -30,4 +40,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default LoginPage;
