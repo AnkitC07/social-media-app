@@ -9,7 +9,7 @@ export const menu = [
     {
         path: "/",
         icon: <HomeOutlinedIcon />,
-        lable: <p className=" ">Home</p>,
+        lable: "Home",
     },
     {
         path: "/explore",

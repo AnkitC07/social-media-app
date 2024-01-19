@@ -10,11 +10,6 @@ const Feed = () => {
             <div className="p-4 pb-0">
                 <Link href="#" className="md:flex-shrink flex-shrink-0 group block">
                     <div className="flex gap-6 items-start">
-                        {/* <img
-                            className="inline-block h-10 w-10 rounded-full"
-                            src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"
-                            alt=""
-                        /> */}
                         <Image
                             className="inline-block rounded-full"
                             src={"https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"}

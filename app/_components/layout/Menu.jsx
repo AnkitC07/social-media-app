@@ -20,7 +20,7 @@ const Menu = () => {
                             "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")
                         }
                     >
-                        {item.icon} <p className="font-light text-lg">{item.lable}</p>
+                        {item.icon} <p className={"font-light text-lg" + (pathname == item.path ? " text-tweet-blue" : "")}>{item.lable}</p>
                     </Link>
                 );
             })}

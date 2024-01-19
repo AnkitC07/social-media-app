@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 
-export  function getTokenData(request) {
+export function getTokenData(request) {            
     try {
         const token = request.cookies.get("token")?.value || "";
 
