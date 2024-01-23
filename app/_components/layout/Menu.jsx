@@ -7,7 +7,9 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 // import { menu } from "@/app/_constans";
 
-const Menu = () => {
+const Menu = (
+    {style=""}
+) => {
     const pathname = usePathname();
     return (
         <>
@@ -17,10 +19,10 @@ const Menu = () => {
                         key={item.path}
                         href={item.path}
                         className={
-                            "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")
+                            style +   "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")
                         }
                     >
-                        {item.icon} <p className="font-light text-lg">{item.lable}</p>
+                        {item.icon} <p className={"font-light text-lg" + (pathname == item.path ? " text-tweet-blue" : "")}>{item.lable}</p>
                     </Link>
                 );
             })}

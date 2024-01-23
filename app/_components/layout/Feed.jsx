@@ -10,11 +10,6 @@ const Feed = () => {
             <div className="p-4 pb-0">
                 <Link href="#" className="md:flex-shrink flex-shrink-0 group block">
                     <div className="flex gap-6 items-start">
-                        {/* <img
-                            className="inline-block h-10 w-10 rounded-full"
-                            src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"
-                            alt=""
-                        /> */}
                         <Image
                             className="inline-block rounded-full"
                             src={"https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"}
@@ -36,7 +31,7 @@ const Feed = () => {
             </div>
 
             <div className="pl-20">
-                <p className="text-base width-auto mr-2 font-normal text-white flex-shrink">
+                <p className="text-base width-auto mr-2 font-normal text-white flex-shrink break-words">
                     Day 07 of the challenge <span className="text-blue-400">#100DaysOfCode</span> I was wondering what I
                     can do with <span className="text-blue-400">#tailwindcss</span>, so just started building Twitter UI
                     using Tailwind and so far it looks so promising. I will post my code after completion. [07/100]
@@ -57,7 +52,7 @@ const Feed = () => {
                                 <div key={i} className="flex-1 text-center py-1 ">
                                     <a
                                         href="#"
-                                        className="w-12 mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
+                                        className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
                                     >
                                         {svg}
                                     </a>

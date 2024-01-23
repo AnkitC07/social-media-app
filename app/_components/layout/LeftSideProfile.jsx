@@ -3,9 +3,9 @@ import Link from "next/link";
 import Card from "../common/Card";
 import Profile from "../common/Profile";
 
-const LeftSideProfile = () => {
+const LeftSideProfile = ({style=""}) => {
     return (
-        <Card>
+        <Card style={style}>
             <div className="w-[250px] m-6 h-auto flex flex-col gap-8   ">
                 <div className="flex flex-col gap-10 items-center text-center">
                     <div className="flex flex-col gap-4 items-center ">

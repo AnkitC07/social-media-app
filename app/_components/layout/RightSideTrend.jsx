@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../common/Card";
 import Hashtags from "../common/Hashtags";
 
-const RightSideTrend = () => {
+const RightSideTrend = ({ style }) => {
     const tags = [
         {
             tag: "Meloni",
@@ -18,8 +18,8 @@ const RightSideTrend = () => {
         },
     ];
     return (
-        <Card>
-            <div className=" w-[300px] flex flex-col gap-8 py-4 px-8">
+        <Card style={style}>
+            <div className={`w-[300px] flex flex-col gap-8 py-3 px-5`}>
                 <h2 className="font-bold text-lg">Trends for you</h2>
                 <div className="flex flex-col gap-4 divide-y ">
                     <div className="flex flex-col gap-4">

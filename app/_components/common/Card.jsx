@@ -1,7 +1,7 @@
 import React from "react";
 
-const Card = ({ children }) => {
-    return <div className="bg-bg-card  rounded-2xl h-fit">{children}</div>;
+const Card = ({ children, style = "" }) => {
+    return <div className={"bg-bg-card  rounded-2xl h-fit " + style}>{children}</div>;
 };
 
 export default Card;
