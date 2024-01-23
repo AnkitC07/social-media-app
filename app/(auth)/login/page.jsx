@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
@@ -21,8 +20,8 @@ const LoginPage = () => {
             toast.success("Login Successfull");
             router.push("/");
         } catch (error) {
-            console.log("Login failed", error.message);
-            toast.error(error.message);
+            console.log("Login Failed", error.message);
+            toast.error("Login Failed");
         } finally {
             setLoading(false);
         }

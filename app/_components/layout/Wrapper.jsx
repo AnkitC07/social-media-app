@@ -5,7 +5,7 @@ import BottomBar from "./BottomBar";
 const Wrapper = ({ childs }) => {
 
     return (
-        <main className="wrapper container mx-auto">
+        <main className="wrapper container mx-auto relative">
             <TopBar />
             {childs}
             {/* Skeleton */}

@@ -13,7 +13,7 @@ export const like = (
 );
 export const comment = (
     <svg
-        className="text-center h-6 w-6"
+        className="text-center w-6"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"

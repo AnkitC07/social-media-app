@@ -20,7 +20,7 @@ const Explore = () => {
             <div className="flex gap-2">
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <RightSideTrend style={"sticky top-[140px]"} />
+                <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
 
                 <div className="flex flex-col justify-center items-center gap-2 w-full">
                     {!loading && [0, 1, 2].map((_, idx) => <Feed key={idx} />)}
@@ -68,7 +68,7 @@ const Explore = () => {
                 </div>
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <SuggestedUsers style={"sticky top-[140px]"} />
+                <SuggestedUsers style={"max-lg:hidden sticky top-[140px]"} />
             </div>
         </div>
     );
