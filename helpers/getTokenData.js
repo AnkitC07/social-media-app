@@ -1,4 +1,5 @@
-import { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+
 
 
 export function getTokenData(request) {            
@@ -9,6 +10,6 @@ export function getTokenData(request) {
 
         return decodedToken.id
     } catch (error) {
-        throw new Error(error.message)
+        return new Error(error.message);
     }
 }

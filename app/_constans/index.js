@@ -4,6 +4,8 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Profile from "../_components/common/Profile";
+import Modal from "../_components/common/Modal";
+import Logout from "../profile/Logout"
 
 export const menu = [
     {
@@ -30,6 +32,12 @@ export const menu = [
         path: "/profile",
         icon: <PersonOutlinedIcon sx={{ fontSize: "20px" }} />,
         lable: "Profile",
+        comp:<Modal width={"w-[100px] right-[-25px]  "}>
+                <p className="flex flex-col text-[16px]">
+                    <span className="border-b-[1px] border-gray-800 text-white hover:text-inherit">Setting</span>
+                    <span className="text-white hover:text-inherit"><Logout/></span>
+                </p>
+            </Modal>
     },
     // {
     //     path: "/more",

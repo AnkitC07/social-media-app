@@ -4,9 +4,7 @@ import Link from "next/link";
 const Profile = () => {
     return (
         <section className="border border-y-0 border-gray-800 mx-auto" style={{ maxWidth: "600px" }}>
-            {/* <!--Content (Center)-->
-    <!-- Nav back-->
-    <!-- User card--> */}
+
             <div>
                 <div
                     className="w-full bg-cover bg-center bg-no-repeat"
