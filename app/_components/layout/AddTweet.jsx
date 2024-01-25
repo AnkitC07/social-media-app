@@ -1,14 +1,20 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
 import Card from "../common/Card";
 import Profile from "../common/Profile";
+import Image from "next/image"
 import CropOriginalRoundedIcon from "@mui/icons-material/CropOriginalRounded";
 import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 
 const AddTweet = () => {
+    const imgRef = useRef(null);
+    const [img, setImg] = useState({
+        url: null,
+        file: null,
+    });
+    console.log(img);
     function auto_grow(element) {
-        console.log(element);
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
     }
@@ -27,9 +33,39 @@ const AddTweet = () => {
                             placeholder="What's on your mind? "
                             className="border-0 w-full resize-none bg-[#28343E] focus-visible:outline-none"
                         />
+                        <div id="media">
+                            {img.url !== null && (
+                                <Image className="mb-2 rounded-lg" src={img.url} height={300} width={240} alt={"tweetImage"} />
+                            )}
+                        </div>
                         <div className="flex justify-between flex-wrap gap-2 max-[319px]:justify-end">
                             <div className="flex gap-2 text-[#03A9F4]">
+                                <input
+                                    accept="image/*"
+                                    ref={imgRef}
+                                    onChange={(e) => {
+                                        // this gives us the data on what files are selected
+                                        // however, it's of type `FileList` which is hard to modify.
+                                        const fileList = e.target.files;
+                                        // let's convert `FileList` into a `File[]`
+                                        if (fileList) {
+                                            const files = [...fileList]; // now we have `File[]` type
+                                            // This only works on es6 version make sure to set your tsconfig.json "target" to "es6"
+                                            const url = URL.createObjectURL(files[0]);
+                                            setImg({
+                                                url: url,
+                                                file: files[0],
+                                            });
+                                            console.log("url=>", url);
+                                        }
+                                    }}
+                                    type="file"
+                                    name="image"
+                                    id="uploadImage"
+                                    className="hidden"
+                                />
                                 <CropOriginalRoundedIcon
+                                    onClick={() => imgRef.current.click()}
                                     sx={{ filter: "drop-shadow(0px 0px 3px rgb(47 223 154 / 0.5))" }}
                                     className="text-[#2FDF9A]"
                                 />
