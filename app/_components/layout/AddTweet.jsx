@@ -2,13 +2,15 @@
 import React, { useRef, useState } from "react";
 import Card from "../common/Card";
 import Profile from "../common/Profile";
-import Image from "next/image"
+import Image from "next/image";
 import CropOriginalRoundedIcon from "@mui/icons-material/CropOriginalRounded";
 import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
+import axios from "axios";
 
 const AddTweet = () => {
     const imgRef = useRef(null);
+    const [postText, setPostText] = useState('');
     const [img, setImg] = useState({
         url: null,
         file: null,
@@ -18,6 +20,28 @@ const AddTweet = () => {
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
     }
+
+    const addPost = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("files", img.file);
+
+            
+            // Append additional JSON data to the FormData
+            formData.append("postText", postText);
+            formData.append("description", "Your Description");
+
+            const response = await axios.post("/api/post/add", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log("Add post data=>", await response.data);
+        } catch (error) {
+            console.log("Add post failed", error);
+            toast.error("Add post failed");
+        }
+    };
 
     return (
         <Card>
@@ -29,13 +53,21 @@ const AddTweet = () => {
                     <div className="p-5 bg-[#28343E] rounded-2xl">
                         <textarea
                             // cols="30"
+                            onChange={(e) => setPostText(e.target.value)}
+                            value={postText}
                             onInput={auto_grow}
                             placeholder="What's on your mind? "
                             className="border-0 w-full resize-none bg-[#28343E] focus-visible:outline-none"
                         />
                         <div id="media">
                             {img.url !== null && (
-                                <Image className="mb-2 rounded-lg" src={img.url} height={300} width={240} alt={"tweetImage"} />
+                                <Image
+                                    className="mb-2 rounded-lg"
+                                    src={img.url}
+                                    height={300}
+                                    width={240}
+                                    alt={"tweetImage"}
+                                />
                             )}
                         </div>
                         <div className="flex justify-between flex-wrap gap-2 max-[319px]:justify-end">
@@ -82,7 +114,9 @@ const AddTweet = () => {
                                     className="text-[#FB6E6E]"
                                 />
                             </div>
-                            <button className="py-1 px-4 bg-[#03A9F4] text-sm rounded-2xl">Tweet</button>
+                            <button onClick={addPost} className="py-1 px-4 bg-[#03A9F4] text-sm rounded-2xl">
+                                Tweet
+                            </button>
                         </div>
                     </div>
                 </div>
