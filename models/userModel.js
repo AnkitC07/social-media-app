@@ -4,14 +4,17 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: [true, "Please provide a username"], unique: true },
     email: { type: String, required: [true, "Please provide a email"], unique: true },
     password: { type: String, required: [true, "Please provide a password"] },
-    isVerified: {
-        type: Boolean,
-        default: false,
-    },
+    isVerified: { type: Boolean, default: false },
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
     verifyToken: String,
     verifyTokenExpiry: Date,
+    fullName: { type: String, required: true },
+    bio: { type: String },
+    avatar: { type: String }, // URL to user's profile picture
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
 });
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
