@@ -33,7 +33,7 @@ const AddTweet = () => {
 
             const response = await axios.post("/api/post/add", formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    'Content-Type': 'multipart/form-data',
                 },
             });
             console.log("Add post data=>", await response.data);
