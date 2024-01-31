@@ -29,7 +29,7 @@ export async function POST(request) {
         }
 
         // Create token 
-        const token = await jwt.sign(tokenData, process.env.JWT_TOKEN_SECRET);
+        const token = jwt.sign(tokenData, process.env.JWT_TOKEN_SECRET);
 
         const expirationTimeInHours = 10;
         const expirationTimeInSeconds = expirationTimeInHours * 60 * 60; // 1 hour = 60 minutes, 1 minute = 60 seconds
