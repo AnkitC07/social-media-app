@@ -2,7 +2,7 @@ import { connect } from "../../../../dbConfig/dbConfig.js";
 import User from "../../../../models/userModel.js";
 import {  NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+import createJWT from "../../../../jwt/create.js";
 
 await connect();
 
@@ -29,7 +29,7 @@ export async function POST(request) {
         }
 
         // Create token 
-        const token = jwt.sign(tokenData, process.env.JWT_TOKEN_SECRET);
+        const token = createJWT(tokenData)
 
         const expirationTimeInHours = 10;
         const expirationTimeInSeconds = expirationTimeInHours * 60 * 60; // 1 hour = 60 minutes, 1 minute = 60 seconds
@@ -38,16 +38,15 @@ export async function POST(request) {
         // Set cokkie
         const response = NextResponse.json({
             message: "Logged in successfully!",
-            success:true
+            success: true,
+            user: tokenData
         })
-
         response.cookies.set("token", token, {
             httpOnly: true,
             maxAge: expirationTimeInSeconds
-
         })
+
         return response;
-        
     } catch (error) {
         console.log("Something went wrong!", error)
         return NextResponse.json({
