@@ -7,35 +7,45 @@ import CropOriginalRoundedIcon from "@mui/icons-material/CropOriginalRounded";
 import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddTweet = () => {
     const imgRef = useRef(null);
-    const [postText, setPostText] = useState('');
+    const [postText, setPostText] = useState("");
     const [img, setImg] = useState({
         url: null,
         file: null,
     });
-    console.log(img);
+    // console.log(img);
     function auto_grow(element) {
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
     }
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
 
     const addPost = async () => {
         try {
-            const formData = new FormData();
-            formData.append("files", img.file);
+            console.log(img)
+            const postData = {
+                postText: postText,
+                img: img.file ? await convertBase64(img.file):'',
+            };
 
-            
-            // Append additional JSON data to the FormData
-            formData.append("postText", postText);
-            formData.append("description", "Your Description");
-
-            const response = await axios.post("/api/post/add", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+        
+            const response = await axios.post("/api/post/add", postData);
             console.log("Add post data=>", await response.data);
         } catch (error) {
             console.log("Add post failed", error);
@@ -76,19 +86,14 @@ const AddTweet = () => {
                                     accept="image/*"
                                     ref={imgRef}
                                     onChange={(e) => {
-                                        // this gives us the data on what files are selected
-                                        // however, it's of type `FileList` which is hard to modify.
                                         const fileList = e.target.files;
-                                        // let's convert `FileList` into a `File[]`
                                         if (fileList) {
-                                            const files = [...fileList]; // now we have `File[]` type
-                                            // This only works on es6 version make sure to set your tsconfig.json "target" to "es6"
+                                            const files = [...fileList];
                                             const url = URL.createObjectURL(files[0]);
                                             setImg({
                                                 url: url,
                                                 file: files[0],
                                             });
-                                            console.log("url=>", url);
                                         }
                                     }}
                                     type="file"

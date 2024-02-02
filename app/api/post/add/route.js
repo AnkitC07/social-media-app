@@ -1,63 +1,65 @@
-import { NextResponse } from "next/server";
-import fs from 'fs'
+import { NextResponse } from "next/server"; 
+import Tweet from "../../../../models/tweetModel.js";
+import User from "../../../../models/userModel.js";
+import Hashtag from "../../../../models/hashtagModel.js";
+import fs from "fs";
 // import '../../../../cloudnary/cldConfig.js'
-import { uploadImage } from "../../../../cloudnary/uploadImage.js"
-import FileReader from "filereader"
-// const toBase64 = file => new Promise((resolve, reject) => {
+import { uploadImage } from "../../../../cloudnary/uploadImage.js";
 
-
-
-    
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     // `onload` as listener
-//     reader.addEventListener('load', function (ev) {
-//         resolve(reader.result)
-//     });
-//     // reader.onload = () => resolve(reader.result);
-//     reader.addEventListener('error', function (ev) {
-//         reject
-//     });
-//     // reader.onerror = reject;
-// });
-
-
-
+// Function to extract hashtags from a tweet text
+function extractHashtags(tweetText) {
+    const regex = /#(\w+)/g;
+    const matches = tweetText.match(regex) || [];
+    return matches.map((match) => match.slice(1)); // Remove the '#' symbol
+}
 export const POST = async (request) => {
     try {
 
-        
-        // const reqBody = await request.json();
-        const formData = await request.formData()
-        let image;
+        const reqBody = await request.json();
+        const requestHeaders = new Headers(request.headers);
+        const userId =  requestHeaders.get("x-user-_id")
+0
+        const { postText, img } = reqBody;
 
-        console.log(...formData)
-         // Iterate over FormData entries
-        for (const [name, value] of formData.entries()) {
-            if (name == "files") {
-                //  image = await toBase64(value)
-                // const image = fs.readFileSync(value);
-                
-             }
-            // console.log(`${name}: ${value}`);
-        }
-        
-        console.log(image)
+
         // Upload the image
-        // const secure_url = await uploadImage("https://static.zerochan.net/Monkey.D..Luffy.full.3186340.jpg");
+        const secure_url = await uploadImage(img);
 
+        const tweet = new Tweet({
+            text: postText,
+            user: userId,
+            images: [secure_url] || [],
+            // Other fields...
+            hashtags: extractHashtags(postText) || [],
+        });
 
+        // Save the tweet
+        tweet.save().then((savedTweet) => {
+            // Update the User's tweets array
+            User.findByIdAndUpdate(userId, { $push: { tweets: savedTweet._id } }).exec();
+
+            // Update the Hashtag collection
+            savedTweet.hashtags.forEach((hashtag) => {
+                Hashtag.findOneAndUpdate(
+                    { hashtag: hashtag },
+                    { $push: { tweets: savedTweet._id } },
+                    { upsert: true }
+                ).exec();
+            });
+        });
 
         return NextResponse.json({
             message: `Post added successfuly`,
-            success:true
-         })
-
+            success: true,
+            tweet:tweet
+        });
     } catch (error) {
         console.log("Something went wrong in post adding ", error);
-        return NextResponse.json({
-            error: error.message,
-        },
-        {status:500})
+        return NextResponse.json(
+            {
+                error: error.message,
+            },
+            { status: 500 }
+        );
     }
-}
+};

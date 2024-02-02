@@ -32,10 +32,10 @@ export const menu = [
         path: "/profile",
         icon: <PersonOutlinedIcon sx={{ fontSize: "20px" }} />,
         lable: "Profile",
-        comp:<Modal width={"w-[100px] right-[-25px]  "}>
+        comp:<Modal width={"w-[100px] right-[-25px] !py-2 "}>
                 <p className="flex flex-col text-[16px]">
-                    <span className="border-b-[1px] border-gray-800 text-white hover:text-inherit">Setting</span>
-                    <span className="text-white hover:text-inherit"><Logout/></span>
+                    <span className="border-b-[1px] pb-1 border-gray-800 text-white hover:text-tweet-blue">Setting</span>
+                    <span className="text-white hover:text-tweet-blue"><Logout/></span>
                 </p>
             </Modal>
     },

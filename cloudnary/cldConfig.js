@@ -8,8 +8,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDNARY_SECERT_KEY 
 });
 
-console.log(cloudinary.config())
-
 
 // cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
 //   { public_id: "olympic_flag_test" }, 
