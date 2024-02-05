@@ -26,6 +26,7 @@ export async function POST(request) {
             id: user._id,
             username:user.username,
             email: user.email,
+            password:password
         }
 
         // Create token 

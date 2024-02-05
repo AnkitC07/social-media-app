@@ -11,12 +11,11 @@ const userSchema = new mongoose.Schema({
     verifyTokenExpiry: Date,
     fullName: { type: String, required: true },
     bio: { type: String },
-    avatar: { type: String }, // URL to user's profile picture
+    avatar: { type: String, default:"https://res.cloudinary.com/deyq54d8b/image/upload/v1707136917/Social-Media-App/default-profile.jpg" }, // URL to user's profile picture
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
 });
-
 const User = mongoose?.models?.users || mongoose.model("users", userSchema);
 
 export default User;

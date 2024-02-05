@@ -4,9 +4,29 @@ import Link from "next/link";
 import Image from "next/image";
 import { like, comment, retweet, share } from "../../../public/assets/svgs";
 
-const Feed = () => {
+const Feed = ({ post }) => {
+    console.log(post);
+    const postImages = () => {
+        if (post.images.length>0 && post.images) {
+            return post.images.map((image, idx) => {
+                return (
+                    <>
+                        {/* <Image
+                            src={image.url}
+                            alt={image.alt}
+                            width={image.width}
+                            height={image.height}
+                        /> */}
+                        <img key={idx} className="rounded-lg" src={image} alt="Post image" />
+                    </>
+                );
+            });
+        } else {
+            return <></>;
+        }
+    };
     return (
-        <Card>
+        <Card style=" w-full ">
             <div className="p-4 pb-0">
                 <Link href="#" className="md:flex-shrink flex-shrink-0 group block">
                     <div className="flex gap-6 items-start">
@@ -20,9 +40,9 @@ const Feed = () => {
 
                         <div className="">
                             <p className=" flex flex-wrap  items-baseline text-lg leading-6 font-semibold text-white mb-3">
-                                <span className="mr-2">Sonali Hirave</span>
+                                <span className="mr-2">{post.user.username}</span>
                                 <span className="text-xs leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                                    @ShonaDesign . 16 April
+                                    @{post.user.username} . 16 April
                                 </span>
                             </p>
                         </div>
@@ -32,18 +52,20 @@ const Feed = () => {
 
             <div className="pl-20">
                 <p className="text-base width-auto mr-2 font-normal text-white flex-shrink break-words">
-                    Day 07 of the challenge <span className="text-blue-400">#100DaysOfCode</span> I was wondering what I
+                    {post.text}
+                    {/* Day 07 of the challenge <span className="text-blue-400">#100DaysOfCode</span> I was wondering what I
                     can do with <span className="text-blue-400">#tailwindcss</span>, so just started building Twitter UI
                     using Tailwind and so far it looks so promising. I will post my code after completion. [07/100]
-                    <span className="text-blue-400"> #WomenWhoCode #CodeNewbie</span>
+                    <span className="text-blue-400"> #WomenWhoCode #CodeNewbie</span> */}
                 </p>
 
                 <div className="md:flex-shrink pr-6 pt-3">
-                    <img
+                    {postImages()}
+                    {/* <img
                         className="rounded-lg"
                         src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80"
-                        alt="Woman paying for a purchase"
-                    />
+                        alt="Woman paying for a purchase" */}
+                    {/* /> */}
                 </div>
                 <div className="flex">
                     <div className="w-full">

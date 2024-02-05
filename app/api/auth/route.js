@@ -8,7 +8,7 @@ await connect()
 export async function POST(request) {
     try {
         const reqBody = await request.json();
-        console.log(reqBody.payload)
+        // console.log("auth",reqBody.payload)
         const { payload: decoded } = reqBody;
 
 

@@ -5,7 +5,6 @@ const isAuthenticated = async (request) => {
         const token = request.cookies.get("token")?.value || "";
         if (token) {
             const decoded = await verifyJWT(request);
-
             let userData;
             await fetch("http://localhost:3000/api/auth", {
                 method: 'POST',

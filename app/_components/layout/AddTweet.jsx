@@ -80,7 +80,7 @@ const AddTweet = () => {
                                 />
                             )}
                         </div>
-                        <div className="flex justify-between flex-wrap gap-2 max-[319px]:justify-end">
+                        <div className="flex justify-betwee n flex-wrap gap-2 max-[319px]:justify-end">
                             <div className="flex gap-2 text-[#03A9F4]">
                                 <input
                                     accept="image/*"
