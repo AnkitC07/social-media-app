@@ -28,7 +28,7 @@ const Feed = ({ post }) => {
     return (
         <Card style=" w-full ">
             <div className="p-4 pb-0">
-                <Link href="#" className="md:flex-shrink flex-shrink-0 group block">
+                <Link href={"/profile/" + post?.user?._id} className="md:flex-shrink flex-shrink-0 group block">
                     <div className="flex gap-6 items-start">
                         <Image
                             className="inline-block rounded-full"

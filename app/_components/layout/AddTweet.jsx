@@ -8,6 +8,7 @@ import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineR
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {convertBase64} from '../../functions/convertBase64.js'
 
 const AddTweet = () => {
     const imgRef = useRef(null);
@@ -21,20 +22,20 @@ const AddTweet = () => {
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
     }
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
+    // const convertBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         const fileReader = new FileReader();
+    //         fileReader.readAsDataURL(file);
 
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
+    //         fileReader.onload = () => {
+    //             resolve(fileReader.result);
+    //         };
 
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
+    //         fileReader.onerror = (error) => {
+    //             reject(error);
+    //         };
+    //     });
+    // };
 
     const addPost = async () => {
         try {
@@ -80,7 +81,7 @@ const AddTweet = () => {
                                 />
                             )}
                         </div>
-                        <div className="flex justify-betwee n flex-wrap gap-2 max-[319px]:justify-end">
+                        <div className="flex justify-between flex-wrap gap-2 max-[319px]:justify-end">
                             <div className="flex gap-2 text-[#03A9F4]">
                                 <input
                                     accept="image/*"

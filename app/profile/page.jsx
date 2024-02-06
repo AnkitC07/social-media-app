@@ -1,22 +1,62 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EditProfileModal from "../_components/layout/EditProfileModal";
 
-const Profile = ({ params }) => {
+const ProfilePage = ({ params }) => {
+    const [loading, setLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [profile, setProfile] = useState({});
+    const [editFormData, setEditFormData] = useState({
+        username: "",
+        name: "",
+        bio: "",
+        avatar: null, // to store the avatar file
+        banner: null, // to store the banner file
+    });
+
+    // console.log(editFormData);
+
+    const editProfleApi = async () => {
+        setLoading(true);
+        try {
+            const request = axios.put("/api/users/profile/edit?id=" + params?.id, editFormData);
+            request
+                .then((res) => {
+                    console.log("Edit Profile Successfull", res.data);
+                    toast.success("Edit Profile Successfull");
+                })
+                .finally(() => setLoading(false));
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
+    const handleFollow = (isFollowed) => {
+        setIsFollowed(isFollowed);
+    };
+    // Profile Edit Submit Button
+    const handleSubmit = (e, editFormData) => {
+        e.preventDefault();
+        console.log(editFormData);
+        editProfleApi();
+    };
+
     useEffect(() => {
         (async () => {
             try {
-                await axios.get(`/api/users/profile?id=${params?.id}`).then((res) => console.log(res.data));
+                await axios.get(`/api/users/profile?id=${params?.id}`).then((res) => setProfile(res.data.data));
             } catch (error) {
                 console.log(error);
                 toast.error("User not found");
             }
         })();
-    });
+    }, []);
     return (
         <>
             <section className="border border-y-0 border-gray-800 mx-auto" style={{ maxWidth: "600px" }}>
@@ -28,10 +68,17 @@ const Profile = ({ params }) => {
                             backgroundImage: "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
                         }}
                     >
-                        <img
+                        {/* <img
                             className="h-full w-full opacity-0"
                             src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
                             alt=""
+                        /> */}
+                        <Image
+                            className="opacity-0"
+                            src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
+                            alt=""
+                            layout="fill"
+                            // objectFit="cover"
                         />
                     </div>
                     <div className="p-4">
@@ -43,24 +90,51 @@ const Profile = ({ params }) => {
                                         style={{ height: "9rem", width: "9rem" }}
                                         className="md avatar relative rounded-full"
                                     >
-                                        <img
+                                        {/* <img
                                             style={{ height: "9rem", width: "9rem" }}
                                             className="md relative rounded-full border-4 border-gray-900"
                                             src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
                                             alt=""
-                                        />
+                                        /> */}
+                                        {profile?.avatar && (
+                                            <Image
+                                                className="rounded-full border-4 border-gray-900"
+                                                src={profile?.avatar}
+                                                alt="Profile picture"
+                                                width={225}
+                                                height={225}
+                                            />
+                                        )}
                                         <div className="absolute"></div>
                                     </div>
                                 </div>
                             </div>
                             {/* <!-- Follow Button --> */}
                             <div className="flex flex-col text-right">
-                                <button
-                                    onClick={() => setOpenModal(!openModal)}
-                                    className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-transparent px-4 py-2 font-bold text-blue-500 hover:border-blue-800 hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                >
-                                    Edit Profile
-                                </button>
+                                {params?.id ? (
+                                    isFollowed ? (
+                                        <button
+                                            onClick={() => handleFollow(!isFollowed)}
+                                            className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-tweet-blue px-5 py-2 font-bold text-white  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                        >
+                                            Following
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleFollow(!isFollowed)}
+                                            className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-white px-5 py-2 font-bold text-black  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                        >
+                                            Follow
+                                        </button>
+                                    )
+                                ) : (
+                                    <button
+                                        onClick={() => setOpenModal(!openModal)}
+                                        className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-transparent px-4 py-2 font-bold text-blue-500  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                    >
+                                        Edit Profile
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -68,16 +142,15 @@ const Profile = ({ params }) => {
                         <div className="ml-3 mt-3 w-full justify-center space-y-1">
                             {/* <!-- User basic--> */}
                             <div>
-                                <h2 className="text-xl font-bold leading-6 text-white">ℜ??????ℜ??????.dev</h2>
-                                <p className="text-sm font-medium leading-5 text-gray-600">@Ricardo_oRibeir</p>
+                                <h2 className="text-xl font-bold leading-6 text-white">{profile?.fullName}</h2>
+                                <p className="text-sm font-medium leading-5 text-gray-600">@{profile?.username}</p>
                             </div>
                             {/* <!-- Description and others --> */}
                             <div className="mt-3">
                                 <p className="mb-4 leading-tight text-white">
-                                    Software Engineer / Designer / Entrepreneur <br />
-                                    Visit my website to test a working <b>Twitter Clone.</b>
+                                    {profile?.bio}
                                 </p>
-                                <div className="flex flex-wrap gap-1 text-sm text-gray-600">
+                                {/* <div className="flex flex-wrap gap-1 text-sm text-gray-600">
                                     <span className="mr-2 flex">
                                         <svg viewBox="0 0 24 24" className="paint-icon h-5 w-5">
                                             <g>
@@ -109,15 +182,19 @@ const Profile = ({ params }) => {
                                         </svg>
                                         <span className="ml-1 leading-5">Joined December, 2019</span>
                                     </span>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="flex w-full items-start justify-start divide-x divide-solid divide-gray-800 pt-3">
                                 <div className="pr-3 text-center">
-                                    <span className="font-bold text-white">520</span>
+                                    <span className="font-bold text-white">
+                                        {profile?.following?.length < 1 ? 0 : profile?.following}
+                                    </span>
                                     <span className="text-gray-600"> Following</span>
                                 </div>
                                 <div className="px-3 text-center">
-                                    <span className="font-bold text-white">23,4m </span>
+                                    <span className="font-bold text-white">
+                                        {profile?.followers?.length < 1 ? 0 : profile?.followers}{" "}
+                                    </span>
                                     <span className="text-gray-600"> Followers</span>
                                 </div>
                             </div>
@@ -219,9 +296,16 @@ const Profile = ({ params }) => {
                     </li>
                 </ul>
             </section>
-            {openModal && <EditProfileModal onClose={()=>setOpenModal(false)} />}
+            {openModal && (
+                <EditProfileModal
+                    onClose={() => setOpenModal(false)}
+                    handleSubmit={handleSubmit}
+                    editFormData={editFormData}
+                    setEditFormData={setEditFormData}
+                />
+            )}
         </>
     );
 };
 
-export default Profile;
+export default ProfilePage;

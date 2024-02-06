@@ -3,13 +3,12 @@ import { connect } from "../../../../dbConfig/dbConfig.js";
 import User from "../../../../models/userModel.js";
 import { getTokenData } from '../../../../helpers/getTokenData.js';
 
-connect();
+await connect();
 
 export const GET = async (request)=>{
     try {
         const searchParams = request.nextUrl.searchParams
-        const query = searchParams.get('id') 
-        console.log(query,"query")
+        const query = searchParams.get('id'); 
         let userId;
         if (query == "undefined") {
              userId = getTokenData(request);

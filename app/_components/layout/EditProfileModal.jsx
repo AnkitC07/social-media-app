@@ -1,25 +1,25 @@
 "use client";
 import React, { useState } from "react";
+import { convertBase64 } from "../../functions/convertBase64.js";
 
-const EditProfileModal = ({ onClose }) => {
-    const [editFormData, setEditFormData] = useState({
-        username: "",
-        name: "",
-        bio: "",
-    });
+const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData }) => {
+    const handleChange = async (e) => {
+        const { name, value, type } = e.target;
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(editFormData)
-        // Add your logic to save changes or update the profile
-        // You can access the updated data using formData state
+        // If the input is a file input, update the state with the file itself
+        if (type === "file") {
+            const base64file = await convertBase64(e.target.files[0]);
+            setEditFormData((prevData) => ({
+                ...prevData,
+                [name]: base64file,
+            }));
+        } else {
+            // Otherwise, update the state with the input value
+            setEditFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
 
     return (
@@ -39,7 +39,7 @@ const EditProfileModal = ({ onClose }) => {
                         <p className="mt-1 max-w-2xl text-sm text-gray-300">Update your profile information.</p>
                     </div>
                     <div className="bg-1B2730 px-4 pb-4 sm:p-6 sm:pb-4">
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={(e) => handleSubmit(e, editFormData)}>
                             <div className="mb-4">
                                 <label htmlFor="username" className="block text-sm font-medium text-white">
                                     Username
@@ -51,12 +51,12 @@ const EditProfileModal = ({ onClose }) => {
                                     value={editFormData.username}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white"
-                                    required
+                                    // required
                                 />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="name" className="block text-sm font-medium text-white">
-                                    Name
+                                  Full Name
                                 </label>
                                 <input
                                     type="text"
@@ -65,7 +65,7 @@ const EditProfileModal = ({ onClose }) => {
                                     value={editFormData.name}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white"
-                                    required
+                                    // required
                                 />
                             </div>
                             <div className="mb-4">
@@ -80,6 +80,32 @@ const EditProfileModal = ({ onClose }) => {
                                     rows="3"
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white resize-none"
                                 ></textarea>
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="avatar" className="block text-sm font-medium text-white">
+                                    Avatar Image
+                                </label>
+                                <input
+                                    type="file"
+                                    id="avatar"
+                                    name="avatar"
+                                    accept="image/*"
+                                    onChange={handleChange}
+                                    className="mt-1 p-2 w-full border border-gray-300 rounded bg-1B2730 text-white"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="banner" className="block text-sm font-medium text-white">
+                                    Profile Banner Image
+                                </label>
+                                <input
+                                    type="file"
+                                    id="banner"
+                                    name="banner"
+                                    accept="image/*"
+                                    onChange={handleChange}
+                                    className="mt-1 p-2 w-full border border-gray-300 rounded bg-1B2730 text-white"
+                                />
                             </div>
                             <div className="flex justify-end">
                                 <button

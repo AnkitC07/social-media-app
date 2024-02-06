@@ -35,7 +35,7 @@ export async function POST(request) {
         const expirationTimeInHours = 10;
         const expirationTimeInSeconds = expirationTimeInHours * 60 * 60; // 1 hour = 60 minutes, 1 minute = 60 seconds
 
-
+        delete tokenData.password
         // Set cokkie
         const response = NextResponse.json({
             message: "Logged in successfully!",
