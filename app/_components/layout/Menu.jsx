@@ -38,13 +38,12 @@ const Menu = (
                             </ul>
                             </Modal>
                             :''} */}
-                            
                         </div>
                     </Link>
                 );
             })}
         </>
-    );
+    );``
 };
 
 export default Menu;

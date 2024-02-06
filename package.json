@@ -18,7 +18,10 @@
     "cloudinary": "^2.0.0",
     "dotenv": "^16.4.1",
     "filereader": "^0.10.3",
+    "gifsicle": "^7.0.1",
+    "imagemin-webp": "^8.0.0",
     "jose": "^5.2.0",
+    "jpegtran": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "next": "^14.0.4",
@@ -26,10 +29,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
-    "react-responsive": "^9.0.2"
+    "react-responsive": "^9.0.2",
+    "sharp": "^0.33.2",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/gifsicle": "^5.2.2",
     "@types/jsonwebtoken": "^9.0.5",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",

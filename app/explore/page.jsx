@@ -1,15 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchCom from "../_components/common/SearchCom";
 import RightSideTrend from "../_components/layout/RightSideTrend";
 import Feed from "../_components/layout/Feed";
+import axios from "axios";
 import SuggestedUsers from "../_components/layout/SuggestedUsers";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
-    setTimeout(() => {
-        setLoading(false);
-    }, [2000]);
+    const [posts,setPosts] = useState([])
+
+    useEffect(() => {
+        (() => {
+            try {
+                const request = axios('/api/post/explore/get');
+                request.then((res) => {
+                    console.log('Explore Post Data=>', res.data);
+                    setPosts(res.data)
+                }).finally(()=>setLoading(false))
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message)
+            }
+        })()
+    },[ ])
+
+    // setTimeout(() => {
+    //     setLoading(false);
+    // }, [2000]);
     const [explorePosts, setExplorePosts] = useState([]);
     return (
         // <div className="container mx-auto flex flex-col gap-2">
@@ -23,7 +41,7 @@ const Explore = () => {
                 <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
 
                 <div className="flex flex-col justify-center items-center gap-2 w-full">
-                    {!loading && [0, 1, 2].map((_, idx) => <Feed key={idx} />)}
+                    {!loading && posts.map((post, idx) => <Feed key={idx} post={post} />)}
 
                     {loading &&
                         [0, 1].map((_, idx) => (

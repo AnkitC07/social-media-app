@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server"; 
+import { NextResponse } from "next/server";
 import Tweet from "../../../../models/tweetModel.js";
 import User from "../../../../models/userModel.js";
 import Hashtag from "../../../../models/hashtagModel.js";
+import { connect } from "../../../../dbConfig/dbConfig.js";
 import fs from "fs";
 // import '../../../../cloudnary/cldConfig.js'
 import { uploadImage } from "../../../../cloudnary/uploadImage.js";
@@ -14,13 +15,10 @@ function extractHashtags(tweetText) {
 }
 export const POST = async (request) => {
     try {
-
         const reqBody = await request.json();
         const requestHeaders = new Headers(request.headers);
-        const userId =  requestHeaders.get("x-user-_id")
-0
+        const userId = requestHeaders.get("x-user-_id");
         const { postText, img } = reqBody;
-
 
         // Upload the image
         const secure_url = await uploadImage(img);
@@ -37,7 +35,6 @@ export const POST = async (request) => {
         tweet.save().then((savedTweet) => {
             // Update the User's tweets array
             User.findByIdAndUpdate(userId, { $push: { tweets: savedTweet._id } }).exec();
-
             // Update the Hashtag collection
             savedTweet.hashtags.forEach((hashtag) => {
                 Hashtag.findOneAndUpdate(
@@ -51,7 +48,7 @@ export const POST = async (request) => {
         return NextResponse.json({
             message: `Post added successfuly`,
             success: true,
-            tweet:tweet
+            tweet: tweet,
         });
     } catch (error) {
         console.log("Something went wrong in post adding ", error);
