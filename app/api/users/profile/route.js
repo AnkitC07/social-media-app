@@ -10,7 +10,7 @@ export const GET = async (request)=>{
         const searchParams = request.nextUrl.searchParams
         const query = searchParams.get('id'); 
         let userId;
-        if (query == "undefined") {
+        if (query == "user") {
              userId = getTokenData(request);
         } else {
             userId = query

@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { UserContext } from "../../_context/User";
 
 const LoginPage = () => {
+    const { setUserData } = useContext(UserContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
@@ -17,6 +19,7 @@ const LoginPage = () => {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
             console.log("Login Successfull", response.data);
+            setUserData(response.data.user);
             toast.success("Login Successfull");
             router.push("/");
         } catch (error) {

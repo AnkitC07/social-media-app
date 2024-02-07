@@ -1,12 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { getCookie } from 'cookies-next';
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EditProfileModal from "../_components/layout/EditProfileModal";
+import { UserContext } from "../_context/User";
+import FollowButton from "../_components/common/FollowButton";
 
 const ProfilePage = ({ params }) => {
+    const { userData } = useContext(UserContext);
+    
     const [loading, setLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
@@ -18,16 +23,28 @@ const ProfilePage = ({ params }) => {
         avatar: null, // to store the avatar file
         banner: null, // to store the banner file
     });
-
-    // console.log(editFormData);
+    if (params?.id) {
+        const id = params.id;    
+    }
 
     const editProfleApi = async () => {
         setLoading(true);
         try {
             const request = axios.put("/api/users/profile/edit?id=" + params?.id, editFormData);
+
             request
                 .then((res) => {
                     console.log("Edit Profile Successfull", res.data);
+                  
+                    setEditFormData({
+                        username: res.data.data.username,
+                        name: res.data.data.fullName,
+                        bio: res.data.data.bio,
+                        avatar: res.data.data.avatar, // to store the avatar file
+                        banner: res.data.data.banner, // to store the banner file
+                    })
+
+                  
                     toast.success("Edit Profile Successfull");
                 })
                 .finally(() => setLoading(false));
@@ -50,7 +67,19 @@ const ProfilePage = ({ params }) => {
     useEffect(() => {
         (async () => {
             try {
-                await axios.get(`/api/users/profile?id=${params?.id}`).then((res) => setProfile(res.data.data));
+                await axios.get(`/api/users/profile?id=${params?.id == undefined ? 'user': params?.id}`).then((res) => {
+                    const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
+                    console.log(res.data.data,userData._id)
+                    setProfile(res.data.data);
+                    setEditFormData({
+                        username: res.data.data.username,
+                        name: res.data.data.fullName,
+                        bio: res.data.data.bio,
+                        avatar: res.data.data.avatar, // to store the avatar file
+                        banner: res.data.data.banner, // to store the banner file
+                    })
+                    setIsFollowed(isCurrentUserFollowing);
+                });
             } catch (error) {
                 console.log(error);
                 toast.error("User not found");
@@ -65,7 +94,7 @@ const ProfilePage = ({ params }) => {
                         className="w-full bg-cover bg-center bg-no-repeat"
                         style={{
                             height: "200px",
-                            backgroundImage: "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
+                            backgroundImage: profile?.banner ?`url(${profile?.banner})`:"url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
                         }}
                     >
                         {/* <img
@@ -73,13 +102,14 @@ const ProfilePage = ({ params }) => {
                             src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
                             alt=""
                         /> */}
-                        <Image
+                        {/* <Image
                             className="opacity-0"
                             src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
                             alt=""
-                            layout="fill"
+                            fill
+                            // layout="fill"
                             // objectFit="cover"
-                        />
+                        /> */}
                     </div>
                     <div className="p-4">
                         <div className="relative flex w-full">
@@ -112,21 +142,23 @@ const ProfilePage = ({ params }) => {
                             {/* <!-- Follow Button --> */}
                             <div className="flex flex-col text-right">
                                 {params?.id ? (
-                                    isFollowed ? (
-                                        <button
-                                            onClick={() => handleFollow(!isFollowed)}
-                                            className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-tweet-blue px-5 py-2 font-bold text-white  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                        >
-                                            Following
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => handleFollow(!isFollowed)}
-                                            className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-white px-5 py-2 font-bold text-black  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                        >
-                                            Follow
-                                        </button>
-                                    )
+                                    // isFollowed ?
+                                    //     (
+                                    //     <button
+                                    //         onClick={() => handleFollow(!isFollowed)}
+                                    //         className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-tweet-blue px-5 py-2 font-bold text-white  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                    //     >
+                                    //         Following
+                                    //     </button>
+                                    // ) : (
+                                    //     <button
+                                    //         onClick={() => handleFollow(!isFollowed)}
+                                    //         className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-white px-5 py-2 font-bold text-black  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                    //     >
+                                    //         Follow
+                                    //     </button>
+                                    // )
+                                    <FollowButton followeeId={profile._id} following={isFollowed} />
                                 ) : (
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
@@ -187,13 +219,13 @@ const ProfilePage = ({ params }) => {
                             <div className="flex w-full items-start justify-start divide-x divide-solid divide-gray-800 pt-3">
                                 <div className="pr-3 text-center">
                                     <span className="font-bold text-white">
-                                        {profile?.following?.length < 1 ? 0 : profile?.following}
+                                        {profile?.following?.length < 1 ? 0 : profile?.following?.length}
                                     </span>
                                     <span className="text-gray-600"> Following</span>
                                 </div>
                                 <div className="px-3 text-center">
                                     <span className="font-bold text-white">
-                                        {profile?.followers?.length < 1 ? 0 : profile?.followers}{" "}
+                                        {profile?.followers?.length < 1 ? 0 : profile?.followers?.length}{" "}
                                     </span>
                                     <span className="text-gray-600"> Followers</span>
                                 </div>
