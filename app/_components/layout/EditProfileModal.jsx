@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { convertBase64 } from "../../functions/convertBase64.js";
+import { compressImage } from "../../functions/compressImage.js";
 
 const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData }) => {
     const handleChange = async (e) => {
@@ -9,9 +10,10 @@ const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData
         // If the input is a file input, update the state with the file itself
         if (type === "file") {
             const base64file = await convertBase64(e.target.files[0]);
+            const compressedImage = await compressImage(e.target.files[0], base64file);
             setEditFormData((prevData) => ({
                 ...prevData,
-                [name]: base64file,
+                [name]: compressedImage,
             }));
         } else {
             // Otherwise, update the state with the input value

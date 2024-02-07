@@ -40,9 +40,9 @@ const SuggestedUser = ({ user }) => {
             <FollowButton
                 handleClick={() => {}}
                 size={"text-xs"}
-                bgColor={following ? "bg-white" : "bg-blue-400"}
-                textColor={following ? "text-black" : "text-white"}
-                text={following ? "Unfollow" : "Follow"}
+                bgColor={following ? "bg-tweet-blue" : "bg-white"}
+                textColor={following ? "text-white" : "text-balck"}
+                following={following}
             />
             {/* </div> */}
         </div>

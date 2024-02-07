@@ -20,7 +20,7 @@ export  async function GET(request) {
             // Use these IDs to retrieve tweets from the users the current user is following
             const tweetsFromFollowingUsers = await Tweet.find({ user: { $in: followingUserIds } })
                 .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
-                .populate("users") // Populate the 'user' field with user details
+                .populate("user") // Populate the 'user' field with user details
                 .exec();
 
             console.log("Tweets from following users:", tweetsFromFollowingUsers);

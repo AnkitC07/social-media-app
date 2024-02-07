@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import followToggle from '../../functions/api/followToggle.js'
 
-const FollowButton = ({ handleClick, textColor = "white", bgColor = "blue-400", size, text }) => {
+
+const FollowButton = ({ followeeId, textColor = "white", bgColor = "blue-400", size, following }) => {
+    const [isFollowing, setIsFollowing] = useState(following);
+    console.log("followeeId", isFollowing)
+
+    const handleFollowToggle = async () => {
+        const action = isFollowing ? 'unfollow' : 'follow';
+        const result = await followToggle(followeeId, action);
+
+        if (!result.error) {
+            // Update the UI state based on the follow/unfollow action
+            setIsFollowing(!isFollowing);
+        } else {
+            // Handle the error (e.g., show an error message)
+            console.error('Follow toggle error:', result.error);
+        }
+    };
     return (
         <button
-            onClick={handleClick}
-            className={`px-4 py-2 ${bgColor} ${textColor} ${size} font-semibold rounded-2xl`}
+            onClick={handleFollowToggle}
+            className={`px-4 py-2 ${bgColor} ${textColor} ${size} ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full bg-white px-5 py-2 font-bold text-black  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring`}
         >
-            {text}
+             {isFollowing ? 'Following' : 'Follow'}
         </button>
     );
 };

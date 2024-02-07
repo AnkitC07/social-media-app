@@ -3,8 +3,7 @@ import Tweet from "../../../../models/tweetModel.js";
 import User from "../../../../models/userModel.js";
 import Hashtag from "../../../../models/hashtagModel.js";
 import { connect } from "../../../../dbConfig/dbConfig.js";
-import fs from "fs";
-// import '../../../../cloudnary/cldConfig.js'
+
 import { uploadImage } from "../../../../cloudnary/uploadImage.js";
 
 // Function to extract hashtags from a tweet text
