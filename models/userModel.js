@@ -19,9 +19,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://res.cloudinary.com/deyq54d8b/image/upload/v1707136917/Social-Media-App/default-banner.jpg",
     }, // URL to user's banner picture
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tweet" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: "tweets" }],
 });
 const User = mongoose?.models?.users || mongoose.model("users", userSchema);
 

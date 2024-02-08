@@ -15,7 +15,7 @@ export  async function GET(request) {
 
         if (currentUser) {
             // Get the IDs of users that the current user is following
-            const followingUserIds = currentUser.following;
+            const followingUserIds = [...currentUser.following];
 
             // Use these IDs to retrieve tweets from the users the current user is following
             const tweetsFromFollowingUsers = await Tweet.find({ user: { $in: followingUserIds } })
