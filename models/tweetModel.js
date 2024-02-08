@@ -5,8 +5,8 @@ const tweetSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
     createdAt: { type: Date, default: Date.now },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
-    retweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
-    replies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
+    retweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'tweets' }],
+    replies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'tweets' }],
     hashtags: [{ type: String }], // Array to store hashtags
     images: [{ type: String }], // Array to store image URLs
     videos: [{ type: String }], // Array to store video URLs

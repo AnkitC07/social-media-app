@@ -10,7 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {convertBase64} from '../../functions/convertBase64.js'
 
-const AddTweet = () => {
+const AddTweet = ({setPosts}) => {
     const imgRef = useRef(null);
     const [postText, setPostText] = useState("");
     const [img, setImg] = useState({
@@ -46,8 +46,11 @@ const AddTweet = () => {
             };
 
         
-            const response = await axios.post("/api/post/add", postData);
-            console.log("Add post data=>", await response.data);
+            await axios.post("/api/post/add", postData).then(response => {
+                setPosts(response.data.data.tweet)
+                console.log("Add post data=>", response.data);
+             })
+            
         } catch (error) {
             console.log("Add post failed", error);
             toast.error("Add post failed");

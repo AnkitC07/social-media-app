@@ -4,27 +4,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { like, comment, retweet, share } from "../../../public/assets/svgs";
 
+export const postImages = (post) => {
+    if (post.images.length>0 && post.images) {
+        return post.images.map((image, idx) => {
+            return (
+                <>
+                    {/* <Image
+                        src={image.url}
+                        alt={image.alt}
+                        width={image.width}
+                        height={image.height}
+                    /> */}
+                    <img key={idx} className="rounded-lg" src={image} alt="Post image" />
+                </>
+            );
+        });
+    } else {
+        return <></>;
+    }
+};
 const Feed = ({ post }) => {
     console.log(post);
-    const postImages = () => {
-        if (post.images.length>0 && post.images) {
-            return post.images.map((image, idx) => {
-                return (
-                    <>
-                        {/* <Image
-                            src={image.url}
-                            alt={image.alt}
-                            width={image.width}
-                            height={image.height}
-                        /> */}
-                        <img key={idx} className="rounded-lg" src={image} alt="Post image" />
-                    </>
-                );
-            });
-        } else {
-            return <></>;
-        }
-    };
     return (
         <Card style=" w-full ">
             <div className="p-4 pb-0">
@@ -60,7 +60,7 @@ const Feed = ({ post }) => {
                 </p>
 
                 <div className="md:flex-shrink pr-6 pt-3">
-                    {postImages()}
+                    {postImages(post)}
                     {/* <img
                         className="rounded-lg"
                         src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80"

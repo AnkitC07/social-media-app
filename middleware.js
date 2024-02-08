@@ -8,14 +8,14 @@ const middleware1 = async (request) => {
 };
 
 export async function middleware(request) {
-    // const requestHeaders = new Headers(request.headers);
-    // requestHeaders.set("x-test", "hello");
+
     const path = request.nextUrl.pathname;
     const token = request.cookies.get("token")?.value || "";
     const isPublicPath = path === "/login" || path === "/signup";
-
+    // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
+console.log(!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup'))
     // Authenticate API calls
-    if (!isPublicPath && path.startsWith("/api/")) {
+    if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup')) {
         const isAuth = await isAuthenticated(request);
         if (!isAuth) {
             // Respond with JSON indicating an error message
@@ -31,13 +31,16 @@ export async function middleware(request) {
         });
         return response
     }
-
-    if (isPublicPath && token) {
-        return NextResponse.redirect(new URL("/", request.nextUrl));
-    }
-
-    if (!isPublicPath && !token) {
-        return NextResponse.redirect(new URL("/login", request.nextUrl));
+    if (!path.startsWith('/api/')) {
+        
+        
+        if (isPublicPath && token) {
+            return NextResponse.redirect(new URL("/", request.nextUrl));
+        }
+        
+        if (!isPublicPath && !token) {
+            return NextResponse.redirect(new URL("/login", request.nextUrl));
+        }
     }
 
     // await middleware1(request)

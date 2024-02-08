@@ -15,7 +15,7 @@ export const GET = async (request)=>{
         } else {
             userId = query
         }
-        const user = await User.findOne({ _id: userId }).select("-password");
+        const user = await User.findOne({ _id: userId }).select("-password").populate('tweets');
         return NextResponse.json({
             message: "User Found",
             data: user,

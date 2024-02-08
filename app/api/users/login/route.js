@@ -9,6 +9,7 @@ await connect();
 export async function POST(request) {
 
     try {
+        console.log('login')
         const reqBody = await request.json();
         const { email, password } = reqBody;
 
@@ -46,6 +47,8 @@ export async function POST(request) {
             httpOnly: true,
             maxAge: expirationTimeInSeconds
         })
+
+        console.log(response)
 
         return response;
     } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import { getCookie } from 'cookies-next';
+import { getCookie } from "cookies-next";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -8,11 +8,13 @@ import axios from "axios";
 import EditProfileModal from "../_components/layout/EditProfileModal";
 import { UserContext } from "../_context/User";
 import FollowButton from "../_components/common/FollowButton";
+import Feed, { postImages } from "../_components/layout/Feed";
 
 const ProfilePage = ({ params }) => {
     const { userData } = useContext(UserContext);
-    
+
     const [loading, setLoading] = useState(false);
+    const [postLoading,setPostLoading]= useState(true);
     const [openModal, setOpenModal] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
     const [profile, setProfile] = useState({});
@@ -24,7 +26,7 @@ const ProfilePage = ({ params }) => {
         banner: null, // to store the banner file
     });
     if (params?.id) {
-        const id = params.id;    
+        const id = params.id;
     }
 
     const editProfleApi = async () => {
@@ -35,28 +37,27 @@ const ProfilePage = ({ params }) => {
             request
                 .then((res) => {
                     console.log("Edit Profile Successfull", res.data);
-                  
+
                     setEditFormData({
                         username: res.data.data.username,
                         name: res.data.data.fullName,
                         bio: res.data.data.bio,
                         avatar: res.data.data.avatar, // to store the avatar file
                         banner: res.data.data.banner, // to store the banner file
-                    })
+                    });
 
-                  
                     toast.success("Edit Profile Successfull");
                 })
-                .finally(() => setLoading(false));
+                .finally(() => {
+                    setLoading(false);
+                    setOpenModal(false);
+                });
         } catch (error) {
             console.log(error);
             toast.error(error.message);
         }
     };
 
-    const handleFollow = (isFollowed) => {
-        setIsFollowed(isFollowed);
-    };
     // Profile Edit Submit Button
     const handleSubmit = (e, editFormData) => {
         e.preventDefault();
@@ -67,25 +68,39 @@ const ProfilePage = ({ params }) => {
     useEffect(() => {
         (async () => {
             try {
-                await axios.get(`/api/users/profile?id=${params?.id == undefined ? 'user': params?.id}`).then((res) => {
-                    const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
-                    console.log(res.data.data,userData._id)
-                    setProfile(res.data.data);
-                    setEditFormData({
-                        username: res.data.data.username,
-                        name: res.data.data.fullName,
-                        bio: res.data.data.bio,
-                        avatar: res.data.data.avatar, // to store the avatar file
-                        banner: res.data.data.banner, // to store the banner file
-                    })
-                    setIsFollowed(isCurrentUserFollowing);
-                });
+                await axios
+                    .get(`/api/users/profile?id=${params?.id == undefined ? "user" : params?.id}`)
+                    .then((res) => {
+                        const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
+                        console.log(res.data.data, userData._id);
+                        setProfile(res.data.data);
+                        setEditFormData({
+                            username: res.data.data.username,
+                            name: res.data.data.fullName,
+                            bio: res.data.data.bio,
+                            avatar: res.data.data.avatar, // to store the avatar file
+                            banner: res.data.data.banner, // to store the banner file
+                        });
+                        
+                        setIsFollowed(isCurrentUserFollowing);
+                    }).finally(() => {
+                        setPostLoading(false)
+                    });
             } catch (error) {
                 console.log(error);
                 toast.error("User not found");
             }
         })();
     }, []);
+
+    const postTextEdit = (text) => {
+        const content = text.split("\n")
+        return (content.map((txt, idx) =>
+        <>
+        {txt+"\n"} 
+            </>
+        ))
+    }
     return (
         <>
             <section className="border border-y-0 border-gray-800 mx-auto" style={{ maxWidth: "600px" }}>
@@ -94,22 +109,11 @@ const ProfilePage = ({ params }) => {
                         className="w-full bg-cover bg-center bg-no-repeat"
                         style={{
                             height: "200px",
-                            backgroundImage: profile?.banner ?`url(${profile?.banner})`:"url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
+                            backgroundImage: profile?.banner
+                                ? `url(${profile?.banner})`
+                                : "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
                         }}
                     >
-                        {/* <img
-                            className="h-full w-full opacity-0"
-                            src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
-                            alt=""
-                        /> */}
-                        {/* <Image
-                            className="opacity-0"
-                            src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
-                            alt=""
-                            fill
-                            // layout="fill"
-                            // objectFit="cover"
-                        /> */}
                     </div>
                     <div className="p-4">
                         <div className="relative flex w-full">
@@ -141,7 +145,7 @@ const ProfilePage = ({ params }) => {
                             </div>
                             {/* <!-- Follow Button --> */}
                             <div className="flex flex-col text-right">
-                                {params?.id ? (
+                                {params?.id && profile._id !== userData._id ? (
                                     // isFollowed ?
                                     //     (
                                     //     <button
@@ -179,9 +183,7 @@ const ProfilePage = ({ params }) => {
                             </div>
                             {/* <!-- Description and others --> */}
                             <div className="mt-3">
-                                <p className="mb-4 leading-tight text-white">
-                                    {profile?.bio}
-                                </p>
+                                <p className="mb-4 leading-tight text-white">{profile?.bio}</p>
                                 {/* <div className="flex flex-wrap gap-1 text-sm text-gray-600">
                                     <span className="mr-2 flex">
                                         <svg viewBox="0 0 24 24" className="paint-icon h-5 w-5">
@@ -234,9 +236,11 @@ const ProfilePage = ({ params }) => {
                     </div>
                     <hr className="border-gray-800" />
                 </div>
-
                 <ul className="list-none">
-                    <li>
+                    {!postLoading && profile.tweets.map((post, idx) => 
+                        <li key={idx}>
+                            {console.log(post.text.split("\n"))}
+                            
                         {/* <!--second tweet--> */}
                         <article className="duration-350 transition ease-in-out hover:bg-gray-800">
                             <div className="p-4 pb-0">
@@ -245,16 +249,16 @@ const ProfilePage = ({ params }) => {
                                         <div>
                                             <img
                                                 className="inline-block h-10 w-10 rounded-full"
-                                                src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"
-                                                alt=""
+                                                src={profile.avatar}
+                                                alt="Profile Image"
                                             />
                                         </div>
                                         <div className="ml-4">
                                             <p className=" flex flex-wrap items-baseline mb-3 text-base font-medium leading-6 text-white">
-                                                <span className="mr-2">Sonali Hirave</span>
+                                                    <span className="mr-2">{profile.fullName}</span>
                                                 <span className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                                                     {" "}
-                                                    @ShonaDesign . 16 April{" "}
+                                                    @{profile.username} . 16 April{" "}
                                                 </span>
                                             </p>
                                         </div>
@@ -263,29 +267,16 @@ const ProfilePage = ({ params }) => {
                             </div>
 
                             <div className="pl-[75px] pr-5">
-                                <p className="width-auto flex-shrink text-base font-medium text-white">
-                                    Day 07 of the challenge{" "}
-                                    <a href="#" className="text-blue-400">
-                                        #100DaysOfCode
-                                    </a>{" "}
-                                    I was wondering what I can do with{" "}
-                                    <a href="#" className="text-blue-400">
-                                        #tailwindcss
-                                    </a>
-                                    , so just started building Twitter UI using Tailwind and so far it looks so
-                                    promising. I will post my code after completion. [07/100]
-                                    <a href="#" className="text-blue-400">
-                                        {" "}
-                                        #WomenWhoCode #CodeNewbie
-                                    </a>
-                                </p>
+                                    <p className="width-auto flex-shrink text-base font-medium text-white whitespace-pre-line">
+                                        {post.text}
+                                    </p>
+                                        {/* {postTextEdit(post.text)} */}
+                                        {/* <pre className="width-auto flex-shrink text-base font-medium text-white font-[inherit]">
+                                            {post.text}
+                                        </pre> */}
 
                                 <div className="pr-6 pt-3 md:flex-shrink">
-                                    <img
-                                        className="rounded-lg"
-                                        src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80"
-                                        alt="Woman paying for a purchase"
-                                    />
+                                {postImages(post)}
                                 </div>
 
                                 <div className="flex items-center py-4">
@@ -325,7 +316,8 @@ const ProfilePage = ({ params }) => {
                             </div>
                             <hr className="border-gray-800" />
                         </article>
-                    </li>
+                        </li>
+                         )}
                 </ul>
             </section>
             {openModal && (
@@ -334,6 +326,7 @@ const ProfilePage = ({ params }) => {
                     handleSubmit={handleSubmit}
                     editFormData={editFormData}
                     setEditFormData={setEditFormData}
+                    loading={loading}
                 />
             )}
         </>
