@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../common/Card";
 import Link from "next/link";
 import Image from "next/image";
 import { like, comment, retweet, share } from "../../../public/assets/svgs";
 
 export const postImages = (post) => {
-    if (post.images.length>0 && post.images) {
+
+    if (post.images.length > 0 && post.images) {
         return post.images.map((image, idx) => {
             return (
                 <>
@@ -22,8 +23,23 @@ export const postImages = (post) => {
     } else {
         return <></>;
     }
+
 };
 const Feed = ({ post }) => {
+    const [isLiked, setIsLiked] = useState(false)
+    const handleLikeToggle = async () => {
+        const action = isLiked ? 'unlike' : 'like';
+        const result = await likeToggle(post._id, action);
+        
+        if (!result.error) {
+            // Update the UI state based on the follow/unfollow action
+            setIsLiked(!isLiked);
+        } else {
+            // Handle the error (e.g., show an error message)
+            console.error('Follow toggle error:', result.error);
+        }
+    };
+
     console.log(post);
     return (
         <Card style=" w-full ">
@@ -70,16 +86,38 @@ const Feed = ({ post }) => {
                 <div className="flex">
                     <div className="w-full">
                         <div className="flex items-center">
-                            {[like, comment, retweet, share].map((svg, i) => (
-                                <div key={i} className="flex-1 text-center py-1 ">
-                                    <a
-                                        href="#"
-                                        className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
-                                    >
-                                        {svg}
-                                    </a>
-                                </div>
-                            ))}
+                            <div className="flex-1 text-center py-1 ">
+                                <a
+                                    href="#"
+                                    className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
+                                >
+                                    {like}
+                                </a>
+                            </div>
+                            <div className="flex-1 text-center py-1 ">
+                                <a
+                                    href="#"
+                                    className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
+                                >
+                                    {comment}
+                                </a>
+                            </div>
+                            <div className="flex-1 text-center py-1 ">
+                                <a
+                                    href="#"
+                                    className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
+                                >
+                                    {retweet}
+                                </a>
+                            </div>
+                        </div>
+                        <div className="flex-1 text-center py-1 ">
+                            <a
+                                href="#"
+                                className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
+                            >
+                                {share}
+                            </a>
                         </div>
                     </div>
                 </div>

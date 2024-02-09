@@ -14,6 +14,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
+            <head>
+
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"/>
+</head>
             <body className={inter.className + "mx-10 md:px-[15px]"}>
                 <UserContextProvider>
                 <PostContextProvider>

@@ -21,7 +21,8 @@ const nextConfig = {
         ],
         // domains: ["pbs.twimg.com"],
     },
-    reactStrictMode: false
+    reactStrictMode: false,
+        bodyParser: false, 
 };
 
 module.exports = nextConfig;
