@@ -35,3 +35,21 @@ body{
 .input-on-hover:hover {
     box-shadow: 4px 4px 1px 1px rgb(255, 253, 253);
 }
+
+/* add tweet slider */
+.slides {
+	-ms-overflow-style: none; /* Internet Explorer 10+ */
+	scrollbar-width: none; /* Firefox */
+}
+.slides::-webkit-scrollbar {
+	display: none; /* Safari and Chrome */
+}
+@media (min-width: 768px) {
+	.slides.moving-left {
+	  transform: translateX(-100%); /* Animation step for moving left */
+	}
+  
+	.slides.moving-right {
+	  transform: translateX(0); /* Animation step for moving right */
+	}
+  }

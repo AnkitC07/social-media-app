@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import User from "../../../../models/userModel.js";
+import Tweet from "../../../../models/tweetModel.js";
 import { connect } from "../../../../dbConfig/dbConfig.js";
 
 await connect();
@@ -13,22 +14,22 @@ export async function POST(request) {
         console.log(followerId)
 
         let updateQuery;
-
+        let updateQueryUser;
+        
         if (action === "like") {
-            updateQuery = { $addToSet: { following: followeeId } };
+            updateQuery = { $addToSet: { likes: followerId } };
+            updateQueryUser = { $push: { likedTweet: postId } };
         } else if (action === "unlike") {
-            updateQuery = { $pull: { following: followeeId } };
+            updateQuery = { $pull: { likes: followerId } };
+            updateQueryUser = { $pull: { likedTweet: postId } };
         } else {
             return NextResponse.json({ error: "Invalid action" }, { status: 400 });
         }
 
         // Update the follower's 'following' array
-        await User.findByIdAndUpdate(followerId, updateQuery).exec();
+        await Tweet.findByIdAndUpdate(postId, updateQuery).exec();
+        await User.findByIdAndUpdate(followerId, updateQueryUser).exec();
 
-        // If it's a follow action, also update the followee's 'followers' array
-        if (action === "follow") {
-            await User.findByIdAndUpdate(followeeId, { $addToSet: { followers: followerId } }).exec();
-        }
 
         return NextResponse.json({ success: true });
     } catch (error) {

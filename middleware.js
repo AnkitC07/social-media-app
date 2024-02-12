@@ -13,7 +13,7 @@ export async function middleware(request) {
     const token = request.cookies.get("token")?.value || "";
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
-console.log(!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup'))
+
     // Authenticate API calls
     if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup')) {
         const isAuth = await isAuthenticated(request);

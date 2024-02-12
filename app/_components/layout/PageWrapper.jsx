@@ -12,7 +12,7 @@ const PageWrapper = () => {
             <div className="max-[660px]:px-4 w-full flex flex-row gap-4">
                 <MainContainer style={"lg:hidden "} />
                 <div className="hidden min-[992px]:flex max-lg:flex-col w-full  gap-4">
-                    <MainContainer style={'hidden lg:flex '} />
+                    <MainContainer style={'hidden lg:flex !w-[50%] '} />
                     <LeftSideProfile style={'lg:order-first '} />
                     <RightSideTrend />
                 </div>
