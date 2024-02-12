@@ -93,14 +93,6 @@ const ProfilePage = ({ params }) => {
         })();
     }, []);
 
-    const postTextEdit = (text) => {
-        const content = text.split("\n")
-        return (content.map((txt, idx) =>
-        <>
-        {txt+"\n"} 
-            </>
-        ))
-    }
     return (
         <>
             <section className="border border-y-0 border-gray-800 mx-auto" style={{ maxWidth: "600px" }}>

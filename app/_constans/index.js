@@ -6,6 +6,9 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Profile from "../_components/common/Profile";
 import Modal from "../_components/common/Modal";
 import Logout from "../profile/Logout"
+import Link from 'next/link'
+
+
 
 export const menu = [
     {
@@ -29,12 +32,13 @@ export const menu = [
         lable: "Notifications",
     },
     {
-        path: "/profile",
+        path: "#",
         icon: <PersonOutlinedIcon sx={{ fontSize: "20px" }} />,
         lable: "Profile",
-        comp:<Modal width={"w-[100px] right-[-25px] !py-2 "}>
+        comp:<Modal width={"w-[100px] bottom-[-65px] right-[-25px] !py-2 "}>
                 <p className="flex flex-col text-[16px]">
                     <span className="border-b-[1px] pb-1 border-gray-800 text-white hover:text-tweet-blue">Setting</span>
+                    <span className="border-b-[1px] pb-1 border-gray-800 text-white hover:text-tweet-blue"><Link href='/profile'>Profile</Link></span>
                     <span className="text-white hover:text-tweet-blue"><Logout/></span>
                 </p>
             </Modal>

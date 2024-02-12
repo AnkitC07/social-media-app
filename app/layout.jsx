@@ -14,12 +14,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
+            <head></head>
             <body className={inter.className + "mx-10 md:px-[15px]"}>
                 <UserContextProvider>
-                <PostContextProvider>
-                    <Toaster position="bottom-center" reverseOrder={false} />
-                    <Wrapper childs={children} />
-                </PostContextProvider>
+                    <PostContextProvider>
+                        <Toaster position="bottom-center" reverseOrder={false} />
+                        <Wrapper childs={children} />
+                    </PostContextProvider>
                 </UserContextProvider>
             </body>
         </html>
