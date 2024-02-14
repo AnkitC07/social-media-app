@@ -15,10 +15,13 @@ const PostContextProvider = ({ children }) => {
         open: false,
         post: {},
     })
+    const [comment, setComment] = useState({
+        text:''
+    })
     
 
     return (
-        <PostContext.Provider value={{ posts,setPosts, modalImage,setModalImage, commentModal, setCommentModal }}>
+        <PostContext.Provider value={{ posts,setPosts, modalImage,setModalImage, commentModal, setCommentModal,comment, setComment }}>
             {children}
         </PostContext.Provider>
     )

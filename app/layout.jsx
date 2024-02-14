@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import UserContextProvider from "./_context/User";
 import PostContextProvider from "./_context/Post";
 import ImageModal from './_components/common/ImageModal'
-import { DarkModal } from "./_components/common/Modal";
+import  CommentModal  from "./_components/layout/CommentModal.jsx";
 
 export const metadata = {
     title: "Create Next App",
@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
             <body className={inter.className + "mx-10 md:px-[15px]"}>
                 <UserContextProvider>
                     <PostContextProvider>
-                    <DarkModal/>
+                    <CommentModal/>
                     <ImageModal/>
                         <Toaster position="bottom-center" reverseOrder={false} />
                         <Wrapper childs={children} />

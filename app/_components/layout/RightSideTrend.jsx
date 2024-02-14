@@ -19,7 +19,8 @@ const RightSideTrend = ({ style }) => {
     ];
     return (
         <Card style={style}>
-            <div className={`w-[300px] flex flex-col gap-8 py-3 px-5`}>
+            <div className={` flex flex-col gap-8 py-3 px-5`}>
+            {/* <div className={`w-[300px] flex flex-col gap-8 py-3 px-5`}> */}
                 <h2 className="font-bold text-lg">Trends for you</h2>
                 <div className="flex flex-col gap-4 divide-y ">
                     <div className="flex flex-col gap-4">

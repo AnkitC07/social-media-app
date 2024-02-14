@@ -46,7 +46,7 @@ const Feed = ({ post }) => {
                     <div className="flex gap-6 items-start">
                         <Image
                             className="inline-block rounded-full"
-                            src={"https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"}
+                            src={post?.user?.avatar}
                             width={40}
                             height={40}
                             alt=""
@@ -63,6 +63,7 @@ const Feed = ({ post }) => {
                     </div>
                 </Link>
             </div>
+            
 
             <div className="pl-20">
                 <p className="text-base width-auto mr-2 font-normal text-white flex-shrink break-words">{post.text}</p>

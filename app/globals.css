@@ -2,35 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background-color: #06141D;
-    color: #D9D9D9;
+body {
+    background-color: #06141d;
+    color: #d9d9d9;
 }
 
-::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	background-color: #06141D;
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #06141d;
 }
 
-::-webkit-scrollbar
-{
-	width: 12px;
-	background-color: #06141D;
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #06141d;
 }
 
-::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #1B2730;
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #1b2730;
 }
 .box-on-hover:hover {
     box-shadow: 12px 12px 1px 1px rgb(255, 255, 255);
-    }
-.box-on-hover:hover h1,p{
-    color:white;
+}
+.box-on-hover:hover h1,
+p {
+    color: white;
 }
 .input-on-hover:hover {
     box-shadow: 4px 4px 1px 1px rgb(255, 253, 253);
@@ -38,18 +36,30 @@ body{
 
 /* add tweet slider */
 .slides {
-	-ms-overflow-style: none; /* Internet Explorer 10+ */
-	scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
 }
 .slides::-webkit-scrollbar {
-	display: none; /* Safari and Chrome */
+    display: none; /* Safari and Chrome */
 }
 @media (min-width: 768px) {
-	.slides.moving-left {
-	  transform: translateX(-100%); /* Animation step for moving left */
-	}
-  
-	.slides.moving-right {
-	  transform: translateX(0); /* Animation step for moving right */
-	}
-  }
+    .slides.moving-left {
+        transform: translateX(-100%); /* Animation step for moving left */
+    }
+
+    .slides.moving-right {
+        transform: translateX(0); /* Animation step for moving right */
+    }
+}
+
+.show .group-\[\&\.show\]\:translate-y-0 {
+    --tw-translate-y: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
+        skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.dark\:bg-surfacedark-100 {
+    --tw-bg-opacity: 1;
+    /* background-color: rgb(38 36 42 / var(--tw-bg-opacity)); */
+    background-color: rgb(00 00 00 / var(--tw-bg-opacity));
+}
