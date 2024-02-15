@@ -7,7 +7,6 @@ import { UserContext } from "../../_context/User";
 
 const LeftSideProfile = ({ style = "" }) => {
     const { userData } = useContext(UserContext);
-    console.log(userData)
     return (
         <Card style={style}>
             <div className=" m-6 h-auto flex flex-col gap-8   ">

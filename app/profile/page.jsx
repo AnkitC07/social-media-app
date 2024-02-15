@@ -154,7 +154,7 @@ const ProfilePage = ({ params }) => {
                                     //         Follow
                                     //     </button>
                                     // )
-                                    <FollowButton followeeId={profile._id} following={isFollowed} />
+                                    <FollowButton followeeId={profile._id} isFollowed={isFollowed} setIsFollowed={setIsFollowed} />
                                 ) : (
                                     <button
                                         onClick={() => setOpenModal(!openModal)}

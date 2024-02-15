@@ -21,7 +21,7 @@ const ImageModal = () => {
                 data-dialog-backdrop="image-dialog"
                 data-dialog-backdrop-close="true"
                 className={
-                    "fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300  " +
+                    "fixed inset-0 z-[9999] grid h-screen w-screen place-items-center bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300  " +
                     (modalImage.open ? " " : " pointer-events-none opacity-0")
                 }
             >

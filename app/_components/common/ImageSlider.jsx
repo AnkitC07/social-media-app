@@ -8,7 +8,6 @@ const ImageSlider = ({ filesRef, setFileRef, isFeed }) => {
     const nextButtonRef = useRef(null);
 
     useEffect(() => {
-        console.log(filesRef);
         const slideWidth = slidesContainerRef.current.querySelector(".slide")?.clientWidth;
 
         const handleNextClick = () => {
@@ -38,7 +37,7 @@ const ImageSlider = ({ filesRef, setFileRef, isFeed }) => {
                 {filesRef.length > 0
                     ? filesRef.map((file, idx) => (
                           <FilePreview
-                              key={file?.name}
+                              key={idx}
                               i={idx}
                               filesRef={filesRef}
                               file={file}

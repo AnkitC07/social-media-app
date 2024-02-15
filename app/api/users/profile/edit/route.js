@@ -49,9 +49,9 @@ export const PUT = async (request) => {
                 },
             });
         }
-        // if (banner) {
-        //     user.banner = await uploadImage(banner, {folder:"Social-Media-App/Banners"});
-        // }
+        if (banner) {
+            user.banner = await uploadImage(banner, {folder:"Social-Media-App/Banners"});
+        }
         await user.save();
 
         return NextResponse.json({
