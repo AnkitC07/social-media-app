@@ -1,14 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SearchCom from "../_components/common/SearchCom";
 import RightSideTrend from "../_components/layout/RightSideTrend";
 import Feed from "../_components/layout/Feed";
 import axios from "axios";
 import SuggestedUsers from "../_components/layout/SuggestedUsers";
+import { PostContext } from "../_context/Post";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
-    const [posts,setPosts] = useState([])
+    const { explorePosts,setExplorePosts } = useContext(PostContext);
+    // const [posts,setPost] = useState([])
 
     useEffect(() => {
         (() => {
@@ -16,7 +18,7 @@ const Explore = () => {
                 const request = axios('/api/post/explore/get');
                 request.then((res) => {
                     console.log('Explore Post Data=>', res.data);
-                    setPosts(res.data)
+                    setExplorePosts(res.data)
                 }).finally(()=>setLoading(false))
             } catch (error) {
                 console.log(error);
@@ -28,11 +30,10 @@ const Explore = () => {
     // setTimeout(() => {
     //     setLoading(false);
     // }, [2000]);
-    const [explorePosts, setExplorePosts] = useState([]);
     return (
         // <div className="container mx-auto flex flex-col gap-2">
         <div className="container mx-auto ">
-            <div className="w-full pb-2 sticky top-[83px] bg-[#06141d8f] backdrop-blur-[2px] z-[1]">
+            <div className="w-full pb-2 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
             <div className="flex gap-2">
@@ -40,8 +41,8 @@ const Explore = () => {
                 </div> */}
                 <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
 
-                <div className="flex flex-col items-center gap-2  max-w-[52%] w-full">
-                    {!loading && posts.map((post, idx) => <Feed key={idx} post={post} />)}
+                <div className="flex flex-col items-center gap-2  lg:max-w-[52%] w-full">
+                    {!loading && explorePosts.map((post, idx) => <Feed key={idx} post={post} />)}
 
                     {loading &&
                         [0, 1].map((_, idx) => (

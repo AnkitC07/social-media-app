@@ -7,10 +7,10 @@ import { UserContext } from "../../_context/User";
 
 const LeftSideProfile = ({ style = "" }) => {
     const { userData } = useContext(UserContext);
-    console.log(userData)
     return (
         <Card style={style}>
-            <div className="w-[250px] m-6 h-auto flex flex-col gap-8   ">
+            <div className=" m-6 h-auto flex flex-col gap-8   ">
+            {/* <div className="w-[250px] m-6 h-auto flex flex-col gap-8   "> */}
                 <div className="flex flex-col gap-10 items-center text-center">
                     <div className="flex flex-col gap-4 items-center ">
                         <Link href="#">

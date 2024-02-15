@@ -21,6 +21,7 @@ export async function GET(request) {
             const tweetsFromFollowingUsers = await Tweet.find({ user: { $nin:  [...followingUserIds, userId] } })
                 .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
                 .populate("user") // Populate the 'user' field with user details
+                .populate("replies") // Populate the 'replies' field with  comments on the post
                 .exec();
 
             // console.log("Tweets from non-following users:", tweetsFromFollowingUsers);

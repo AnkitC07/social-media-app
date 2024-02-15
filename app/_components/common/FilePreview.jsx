@@ -28,7 +28,7 @@ const FilePreview = ({ i, file, filesRef, setFileRef, isFeed }) => {
 
     return (
         <>
-            <div className="slide flex-shrink-0 w-[26vw] h-[calc(22vw*1.5)] sm:w-[20vw] sm:h-[calc(20vw*1.5)] md:w-[14vw] md:h-[calc(10vw*1.5)] overflow-clip relative mx-2 snap-center rounded-3xl">
+            <div className="slide flex-shrink-0 w-[36vw] h-[calc(30vw*1.5)] sm:w-[36vw] sm:h-[calc(30vw*1.5)] md:w-[20vw] md:h-[calc(16vw*1.5)]  overflow-clip relative mx-2 snap-center rounded-3xl">
                 {isImage && (
                     <img
                         onClick={handleClick}
