@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (request) => {
     try {
         const response = NextResponse.json({
             message: 'Logout successfull',
@@ -11,6 +11,7 @@ export const GET = async () => {
             httpOnly: true,
             expires: new Date(0)
         });
+
 
         return response
         

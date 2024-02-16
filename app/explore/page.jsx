@@ -42,7 +42,7 @@ const Explore = () => {
                 <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
 
                 <div className="flex flex-col items-center gap-2  lg:max-w-[52%] w-full">
-                    {!loading && explorePosts.map((post, idx) => <Feed key={idx} post={post} />)}
+                    {!loading && explorePosts.map((post, idx) => <Feed key={idx} i={idx} post={post} />)}
 
                     {loading &&
                         [0, 1].map((_, idx) => (

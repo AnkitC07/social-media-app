@@ -183,7 +183,8 @@ const CommentModal = () => {
                             </div>
 
                             {/* <!--Modal footer--> */}
-                            <div class="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-[0.5px]   border-[#ffffff26] border-opacity-100 p-4 dark:border-opacity-50 justify-between">
+                            <div class="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-[0.5px]   border-[#ffffff26] border-opacity-100 p-4 dark:border-o
+                            pacity-50 justify-between">
                                 <div>
                                     {/* <EmojiPicker
                                         // open={openEmoji}
