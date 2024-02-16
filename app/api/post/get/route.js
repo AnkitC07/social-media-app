@@ -28,7 +28,7 @@ export  async function GET(request) {
                 .populate("user") // Populate the 'user' field with user details
                 .exec();
 
-            console.log("Tweets from following users:", tweetsFromFollowingUsers);
+            // console.log("Tweets from following users:", tweetsFromFollowingUsers);
             return NextResponse.json(tweetsFromFollowingUsers);
         } else {
             console.log("User not found");

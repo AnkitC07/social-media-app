@@ -11,11 +11,11 @@ export async function POST(request) {
         const requestHeaders = new Headers(request.headers);
         const userId = requestHeaders.get("x-user-_id");
         const followerId = userId;
-        console.log(followerId)
+        console.log(followerId);
 
         let updateQuery;
         let updateQueryUser;
-        
+
         if (action === "like") {
             updateQuery = { $addToSet: { likes: followerId } };
             updateQueryUser = { $push: { likedTweet: postId } };
@@ -27,11 +27,13 @@ export async function POST(request) {
         }
 
         // Update the follower's 'following' array
-        await Tweet.findByIdAndUpdate(postId, updateQuery).exec();
+        const updatedTweet = await Tweet.findByIdAndUpdate(postId, updateQuery, {
+            new: true,
+        }).exec();
         await User.findByIdAndUpdate(followerId, updateQueryUser).exec();
 
-
-        return NextResponse.json({ success: true });
+        console.log("test=>", updatedTweet);
+        return NextResponse.json({ likes:updatedTweet.likes,success: true });
     } catch (error) {
         console.error("Error in like/unlike:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

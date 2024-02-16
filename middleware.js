@@ -10,7 +10,7 @@ const middleware1 = async (request) => {
 export async function middleware(request) {
 
     const path = request.nextUrl.pathname;
-    const token = request.cookies.get("token")?.value || "";
+    const token = request.cookies.get("token")?.value 
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
 
@@ -33,12 +33,11 @@ export async function middleware(request) {
     }
     if (!path.startsWith('/api/')) {
         
-        
         if (isPublicPath && token) {
             return NextResponse.redirect(new URL("/", request.nextUrl));
         }
         
-        if (!isPublicPath && !token) {
+        if (!isPublicPath && !token && token !== "") {
             return NextResponse.redirect(new URL("/login", request.nextUrl));
         }
     }
