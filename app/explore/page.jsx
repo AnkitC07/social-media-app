@@ -36,12 +36,12 @@ const Explore = () => {
             <div className="w-full pb-2 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
+                <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />
 
-                <div className="flex flex-col items-center gap-2  lg:max-w-[52%] w-full">
+                <div className="flex flex-col items-center gap-2  w-full lg:!w-[51%] md:!w-[69%]">
                     {!loading && explorePosts.map((post, idx) => <Feed key={idx} i={idx} post={post} />)}
 
                     {loading &&
@@ -87,7 +87,7 @@ const Explore = () => {
                 </div>
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <SuggestedUsers style={"max-lg:hidden sticky top-[140px]"} />
+                <SuggestedUsers style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"} />
             </div>
         </div>
     );

@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import axios  from "axios";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
 const SignupPage = () => {
     const router = useRouter();
@@ -20,12 +20,12 @@ const SignupPage = () => {
             const response = await axios.post("/api/users/signup", user);
             const data = response.data;
             console.log("signup success", data);
-            router.push("/login")
+            router.push("/login");
         } catch (error) {
-            console.log("Signup Failed", error.message)
-            toast.error(error.message)
+            console.log("Signup Failed", error.message);
+            toast.error(error.message);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
@@ -66,12 +66,21 @@ const SignupPage = () => {
                         className="border-2 text-black border-black rounded-lg py-2.5 px-4 mt-4 w-full outline-none input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                     />
 
-                    <button
-                        onClick={onSignup}
-                        className="bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
-                    >
-                        Signup
-                    </button>
+                    <div className="flex justify-between w-full items-baseline">
+                        <span>
+                            Already have an account?{" "}
+                            <Link href={"/login"} className="text-blue-500">
+                                {" "}
+                                Login
+                            </Link>
+                        </span>
+                        <button
+                            onClick={onSignup}
+                            className="bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
+                        >
+                            Signup
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,8 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { UserContext } from "../../_context/User";
 import ImageSlider from "../common/ImageSlider.jsx";
-
-
+import PlaceholderAnimation from "../common/PlaceholderAnimaion";
 
 const AddTweet = ({ setPosts }) => {
     // const filesRef = useRef([]);
@@ -20,7 +19,22 @@ const AddTweet = ({ setPosts }) => {
     const [loading, setLoading] = useState(false);
     const [filesRef, setFileRef] = useState([]);
     const inputRef = useRef(null);
+    const [placeholder, setPlaceholder] = useState("");
+    const [currentChar, setCurrentChar] = useState(0);
 
+    const text = "What is on your mind ?"; // Replace with your email
+    const typingSpeed = 100; // Adjust typing speed if desired
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setCurrentChar((prevChar) => (prevChar + 1) % text.length);
+            setPlaceholder(text.substring(0, currentChar + 1));
+            // setPlaceholder(placeholder + text.charAt(placeholder.length));
+            // setTimeout(timeoutId, typingSpeed);
+        }, typingSpeed);
+
+        return () => clearTimeout(timeoutId); // Clear timeout on cleanup
+    }, [currentChar,typingSpeed, text]);
 
     function auto_grow(element) {
         element.target.style.height = "5px";
@@ -78,15 +92,16 @@ const AddTweet = ({ setPosts }) => {
                     <Profile src={userData.avatar} w={50} h={50} />
                 </div>
                 <div className="bg-bg-card  w-[91.5%]">
-                    <div className="p-5 bg-[#28343E] rounded-2xl">
+                    <div className=" relative p-5 bg-[#28343E] rounded-2xl">
                         <textarea
                             // cols="30"
                             onChange={(e) => setPostText(e.target.value)}
                             value={postText}
                             onInput={auto_grow}
-                            placeholder="What's on your mind? "
-                            className="border-0 w-full resize-none bg-[#28343E] focus-visible:outline-none"
+                            placeholder={placeholder}
+                            className=" border-0 w-full resize-none bg-[#28343E] focus-visible:outline-none"
                         />
+                        {/* <PlaceholderAnimation /> */}
                         <div id="media" className="pb-3">
                             {/* {img.url !== null && (
                                 <Image
