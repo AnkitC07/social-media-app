@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "../common/Card";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,22 +24,28 @@ export const postImages = (post) => {
     }
 };
 
-const Feed = ({ post, i, window }) => {
+const Feed = ({ post, i, window, posts, setPosts }) => {
     const { userData, setUserData } = useContext(UserContext);
     const { setCommentModal } = useContext(PostContext);
+
     const [isLiked, setIsLiked] = useState(post?.likes?.includes(userData._id));
 
     const handleLikeToggle = async () => {
         const action = isLiked ? "unlike" : "like";
+
         const result = await likeToggle(post._id, action);
         if (!result.error) {
+            setPosts(prevPosts => {
+                const newPosts = [...prevPosts];
+                newPosts[i].likes = result.likes;
+                return newPosts;
+              });
+
             setIsLiked(!isLiked);
-            post.likes = result.likes;
         } else {
             console.error("Follow toggle error:", result.error);
         }
     };
-
     return (
         <Card style=" w-full ">
             <div className="p-4 pb-0">
@@ -66,7 +72,7 @@ const Feed = ({ post, i, window }) => {
             </div>
 
             <div className="pl-20">
-                <p className="text-base width-auto mr-2 font-normal text-white flex-shrink break-words">{post.text}</p>
+                <p className="text-base width-auto mr-2 font-normal text-white flex-shrink break-words whitespace-pre-line">{post.text}</p>
 
                 <div className="md:flex-shrink pr-6 pt-3">{postImages(post)}</div>
 
@@ -108,7 +114,7 @@ const Feed = ({ post, i, window }) => {
                                 onClick={handleLikeToggle}
                                 className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-red-600"
                             >
-                                {!isLiked ? (
+                                {/* {!isLiked ? (
                                     <>
                                         <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
                                             <g>
@@ -125,8 +131,7 @@ const Feed = ({ post, i, window }) => {
                                             ></path>
                                         </g>
                                     </svg>
-                                )}
-                                {console.log(post.likes)}
+                                )} */}
                                 {post?.likes?.length}
                             </div>
                             <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400">

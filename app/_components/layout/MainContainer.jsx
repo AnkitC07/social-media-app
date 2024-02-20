@@ -8,8 +8,7 @@ import { PostContext } from "../../_context/Post";
 const MainContainer = ({window, style = "" }) => {
     const { homePosts,setHomePosts } = useContext(PostContext);
     const [loading, setLoading] = useState(true);
-    // const [posts,setPosts] = useState([])
-    console.log(window)
+
 
     useEffect(() => {
         (() => {
@@ -42,7 +41,7 @@ const MainContainer = ({window, style = "" }) => {
                 </div> */}
             
             <AddTweet setPosts={setHomePosts} />
-            {!loading && homePosts?.map((post, idx) => <Feed key={idx} i={idx} window={window} post={post} />)}
+            {!loading && homePosts?.map((post, idx) => <Feed key={idx} i={idx} window={window} post={post} posts={homePosts} setPosts={setHomePosts} />)}
         </div>
     );
 };

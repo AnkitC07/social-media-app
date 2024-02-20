@@ -8,7 +8,7 @@ async function followToggle(followeeId, action) {
         }); 
 
         const result = await response.data;
-        console.log(result);
+        console.log("Follow toggel result=>",result);
 
         // Return the result if you want to handle it in the calling component
         return result;

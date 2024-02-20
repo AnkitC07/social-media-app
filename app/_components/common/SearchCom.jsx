@@ -6,6 +6,8 @@ import Hashtags from "./Hashtags.jsx";
 import Modal from "../common/Modal.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from 'next/link'
+import Profile from "./Profile.jsx";
 
 const SearchCom = () => {
     const [search, setSearch] = useState("");
@@ -116,15 +118,40 @@ const SearchCom = () => {
                                 </span>
                             ) : (
                                     searchData.users.map(user => (
-                                        <p key={user._id}>
-                                            {user.username}
-                                        </p>
+                                        <Link key={user._id} href={"/profile/" + user?._id} className="md:flex-shrink flex-shrink-0 group block my-3">
+                                         <div className="flex gap-1 items-start">
+                                            {/*<Image
+                                                className="inline-block rounded-sm"
+                                                src={"https://inc42.com/wp-content/uploads/2023/11/Elon-Musk-Web-760x570.jpg"}
+                                                width={50}
+                                                height={50}
+                                                alt=""
+                                            /> */}
+                                            <Profile
+                                                src={user.avatar}
+                                                w={40}
+                                                h={25}
+                                            />
+                        
+                                            <div className="">
+                                                <p className=" flex flex-wrap flex-col  items-baseline text-sm leading-6 font-semibold text-white ">
+                                                    <span className="mr-2">{user.fullName}</span>
+                                                    <span className="text-xs leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                                                        @{user.username}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Link>
                                 )) 
                             )}
                         </div>
                         <div className="pt-4">
+                            <div className="text-center mb-2 text-gray-500 text-lg">
+                                <span>Trends for you.</span>
+                            </div>
                             {!searchData.hashtags.length>0 ? (
-                                <span className="font-medium text-gray-600">
+                                <span className="font-medium text-gray-600">    
                                     Try searching for hashtags.
                                 </span>
                             ) : (

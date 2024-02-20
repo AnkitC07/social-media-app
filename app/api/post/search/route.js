@@ -11,9 +11,14 @@ export const GET = async (request) => {
         console.log(query, userId);
 
 
-        const users = await User.find({
-            username: { $regex: `^\\s?(?i:${query})`, $options: "i" }
-        });
+        const users = query !== ''? await User.find({
+            $or: [
+                { username: { $regex: `(?i:${query})` } },
+                { fullName: { $regex: `(?i:${query})` } }
+                // { username: { $regex: `^\\s?(?i:${query})`, $options: "i" } },
+                // { fullName: { $regex: `^\\s?(?i:${query})`, $options: "i" } }
+              ]
+        }) : [];
 
         let hashtags = await Hashtag.find({
             hashtag: { $regex: `^${query}`, $options: "i" }
