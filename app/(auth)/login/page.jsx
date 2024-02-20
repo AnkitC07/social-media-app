@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { UserContext } from "../../_context/User";
+import Link from "next/link";
 
 const LoginPage = () => {
     const { setUserData } = useContext(UserContext);
@@ -51,12 +52,19 @@ const LoginPage = () => {
                         placeholder="Password"
                         className="border-2 border-black rounded-lg py-2.5 px-4 mt-4 w-full outline-none input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                     />
-                    <button
-                        onClick={onLogin}
-                        className="bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
-                    >
-                        Login
-                    </button>
+                    <div className="flex justify-between w-full items-baseline">
+                        <span>
+                            Do not have an account? {" "}
+                            <Link  href={'/signup'} className="text-blue-500"> Signup</Link>
+                        </span>
+
+                        <button
+                            onClick={onLogin}
+                            className="bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
+                        >
+                            Login
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

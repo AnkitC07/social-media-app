@@ -21,7 +21,7 @@ const LeftSideProfile = ({ style = "" }) => {
                             <p className="text-xs font-light">@{userData?.username}</p>
                         </div>
                     </div>
-                    <div className="font-light">{userData?.bio}</div>
+                    <div className="font-light whitespace-pre-line">{userData?.bio?userData.bio:"'No Bio' \n Edit your bio in profile page"}</div>
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col gap-3">
                             <p className="font-extralight">Tweets</p>

@@ -9,23 +9,41 @@ import { PostContext } from "../_context/Post";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
-    const { explorePosts,setExplorePosts } = useContext(PostContext);
+    const { explorePosts, setExplorePosts, suggestedUsers, setSuggestedUsers } = useContext(PostContext);
     // const [posts,setPost] = useState([])
 
     useEffect(() => {
-        (() => {
+        const getExlplorePots = () => {
             try {
-                const request = axios('/api/post/explore/get');
-                request.then((res) => {
-                    console.log('Explore Post Data=>', res.data);
-                    setExplorePosts(res.data)
-                }).finally(()=>setLoading(false))
+                const request = axios("/api/post/explore/get");
+                request
+                    .then((res) => {
+                        console.log("Explore Post Data=>", res.data);
+                        setExplorePosts(res.data);
+                    })
+                    .finally(() => setLoading(false));
             } catch (error) {
                 console.log(error);
-                toast.error(error.message)
+                toast.error(error.message);
             }
-        })()
-    },[ ])
+        };
+        const getSuggestedUsers = () => {
+            try {
+                const request = axios("/api/users/suggested");
+                request
+                    .then((res) => {
+                        console.log("Suggested Post Data=>", res.data);
+                        setSuggestedUsers(res.data.suggestedUsers);
+                    })
+                    .finally(() => setLoading(false));
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message);
+            }
+        };
+        getExlplorePots();
+        getSuggestedUsers();
+    }, []);
 
     // setTimeout(() => {
     //     setLoading(false);
@@ -36,13 +54,16 @@ const Explore = () => {
             <div className="w-full pb-2 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <RightSideTrend style={"max-md:hidden sticky top-[140px]"} />
+                <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />
 
-                <div className="flex flex-col items-center gap-2  lg:max-w-[52%] w-full">
-                    {!loading && explorePosts.map((post, idx) => <Feed key={idx} i={idx} post={post} />)}
+                <div className="flex flex-col items-center gap-2  w-full lg:!w-[51%] md:!w-[69%]">
+                    {!loading &&
+                        explorePosts.map((post, idx) => (
+                            <Feed key={idx} i={idx} post={post} posts={explorePosts} setPosts={setExplorePosts} />
+                        ))}
 
                     {loading &&
                         [0, 1].map((_, idx) => (
@@ -87,7 +108,7 @@ const Explore = () => {
                 </div>
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <SuggestedUsers style={"max-lg:hidden sticky top-[140px]"} />
+                <SuggestedUsers style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"} />
             </div>
         </div>
     );
