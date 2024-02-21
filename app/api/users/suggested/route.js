@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import User from "../../../../models/userModel.js";
+import mongoose from "mongoose";
 
 export const GET = async (request) => {
     try {
@@ -12,7 +13,7 @@ export const GET = async (request) => {
             {
                 $match: {
                     _id: {
-                        $ne: userId,
+                        $ne: new mongoose.Types.ObjectId(userId),
                     },
                 },
             },
@@ -22,10 +23,11 @@ export const GET = async (request) => {
                 },
             },
         ]);
-
+console.log("->",userId)
         const filteredUsers = users.filter(user => !usersFollowedByYou.following.includes(user._id))
         const suggestedUsers = filteredUsers.slice(0, 4)
         suggestedUsers.forEach(user => user.password = null);
+        console.log("suggseted users",suggestedUsers)
         
         return NextResponse.json({
             success: true,

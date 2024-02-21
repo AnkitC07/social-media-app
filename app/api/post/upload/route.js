@@ -87,12 +87,9 @@ export const POST = async (request) => {
                     { upsert: true }
                 ).exec();
             });
-            return NextResponse.json({
-                error: error.message,
-            },
-            { status: 501 });
         });
-
+       const tempTweet  = await tweet.populate('user', 'username avatar fullname')
+        console.log("tweet user",tempTweet)
         return NextResponse.json({
             message: `Post added successfuly`,
             success: true,

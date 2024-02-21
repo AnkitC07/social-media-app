@@ -51,7 +51,7 @@ const Explore = () => {
     return (
         // <div className="container mx-auto flex flex-col gap-2">
         <div className="container mx-auto ">
-            <div className="w-full pb-2 sticky top-[83px] backdrop-blur-[2px] z-[1]">
+            <div className="w-full pb-[30px] -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
             <div className="flex gap-2 w-full">
@@ -62,12 +62,12 @@ const Explore = () => {
                 <div className="flex flex-col items-center gap-2  w-full lg:!w-[51%] md:!w-[69%]">
                     {!loading &&
                         explorePosts.map((post, idx) => (
-                            <Feed key={idx} i={idx} post={post} posts={explorePosts} setPosts={setExplorePosts} />
+                            <Feed key={idx} i={idx} window={'desktop'} post={post} posts={explorePosts} setPosts={setExplorePosts} />
                         ))}
 
                     {loading &&
                         [0, 1].map((_, idx) => (
-                            <div key={idx} className="w-full">
+                            <div key={idx} className="w-full ">
                                 <div className="mx-auto max-w-lg">
                                     <div className="flex gap-1 items-center animate-pulse mb-2">
                                         <div className="h-12 w-12 rounded-full bg-gray-700"></div>
@@ -108,7 +108,7 @@ const Explore = () => {
                 </div>
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <SuggestedUsers style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"} />
+                <SuggestedUsers loading={loading} suggestedUsers={suggestedUsers} style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"} />
             </div>
         </div>
     );
