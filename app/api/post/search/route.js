@@ -24,7 +24,6 @@ export const GET = async (request) => {
             hashtag: { $regex: `^${query}`, $options: "i" }
         }).limit(query == '' ? 5 : null)
         
-        console.log(users,hashtags)
 
         return NextResponse.json(
             {

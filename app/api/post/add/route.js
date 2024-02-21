@@ -44,6 +44,7 @@ export const POST = async (request) => {
             });
         });
 
+
         return NextResponse.json({
             message: `Post added successfuly`,
             success: true,

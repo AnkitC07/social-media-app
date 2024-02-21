@@ -38,7 +38,7 @@ const Modal = ({ children, style = "", width }) => {
 //             {commentModal?.open && (
 //                 <div
 //                     data-te-modal-init
-//                     class="fixed left-0 top-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+//                     className="fixed left-0 top-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none"
 //                     id="exampleModal"
 //                     tabindex="-1"
 //                     aria-labelledby="exampleModalLabel"
@@ -46,15 +46,15 @@ const Modal = ({ children, style = "", width }) => {
 //                 >
 //                     <div
 //                         data-te-modal-dialog-ref
-//                         class=" relative w-auto   transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[600px] pointer-events-none opacity-1 "
+//                         className=" relative w-auto   transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[600px] pointer-events-none opacity-1 "
 //                     >
-//                         <div class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-2xl border-none bg-black bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
-//                             <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+//                         <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-2xl border-none bg-black bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+//                             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
 //                                 {/* <!--Modal title--> */}
 //                                 {/* <!--Close button--> */}
 //                                 <button
 //                                     type="button"
-//                                     class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+//                                     className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
 //                                     data-te-modal-dismiss
 //                                     aria-label="Close"
 //                                     onClick={handleClose}
@@ -65,7 +65,7 @@ const Modal = ({ children, style = "", width }) => {
 //                                         viewBox="0 0 24 24"
 //                                         stroke-width="1.5"
 //                                         stroke="currentColor"
-//                                         class="h-6 w-6"
+//                                         className="h-6 w-6"
 //                                     >
 //                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 //                                     </svg>
@@ -73,7 +73,7 @@ const Modal = ({ children, style = "", width }) => {
 //                             </div>
 
 //                             {/* <!--Modal body--> */}
-//                             <div class="relative flex-auto p-4" data-te-modal-body-ref>
+//                             <div className="relative flex-auto p-4" data-te-modal-body-ref>
 //                                 <div>
 //                                     <div className="p-4 pl-0">
 //                                         <Link
@@ -139,7 +139,7 @@ const Modal = ({ children, style = "", width }) => {
 //                             </div>
 
 //                             {/* <!--Modal footer--> */}
-//                 <div class="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md  border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50 justify-between">
+//                 <div className="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md  border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50 justify-between">
 //                   <div>
 //                     <EmojiPicker
 //                       height={360}
@@ -150,10 +150,10 @@ const Modal = ({ children, style = "", width }) => {
 //                   </div>
 //                                 <button
 //                                     onClick={handleClose}
-//                                     class="relative inline-flex items-center justify-start inline-block px-3 py-[5px] overflow-hidden font-medium transition-all bg-tweet-blue rounded-full border border-tweet-blue hover:border-white hover:bg-black group"
+//                                     className="relative inline-flex items-center justify-start inline-block px-3 py-[5px] overflow-hidden font-medium transition-all bg-tweet-blue rounded-full border border-tweet-blue hover:border-white hover:bg-black group"
 //                                 >
-//                                     <span class="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-black rounded-full"></span>
-//                                     <span class="relative w-full text-left text-[15px]  text-white transition-colors duration-200 ease-in-out group-hover:text-white ">
+//                                     <span className="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-black rounded-full"></span>
+//                                     <span className="relative w-full text-left text-[15px]  text-white transition-colors duration-200 ease-in-out group-hover:text-white ">
 //                                         Reply
 //                                     </span>
 //                                 </button>

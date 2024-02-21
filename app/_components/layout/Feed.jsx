@@ -25,7 +25,7 @@ export const postImages = (post) => {
 };
 
 const Feed = ({ post, i, window, posts, setPosts }) => {
-    const { userData, setUserData } = useContext(UserContext);
+    const { userData } = useContext(UserContext);
     const { setCommentModal } = useContext(PostContext);
 
     const [isLiked, setIsLiked] = useState(post?.likes?.includes(userData._id));
@@ -104,34 +104,15 @@ const Feed = ({ post, i, window, posts, setPosts }) => {
                                 </svg>
                                 14 k
                             </div>
+                            <div
+                                className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-red-600"
+                            >
                             <LikeButton
                                 i={`${post?._id}-${window}`}
                                 isLiked={isLiked}
                                 setIsLiked={setIsLiked}
                                 handleLikeToggle={handleLikeToggle}
                             />
-                            <div
-                                onClick={handleLikeToggle}
-                                className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-red-600"
-                            >
-                                {/* {!isLiked ? (
-                                    <>
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
-                                            <g>
-                                                <path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
-                                            </g>
-                                        </svg>
-                                    </>
-                                ) : (
-                                    <svg viewBox="0 0 24 24" className="mr-2 h-5 w-5">
-                                        <g>
-                                            <path
-                                                fill="#e02424"
-                                                d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225"
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                )} */}
                                 {post?.likes?.length}
                             </div>
                             <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400">
@@ -143,60 +124,6 @@ const Feed = ({ post, i, window, posts, setPosts }) => {
                                 </svg>
                             </div>
                         </div>
-                        {/* <div className="flex items-center">
-                            <div className="flex-1 text-center py-1 relative">
-                                {isLiked ? (
-                                    <span
-                                        onClick={handleLikeToggle}
-                                        className="max-w-12 w-auto mt-1 group flex items-center text-red-600 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
-                                    >
-                                        {liked}
-                                    </span>
-                                ) : (
-                                    <span
-                                        onClick={handleLikeToggle}
-                                        className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
-                                    >
-                                        {like}
-                                    </span>
-                                )}
-                                <span className="absolute text-[#6a6a6a] text-sm top-[37%] right-[66%] ">
-                                    {post?.likes?.length}
-                                </span>
-                            </div>
-                            <div className="flex-1 text-center py-1 relative">
-                                <span
-                                    onClick={() =>
-                                        setCommentModal({
-                                            open: true,
-                                            post: post,
-                                        })
-                                    }
-                                    className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300"
-                                >
-                                    {comment}
-                                </span>
-                                <span className="absolute text-gray-600 top-[32%] right-[65%]">
-                                    
-                                </span>
-                            </div>
-                            <div className="flex-1 text-center py-1 relative">
-                                <span className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300">
-                                    {retweet}
-                                </span>
-                                <span className="absolute text-gray-600 top-[32%] right-[65%]">
-                                    
-                                </span>
-                            </div>
-                            <div className="flex-1 text-center py-1 relative">
-                                <span className="max-w-12 w-auto mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:bg-blue-800 hover:text-blue-300">
-                                    {share}
-                                </span>
-                                <span className="absolute text-gray-600 top-[32%] right-[65%]">
-                                    
-                                </span>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>

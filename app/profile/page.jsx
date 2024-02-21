@@ -9,15 +9,16 @@ import EditProfileModal from "../_components/layout/EditProfileModal";
 import { UserContext } from "../_context/User";
 import FollowButton from "../_components/common/FollowButton";
 import Feed, { postImages } from "../_components/layout/Feed";
+import followToggle from "../functions/api/followToggle";
 
 const ProfilePage = ({ params }) => {
-    const { userData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [postLoading, setPostLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
-    const [profile, setProfile] = useState(userData);
+    const [profile, setProfile] = useState({});
     const [editFormData, setEditFormData] = useState({
         username: "",
         name: "",
@@ -26,15 +27,14 @@ const ProfilePage = ({ params }) => {
         banner: null, // to store the banner file
     });
 
-
     useEffect(() => {
-        console.log(userData._id === params?.id || params?.id === undefined, userData)
-        // setIsFollowed(userData.followers.includes(params?.id))
+        console.log(userData._id === params?.id || params?.id === undefined, userData);
         if (userData._id === params?.id || params?.id === undefined) {
-        setProfile(userData)
+            setProfile(userData);
+            setLoading(false);
         }
-    }, [userData, params?.id])
-    
+    }, [userData, params?.id]);
+
     const editProfleApi = async () => {
         setLoading(true);
         try {
@@ -71,17 +71,58 @@ const ProfilePage = ({ params }) => {
         editProfleApi();
     };
 
-    useEffect(() => {
+    const handleFollowToggle = async (toggle) => {
+        // Update the UI state based on the follow/unfollow action
+        setIsFollowed(toggle);
+        console.log("handleFollowToggle=>", toggle);
+        const action = toggle ? "follow" : "unfollow";
+        const result = await followToggle(profile._id, action);
 
+        if (!result.error) {
+            if (toggle) {
+                setProfile((state) => {
+                    return {
+                        ...state,
+                        followers: [...state.followers, profile._id],
+                    };
+                });
+                setUserData((state) => {
+                    return {
+                        ...state,
+                        following: [...state.following, profile._id],
+                    };
+                });
+            } else {
+                setProfile((state) => {
+                    return {
+                        ...state,
+                        followers: state.followers.filter((follower) => follower !== profile._id),
+                    };
+                });
+                setUserData((state) => {
+                    return {
+                        ...state,
+                        following: state.following.filter((followin) => followin !== profile._id),
+                    };
+                });
+            }
+        } else {
+            // Handle the error (e.g., show an error message)
+            console.error("Follow toggle error:", result.error);
+        }
+    };
+
+    useEffect(() => {
         if (params?.id !== undefined) {
             (async () => {
                 try {
+                    setLoading(true);
                     setPostLoading(true);
                     await axios
                         .get(`/api/users/profile?id=${params?.id == undefined ? "user" : params?.id}`)
                         .then((res) => {
                             const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
-                            console.log(res.data.data, userData._id);
+                            console.log("onload", res.data.data, userData._id);
                             setProfile(res.data.data);
                             setEditFormData({
                                 username: res.data.data.username,
@@ -90,19 +131,20 @@ const ProfilePage = ({ params }) => {
                                 avatar: res.data.data.avatar, // to store the avatar file
                                 banner: res.data.data.banner, // to store the banner file
                             });
-
+                            console.log("is followed", isCurrentUserFollowing);
                             setIsFollowed(isCurrentUserFollowing);
                         })
                         .finally(() => {
                             setPostLoading(false);
+                            setLoading(false);
                         });
                 } catch (error) {
                     console.log(error);
                     toast.error("User not found");
                 }
-            })(); 
-       }
-        console.log(userData, profile);
+            })();
+        }
+        // console.log(userData, profile);
     }, []);
 
     return (
@@ -115,7 +157,7 @@ const ProfilePage = ({ params }) => {
                             height: "200px",
                             backgroundImage: profile?.banner
                                 ? `url(${profile?.banner})`
-                                : "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
+                                : "url(https://res.cloudinary.com/deyq54d8b/image/upload/v1708498415/Social-Media-App/default-banner.jpg)",
                         }}
                     ></div>
                     <div className="p-4">
@@ -133,10 +175,20 @@ const ProfilePage = ({ params }) => {
                                             src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
                                             alt=""
                                         /> */}
-                                        {profile?.avatar && (
+                                        {profile?.avatar ? (
                                             <Image
                                                 className="rounded-full border-4 border-gray-900"
                                                 src={profile?.avatar}
+                                                alt="Profile picture"
+                                                width={225}
+                                                height={225}
+                                            />
+                                        ) : (
+                                            <Image
+                                                className="rounded-full border-4 border-gray-900"
+                                                src={
+                                                    "https://res.cloudinary.com/deyq54d8b/image/upload/v1707136917/Social-Media-App/default-profile.jpg"
+                                                }
                                                 alt="Profile picture"
                                                 width={225}
                                                 height={225}
@@ -148,29 +200,10 @@ const ProfilePage = ({ params }) => {
                             </div>
                             {/* <!-- Follow Button --> */}
                             <div className="flex flex-col text-right">
-                                {params?.id && profile._id !== userData._id ? (
-                                    // isFollowed ?
-                                    //     (
-                                    //     <button
-                                    //         onClick={() => handleFollow(!isFollowed)}
-                                    //         className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-tweet-blue px-5 py-2 font-bold text-white  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                    //     >
-                                    //         Following
-                                    //     </button>
-                                    // ) : (
-                                    //     <button
-                                    //         onClick={() => handleFollow(!isFollowed)}
-                                    //         className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-white px-5 py-2 font-bold text-black  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                    //     >
-                                    //         Follow
-                                    //     </button>
-                                    // )
-                                    <FollowButton
-                                        followeeId={profile._id}
-                                        isFollowed={isFollowed}
-                                        setIsFollowed={setIsFollowed}
-                                        setProfile = {setProfile}
-                                    />
+                                {postLoading || loading ? (
+                                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                                ) : params?.id ? (
+                                    <FollowButton isFollowed={isFollowed} handleFollowToggle={handleFollowToggle} />
                                 ) : (
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
@@ -186,8 +219,22 @@ const ProfilePage = ({ params }) => {
                         <div className="ml-3 mt-3 w-full justify-center space-y-1">
                             {/* <!-- User basic--> */}
                             <div>
-                                <h2 className="text-xl font-bold leading-6 text-white">{profile?.fullName}</h2>
-                                <p className="text-sm font-medium leading-5 text-gray-600">@{profile?.username}</p>
+                                {!profile?.username ? (
+                                    <div
+                                        role="status"
+                                        className="max-w-sm rounded shadow animate-pulse  dark:border-gray-700"
+                                    >
+                                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2.5"></div>
+                                        <div className="w-48 h-2 mb-10 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <h2 className="text-xl font-bold leading-6 text-white">{profile?.fullName}</h2>
+                                        <p className="text-sm font-medium leading-5 text-gray-600">
+                                            @{profile?.username}
+                                        </p>
+                                    </>
+                                )}
                             </div>
                             {/* <!-- Description and others --> */}
                             <div className="mt-3">
@@ -245,7 +292,7 @@ const ProfilePage = ({ params }) => {
                     <hr className="border-gray-800" />
                 </div>
                 <ul className="list-none">
-                    {!postLoading &&
+                    {profile?.tweets ?
                         profile?.tweets?.map((post, idx) => (
                             <li key={idx}>
                                 {/* <!--second tweet--> */}
@@ -322,7 +369,44 @@ const ProfilePage = ({ params }) => {
                                     <hr className="border-gray-800" />
                                 </article>
                             </li>
-                        ))}
+                        ))
+                    :<div className="w-full mt-4">
+                    <div className="mx-auto max-w-lg">
+                        <div className="flex gap-1 items-center animate-pulse mb-2">
+                            <div className="h-12 w-12 rounded-full bg-gray-700"></div>
+                            <div className="h-4 w-20 rounded-md bg-gray-700"></div>
+                            <div className="h-4 w-10 rounded-md bg-gray-700"></div>
+                        </div>
+                        <div role="status" className="mb-7 animate-pulse">
+                            <div className="mb-4 h-2.5 w-48 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                            <div className="mb-2.5 h-2 max-w-[460px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                            <div className="h-2 max-w-[460px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        <div role="status" className="mb-7 max-w-lg animate-pulse">
+                            <div className="flex h-48 w-full items-center justify-center rounded bg-gray-300 dark:bg-gray-700">
+                                <svg
+                                    className="h-12 w-12 text-gray-200"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    fill="currentColor"
+                                    viewBox="0 0 640 512"
+                                >
+                                    <path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"></path>
+                                </svg>
+                            </div>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        <div role="status" className="my-6 animate-pulse">
+                            <div className="flex w-full justify-around">
+                                <div className="h-5 w-5 rounded-lg bg-gray-700"></div>
+                                <div className="h-5 w-5 rounded-lg bg-gray-700"></div>
+                                <div className="h-5 w-5 rounded-lg bg-gray-700"></div>
+                                <div className="h-5 w-5 rounded-lg bg-gray-700"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>}
                 </ul>
             </section>
             {openModal && (

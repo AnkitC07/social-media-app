@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Profile from "../common/Profile";
 import EmojiPicker from "emoji-picker-react";
@@ -8,28 +8,29 @@ import axios from "axios";
 import { PostContext } from "../../_context/Post";
 import { postImages } from "./Feed";
 import toast from "react-hot-toast";
+import { UserContext } from "../../_context/User";
+import LikeButton from "../common/LikeButton";
+import likeToggle from "../../functions/api/likeToggle";
 
 const CommentModal = () => {
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
+    const { userData } = useContext(UserContext);
     const [openEmoji, setOpenEmoji] = useState(true);
+    const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));
 
-    function auto_grow(element) {
-        // element.target.style.height = "5px";
-        // element.target.style.height = element.target.scrollHeight + "px";
-    }
     const handleClose = () => {
         setCommentModal({
             open: false,
             post: {},
         });
     };
-    const handleChange = (e) => {
-        setComment({
-            text: e.target.value,
-        });
-    };
+
+    useEffect(() => {
+        setIsLiked(commentModal.post?.likes?.includes(userData._id))
+    },[commentModal.post?.likes])
+
     const handleComment = () => {
-        console.log("first",comment);
+        console.log("first", comment);
         try {
             axios
                 .post("/api/post/comment", {
@@ -37,11 +38,10 @@ const CommentModal = () => {
                     comment: comment,
                 })
                 .then((res) => {
-                    console.log(commentModal, res.data.reply);
                     setComment({
                         text: "",
                     });
-                    commentModal.post.replies = [...commentModal.post.replies,res.data.reply]
+                    commentModal.post.replies = [...commentModal.post.replies, res.data.reply];
                     setCommentModal(commentModal);
                     toast.success("Commented.");
                 })
@@ -53,29 +53,47 @@ const CommentModal = () => {
             console.log("SomwthinG went wrong in comment:", error);
         }
     };
+
+    const handleLikeToggle = async() => {
+        const action = isLiked ? "unlike" : "like";
+
+        const result = await likeToggle(commentModal.post._id, action);
+        if (!result.error) {
+            
+            setCommentModal(prevPosts => {
+                const newPosts = { ...prevPosts };
+                newPosts.post.likes = result.likes;
+                return newPosts;
+              });
+
+            setIsLiked(!isLiked);
+        } else {
+            console.error("Follow toggle error:", result.error);
+        }
+    }
     return (
         <>
             {commentModal?.open && (
                 <div
                     data-te-modal-init
-                    class="fixed left-0 backdrop-blur-xl bg-white bg-opacity-10 top-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+                    className="fixed left-0 backdrop-blur-xl bg-white bg-opacity-10 top-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none"
                     id="exampleModal"
-                    tabindex="-1"
+                    tabIndex="-1"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                 >
                     <div
                         data-te-modal-dialog-ref
-                        class=" relative w-auto   transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[1280px] pointer-events-none opacity-1 "
+                        className=" relative w-auto   transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[1280px] pointer-events-none opacity-1 "
                     >
-                        <div class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-2xl border-none bg-black bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
-                            <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b border-[#ffffff26] border-opacity-100 p-4 dark:border-opacity-50">
+                        <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-2xl border-none bg-black bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+                            <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b border-[#ffffff26] border-opacity-100 p-4 dark:border-opacity-50">
                                 {/* <!--Modal title--> */}
                                 <p className="text-2xl pl-4">Comment</p>
                                 {/* <!--Close button--> */}
                                 <button
                                     type="button"
-                                    class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                                    className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
                                     data-te-modal-dismiss
                                     aria-label="Close"
                                     onClick={handleClose}
@@ -84,17 +102,17 @@ const CommentModal = () => {
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
-                                        stroke-width="1.5"
+                                        strokeWidth="1.5"
                                         stroke="currentColor"
-                                        class="h-6 w-6"
+                                        className="h-6 w-6"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
 
                             {/* <!--Modal body--> */}
-                            <div class="relative flex px-4 " data-te-modal-body-ref>
+                            <div className="relative flex px-4 " data-te-modal-body-ref>
                                 <div className="w-[60%] border-r-[0.5px] border-[#ffffff26]">
                                     <div className="p-4 pl-0">
                                         <Link
@@ -146,9 +164,7 @@ const CommentModal = () => {
                                                         <path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path>
                                                     </g>
                                                 </svg>
-                                                {
-                                                    commentModal.post.replies.length
-                                                }
+                                                {commentModal.post.replies.length}
                                             </div>
                                             <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-green-400">
                                                 <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
@@ -164,9 +180,13 @@ const CommentModal = () => {
                                                         <path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
                                                     </g>
                                                 </svg>
-                                                {
-                                                    commentModal.post.likes.length
-                                                }
+                                                <LikeButton
+                                                    i={`${commentModal.post?._id}-desktop-comment-modal`}
+                                                    isLiked={isLiked}
+                                                    setIsLiked={setIsLiked}
+                                                    handleLikeToggle={handleLikeToggle}
+                                                />
+                                                {commentModal.post.likes.length}
                                             </div>
                                             <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400">
                                                 <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
@@ -179,12 +199,14 @@ const CommentModal = () => {
                                         </div>
                                     </div>
                                 </div>
-                               <CommentArea  commentModal={commentModal} comment={comment} setComment={setComment} />
+                                <CommentArea commentModal={commentModal} comment={comment} setComment={setComment} />
                             </div>
 
                             {/* <!--Modal footer--> */}
-                            <div class="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-[0.5px]   border-[#ffffff26] border-opacity-100 p-4 dark:border-o
-                            pacity-50 justify-between">
+                            <div
+                                className="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-[0.5px]   border-[#ffffff26] border-opacity-100 p-4 dark:border-o
+                            pacity-50 justify-between"
+                            >
                                 <div>
                                     {/* <EmojiPicker
                                         // open={openEmoji}
@@ -196,10 +218,10 @@ const CommentModal = () => {
                                 </div>
                                 <button
                                     onClick={handleComment}
-                                    class="relative inline-flex items-center justify-start inline-block px-3 py-[5px] overflow-hidden font-medium transition-all bg-tweet-blue rounded-full border border-tweet-blue hover:border-white hover:bg-black group"
+                                    className="relative inline-flex items-center justify-start inline-block px-3 py-[5px] overflow-hidden font-medium transition-all bg-tweet-blue rounded-full border border-tweet-blue hover:border-white hover:bg-black group"
                                 >
-                                    <span class="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-black rounded-full"></span>
-                                    <span class="relative w-full text-left text-[15px]  text-white transition-colors duration-200 ease-in-out group-hover:text-white ">
+                                    <span className="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-black rounded-full"></span>
+                                    <span className="relative w-full text-left text-[15px]  text-white transition-colors duration-200 ease-in-out group-hover:text-white ">
                                         Reply
                                     </span>
                                 </button>
