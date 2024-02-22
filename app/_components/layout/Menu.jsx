@@ -23,9 +23,10 @@ const Menu = (
                         key={idx}
                         href={item.path}
                         className={
-                            style +   "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")
+                            style +   "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")  + (item.path == '/messages' || item.path == '/notifications' ? " cursor-not-allowed ":'')
                         }
-                        onClick={()=>item.path ==="#"&& setShow(!show)}
+                        onClick={() => item.path === "#" && setShow(!show)}
+                        
                     >
                         {item.icon}
                         <div className={"font-light text-lg" + (pathname == item.path ? " text-tweet-blue" : "")}>

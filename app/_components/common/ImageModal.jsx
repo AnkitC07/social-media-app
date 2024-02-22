@@ -46,6 +46,8 @@ const ImageModal = () => {
                                 alt={`modal image of Post`}
                             />
                         )}
+                        <div>
+
                         <CloseIcon
                         sx={{
                             fontSize: "30px",
@@ -56,8 +58,9 @@ const ImageModal = () => {
                                 open: false
                             })
                         }}
-                        className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[45xp] text-white group cursor-pointer backdrop-blur-[2px]"
-                    />
+                        className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
+                        />
+                        </div>
                     </div>
                 </div>
             </div>

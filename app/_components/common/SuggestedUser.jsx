@@ -1,12 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Profile from "./Profile";
 import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
+import followToggle from "../../functions/api/followToggle";
+import { UserContext } from "../../_context/User";
 
 const SuggestedUser = ({ user }) => {
-    const following = false;
-console.log(user)
+    const { setUserData } = useContext(UserContext);
+    const [isFollowed, setIsFollowed] = useState(false);
+    console.log(user);
+
+    const handleFollowToggle = async (toggle) => {
+        // Update the UI state based on the follow/unfollow action
+        setIsFollowed(toggle);
+        console.log("handleFollowToggle=>", toggle);
+        const action = toggle ? "follow" : "unfollow";
+        const result = await followToggle(user._id, action);
+
+        if (!result.error) {
+            if (toggle) {
+                setUserData((state) => {
+                    return {
+                        ...state,
+                        following: [...state.following, user._id],
+                    };
+                });
+            } else {
+                setUserData((state) => {
+                    return {
+                        ...state,
+                        following: state.following.filter((followin) => followin !== user._id),
+                    };
+                });
+            }
+        } else {
+            // Handle the error (e.g., show an error message)
+            console.error("Follow toggle error:", result.error);
+        }
+    };
     return (
         <div className="flex gap-2 justify-between items-center">
             {/* left side */}
@@ -21,11 +53,7 @@ console.log(user)
                         height={50}
                         alt=""
                     /> */}
-                    <Profile
-                        src={user.avatar}
-                        w={50}
-                        h={50}
-                    />
+                    <Profile src={user.avatar} w={50} h={50} />
 
                     <div className="">
                         <p className=" flex flex-wrap  items-baseline text-md leading-6 font-semibold text-white ">
@@ -39,11 +67,11 @@ console.log(user)
             </Link>
             {/* right side */}
             <FollowButton
-                handleClick={() => {}}
+                handleFollowToggle={handleFollowToggle}
                 size={"text-xs"}
-                bgColor={following ? "bg-tweet-blue" : "bg-white"}
-                textColor={following ? "text-white" : "text-balck"}
-                following={following}
+                bgColor={isFollowed ? "!bg-tweet-blue" : "bg-white"}
+                textColor={isFollowed ? "!text-white" : "text-balck"}
+                isFollowed={isFollowed}
             />
             {/* </div> */}
         </div>

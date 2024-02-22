@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Profile from "../common/Profile";
 import formatTimeDifference from '../../functions/getTIme.js'
+import { UserContext } from "../../_context/User";
 
 const CommentArea = ({ commentModal, comment, setComment }) => {
+    const { userData } = useContext(UserContext)
+    console.log(commentModal)
     const handleChange = (e) => {
         setComment({
             text: e.target.value,
@@ -10,6 +13,7 @@ const CommentArea = ({ commentModal, comment, setComment }) => {
     };
 
     const comments = (comment) => {
+        console.log(comment)
         return (
             <div key={comment._id} className="flex items-start pt-4">
                         <div>
@@ -48,7 +52,7 @@ const CommentArea = ({ commentModal, comment, setComment }) => {
                     <div>
                         <Profile
                             src={
-                                "http://localhost:3000/_next/image?url=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F1121328878142853120%2Fe-rpjoJi_bigger.png&w=48&q=75"
+                                userData.avatar
                             }
                             w={42}
                             h={100}
@@ -61,7 +65,7 @@ const CommentArea = ({ commentModal, comment, setComment }) => {
                             value={comment?.text}
                             // cols="30"
                             placeholder="Post yout reply"
-                            className="border-0 text-2xl pt-1 w-full resize-none bg-transparent !focus-visible:!outline-none"
+                            className="border-0 text-xl pt-1 w-full resize-none bg-transparent !focus-visible:!outline-none"
                         />
                     </div>
                 </div>
