@@ -52,7 +52,7 @@ const Explore = () => {
     // }, [2000]);
     return (
         // <div className="container mx-auto flex flex-col gap-2">
-        <div className="container mx-auto ">
+        <div className="container mx-auto px-2 ">
             <div className="w-full pb-[30px] -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
@@ -61,7 +61,7 @@ const Explore = () => {
                 </div> */}
                 <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />
 
-                <div className="flex flex-col items-center gap-2  w-full lg:!w-[51%] md:!w-[69%]">
+                <div className="flex flex-col items-center pb-[69px] md:pb-0 gap-2  w-full lg:!w-[51%] md:!w-[69%]">
                     {showTrendingPost.open && <TrendingPosts  />}
                     {!loading &&
                         explorePosts.map((post, idx) => (

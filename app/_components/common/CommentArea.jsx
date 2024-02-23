@@ -40,7 +40,7 @@ const CommentArea = ({ commentModal, comment, setComment }) => {
         )
     }
     return (
-        <div className="pt-4 w-[40%] flex flex-col justify-end ">
+        <div className="pt-4 sm:w-[40%] flex flex-col justify-end ">
             <div className="flex flex-col justify-end">
                 {/* Comments */}
                 <div className="flex flex-col divide-y divide-[#ffffff26] ml-4 overflow-y-auto max-h-[444px]">

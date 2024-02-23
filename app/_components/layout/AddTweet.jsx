@@ -88,10 +88,10 @@ const AddTweet = ({ setPosts }) => {
     return (
         <Card>
             <div className="flex gap-2 p-4">
-                <div className="w-[8%]">
+                <div className="">
                     <Profile src={userData.avatar} w={50} h={50} />
                 </div>
-                <div className="bg-bg-card  w-[91.5%]">
+                <div className="bg-bg-card   w-full">
                     <div className=" relative p-5 bg-[#28343E] rounded-2xl">
                         <textarea
                             // cols="30"
@@ -184,7 +184,7 @@ const AddTweet = ({ setPosts }) => {
                                 ) : null}
                             </div> */}
                         </div>
-                        <div className="flex justify-between flex-wrap gap-2 max-[319px]:justify-end">
+                        <div className="flex justify-between flex-wrap gap-2 max-[330px]:justify-end">
                             <div className="flex gap-2 text-[#03A9F4]">
                                 <input
                                     disabled={filesRef?.length >= 4}

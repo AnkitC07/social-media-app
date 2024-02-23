@@ -9,7 +9,7 @@ const PageWrapper = () => {
     return (
         <>
             <div className="max-[660px]:px-4 w-full flex flex-row gap-4">
-                <MainContainer window={'mobile'} style={"lg:hidden "} />
+                <MainContainer window={'mobile'} style={"lg:hidden pb-[69px] md:pb-0 "} />
                 <div className="hidden min-[992px]:flex max-lg:flex-col w-full  gap-4">
                     <MainContainer window={'desktop'}  style={'hidden lg:flex lg:!w-[51%] '} />
                     <LeftSideProfile style={'lg:order-first lg:w-[23.3%]'} />

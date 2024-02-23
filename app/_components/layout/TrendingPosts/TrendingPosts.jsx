@@ -32,7 +32,7 @@ const TrendingPosts = () => {
 
     return (
         <>
-            <div>Trending Posts</div>
+            <div className="p-4 text-xl font-bold tracking-wide w-full backdrop-blur-sm text-center">Trending Posts</div>
             {trendingPosts.map((post, idx) => (
                 <Feed
                     key={idx}
@@ -43,7 +43,7 @@ const TrendingPosts = () => {
                     setPosts={setTrendingPosts}
                 />
             ))}
-            <div>Explore Posts</div>
+            <div className="p-4 text-xl font-bold tracking-wide w-full backdrop-blur-sm text-center">Explore Posts</div>
         </>
     );
 };

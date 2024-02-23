@@ -85,7 +85,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                 {/* <div className="md:flex-shrink pr-6 pt-3">{postImages(post)}</div> */}
                 <div className="md:flex-shrink pr-6 pt-3">
                     {post.images?.length > 0 && (
-                        <div className="relative w-full h-[22rem] px-4">
+                        <div className="relative h-[calc(30vw*1.5)] sm:h-[calc(30vw*1.5)] md:w-[56vw] md:h-[calc(16vw*1.5)] lg:w-full  lg:h-[22rem] px-4">
                             <PostSwiper posts={post?.images} />
                         </div>
                     )}

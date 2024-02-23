@@ -1,6 +1,7 @@
 import React from "react";
 
 const LikeButton = ({ isLiked, setIsLiked, handleLikeToggle, i }) => {
+    
 
     const handleCheckboxChange = (event) => {
         setIsLiked(event.target.checked); // Update state based on checkbox change

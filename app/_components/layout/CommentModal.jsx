@@ -112,8 +112,8 @@ const CommentModal = () => {
                             </div>
 
                             {/* <!--Modal body--> */}
-                            <div className="relative flex px-4 " data-te-modal-body-ref>
-                                <div className="w-[60%] border-r-[0.5px] border-[#ffffff26]">
+                            <div className="relative sm:flex sm:divide-x divide-y divide-[#ffffff26] px-4 " data-te-modal-body-ref>
+                                <div className="sm:w-[60%] ">
                                     <div className="p-4 pl-0">
                                         <Link
                                             href={"/profile/" + commentModal.post?.user?._id}

@@ -344,7 +344,7 @@ const ProfilePage = ({ params }) => {
                     </div>
                     <hr className="border-gray-800" />
                 </div>
-                <ul className="list-none">
+                <ul className="list-none pb-[63px] md:pb-0 ">
                     {profile?.tweets ? (
                         // profile?.tweets?.map((post, idx) => (
                         //     <li key={idx}>
