@@ -5,11 +5,13 @@ import RightSideTrend from "../_components/layout/RightSideTrend";
 import Feed from "../_components/layout/Feed";
 import axios from "axios";
 import SuggestedUsers from "../_components/layout/SuggestedUsers";
+import TrendingPosts from "../_components/layout/TrendingPosts/TrendingPosts.jsx";
 import { PostContext } from "../_context/Post";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
-    const { explorePosts, setExplorePosts, suggestedUsers, setSuggestedUsers } = useContext(PostContext);
+    const { explorePosts, setExplorePosts, suggestedUsers, setSuggestedUsers, showTrendingPost } =
+        useContext(PostContext);
     // const [posts,setPost] = useState([])
 
     useEffect(() => {
@@ -60,10 +62,19 @@ const Explore = () => {
                 <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />
 
                 <div className="flex flex-col items-center gap-2  w-full lg:!w-[51%] md:!w-[69%]">
+                    {showTrendingPost.open && <TrendingPosts  />}
                     {!loading &&
                         explorePosts.map((post, idx) => (
-                            <Feed key={idx} i={idx} window={'desktop'} post={post} posts={explorePosts} setPosts={setExplorePosts} />
+                            <Feed
+                                key={idx}
+                                i={idx}
+                                window={"desktop"}
+                                post={post}
+                                posts={explorePosts}
+                                setPosts={setExplorePosts}
+                            />
                         ))}
+
 
                     {loading &&
                         [0, 1].map((_, idx) => (
@@ -108,7 +119,11 @@ const Explore = () => {
                 </div>
                 {/* <div className="sticky top-[140px]">
                 </div> */}
-                <SuggestedUsers loading={loading} suggestedUsers={suggestedUsers} style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"} />
+                <SuggestedUsers
+                    loading={loading}
+                    suggestedUsers={suggestedUsers}
+                    style={"max-lg:hidden sticky top-[140px] lg:w-[23.45%]"}
+                />
             </div>
         </div>
     );

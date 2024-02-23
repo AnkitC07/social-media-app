@@ -17,6 +17,8 @@ import likeToggle from "../functions/api/likeToggle";
 
 const ProfilePage = ({ params }) => {
     const { userData, setUserData } = useContext(UserContext);
+    const {profile, setProfile } = useContext(PostContext);
+
 
 
     const [loading, setLoading] = useState(true);
@@ -24,11 +26,11 @@ const ProfilePage = ({ params }) => {
     const [postLoading, setPostLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
-    const [profile, setProfile] = useState({});
+    // const [profile, setProfile] = useState({});
     const [editFormData, setEditFormData] = useState({
-        username: "",
-        name: "",
-        bio: "",
+        username: userData.username,
+        name: userData?.fullName?userData.fullName:'',
+        bio: userData?.bio?userData.bio:'',
         avatar: null, // to store the avatar file
         banner: null, // to store the banner file
     });
@@ -78,7 +80,7 @@ const ProfilePage = ({ params }) => {
         editProfleApi();
     };
 
-    // Follow Unfollow
+    // Follow/Unfollow
     const handleFollowToggle = async (toggle) => {
         // Update the UI state based on the follow/unfollow action
         setIsFollowed(toggle);
@@ -120,7 +122,7 @@ const ProfilePage = ({ params }) => {
         }
     };
 
-    // Like Unlike
+    // Like/Unlike
     const handleLikeToggle = async (idx,isLiked,setIsLiked,post) => {
         const action = isLiked ? "unlike" : "like";
 

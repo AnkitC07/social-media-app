@@ -27,9 +27,14 @@ export const postImages = (post) => {
 
 const Feed = ({ post, i, window, setPosts }) => {
     const { userData } = useContext(UserContext);
-    const { setCommentModal } = useContext(PostContext);
+    const { setCommentModal,commentModal } = useContext(PostContext);
 
     const [isLiked, setIsLiked] = useState(post?.likes?.includes(userData._id));
+
+    // useEffect(() => {
+    //     console.log("when comment modal state updates=>", commentModal)
+        
+    // },[commentModal])
 
     const handleLikeToggle = async () => {
         const action = isLiked ? "unlike" : "like";
@@ -62,9 +67,9 @@ const Feed = ({ post, i, window, setPosts }) => {
 
                         <div className="">
                             <p className=" flex flex-wrap  items-baseline text-lg leading-6 font-semibold text-white mb-3">
-                                <span className="mr-2">{post.user.fullName}</span>
+                                <span className="mr-2">{post?.user?.fullName}</span>
                                 <span className="text-xs leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                                    @{post.user.username} . 16 April
+                                    @{post?.user?.username} . 16 April
                                 </span>
                             </p>
                         </div>
@@ -81,7 +86,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                 <div className="md:flex-shrink pr-6 pt-3">
                     {post.images?.length > 0 && (
                         <div className="relative w-full h-[22rem] px-4">
-                            <PostSwiper posts={post.images} />
+                            <PostSwiper posts={post?.images} />
                         </div>
                     )}
                 </div>
@@ -103,7 +108,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                                     </g>
                                 </svg>
 
-                                {post.replies.length}
+                                {post?.replies.length}
                             </div>
                             {/* <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-green-400">
                                 <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">

@@ -8,6 +8,7 @@ const PostContextProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
     const [homePosts, setHomePosts] = useState([]);
     const [explorePosts, setExplorePosts] = useState([]);
+    const [profile, setProfile] = useState({});
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const [modalImage, setModalImage] = useState({
         url: "",
@@ -21,6 +22,13 @@ const PostContextProvider = ({ children }) => {
         text: "",
     });
 
+    const [trendingTags, setTrendingTags] = useState([]);
+    const [trendingPosts, setTrendingPosts] = useState([]);
+    const [showTrendingPost, setShowTrendingPost] = useState({
+        open: false,
+        tag:null
+    })
+
     return (
         <PostContext.Provider
             value={{
@@ -30,7 +38,11 @@ const PostContextProvider = ({ children }) => {
                 comment,setComment,
                 explorePosts, setExplorePosts,
                 homePosts,setHomePosts,
-                suggestedUsers,setSuggestedUsers
+                suggestedUsers, setSuggestedUsers,
+                profile, setProfile,
+                trendingTags, setTrendingTags,
+                showTrendingPost, setShowTrendingPost,
+                trendingPosts, setTrendingPosts,
             }}
         >
             {children}

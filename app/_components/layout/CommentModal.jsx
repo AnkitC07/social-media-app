@@ -14,6 +14,7 @@ import likeToggle from "../../functions/api/likeToggle";
 import PostSwiper from "../common/PostSwiper";
 
 const CommentModal = () => {
+    
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
     const { userData } = useContext(UserContext);
     const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));

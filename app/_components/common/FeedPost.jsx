@@ -3,11 +3,15 @@ import PostSwiper from './PostSwiper.jsx'
 import LikeButton from "./LikeButton";
 import likeToggle from "../../functions/api/likeToggle.js";
 import Link from "next/link";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../../_context/Post.jsx';
 function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
-    const { setCommentModal } = useContext(PostContext);
+    const { setCommentModal,commentModal } = useContext(PostContext);
     const [isLiked, setIsLiked] = useState(post?.likes?.includes(profile._id));
+
+    // useEffect(() => {
+    //     console.log("when comment modal state updates=>",commentModal)
+    // },[commentModal,setCommentModal])
     return (
         <>
             <li key={idx}>

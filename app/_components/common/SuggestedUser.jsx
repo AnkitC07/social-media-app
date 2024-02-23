@@ -9,7 +9,6 @@ import { UserContext } from "../../_context/User";
 const SuggestedUser = ({ user }) => {
     const { setUserData } = useContext(UserContext);
     const [isFollowed, setIsFollowed] = useState(false);
-    console.log(user);
 
     const handleFollowToggle = async (toggle) => {
         // Update the UI state based on the follow/unfollow action
