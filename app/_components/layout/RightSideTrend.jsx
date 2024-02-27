@@ -25,6 +25,7 @@ const RightSideTrend = ({ style }) => {
 
     useEffect(() => {
         const getTrendingHashtags = () => {
+            
             try {
                 setLoading(true);
                 axios
@@ -36,7 +37,11 @@ const RightSideTrend = ({ style }) => {
                     .finally(() => setLoading(false));
             } catch (error) {}
         };
-        getTrendingHashtags();
+        if (trendingTags.length == 0) {       
+            getTrendingHashtags();
+        } else {
+            setLoading(false)
+        }
     }, []);
 
     return (

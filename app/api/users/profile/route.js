@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { connect } from "../../../../dbConfig/dbConfig.js";
 import User from "../../../../models/userModel.js";
+import "../../../../models/tweetModel.js";
+import "../../../../models/replyModel.js";
 import { getTokenData } from '../../../../helpers/getTokenData.js';
 
 await connect();

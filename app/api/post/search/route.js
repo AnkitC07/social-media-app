@@ -10,27 +10,44 @@ export const GET = async (request) => {
         const userId = requestHeaders.get("x-user-_id");
         console.log(query, userId);
 
+        const users =
+            query !== ""
+                ? await User.find({
+                      $or: [
+                          { username: { $regex: `(?i:${query})` } },
+                          { fullName: { $regex: `(?i:${query})` } },
+                          // { username: { $regex: `^\\s?(?i:${query})`, $options: "i" } },
+                          // { fullName: { $regex: `^\\s?(?i:${query})`, $options: "i" } }
+                      ],
+                  })
+                : [];
 
-        const users = query !== ''? await User.find({
-            $or: [
-                { username: { $regex: `(?i:${query})` } },
-                { fullName: { $regex: `(?i:${query})` } }
-                // { username: { $regex: `^\\s?(?i:${query})`, $options: "i" } },
-                // { fullName: { $regex: `^\\s?(?i:${query})`, $options: "i" } }
-              ]
-        }) : [];
+        // const hashtags = await Hashtag.aggregate([
+        //     {
+        //         $match: {
+        //             ...(query ? { hashtag: { $regex: new RegExp(query, "i") } } : {}), // Regular expression for case-insensitive search
+        //         },
+        //     },
+        //     {
+        //         $project: {
+        //             hashtag: 1,
+        //             tweetCount: { $size: "$tweets" }, // Count the number of tweets for each hashtag
+        //         },
+        //     },
+        //     { $sort: { tweetCount: -1 } }, // Sort by tweet count in descending order
+        //     { $limit: query == "" ? 4 : null }, // Limit to the top N trending hashtags
+        // ]);
 
         let hashtags = await Hashtag.find({
-            hashtag: { $regex: `^${query}`, $options: "i" }
-        }).limit(query == '' ? 5 : null)
-        
+            hashtag: { $regex: `^${query}`, $options: "i" },
+        });
 
         return NextResponse.json(
             {
                 message: `Search successfuly`,
                 success: true,
                 users,
-                hashtags
+                hashtags,
             },
             { status: 200 }
         );

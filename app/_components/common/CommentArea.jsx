@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Profile from "../common/Profile";
 import formatTimeDifference from '../../functions/getTIme.js'
-import { UserContext } from "../../_context/User";
+import { PostContext } from "../../_context/Post";
 
 const CommentArea = ({ commentModal, comment, setComment }) => {
-    const { userData } = useContext(UserContext)
+    const { userData } = useContext(PostContext)
     console.log(commentModal)
     const handleChange = (e) => {
         setComment({

@@ -4,7 +4,6 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EditProfileModal from "../_components/layout/EditProfileModal";
-import { UserContext } from "../_context/User";
 import FollowButton from "../_components/common/FollowButton";
 import followToggle from "../functions/api/followToggle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -12,14 +11,11 @@ import Modal from "../_components/common/Modal";
 import Logout from "./Logout";
 import { PostContext } from "../_context/Post";
 
-import FeedPost from '../_components/common/FeedPost.jsx';
+import FeedPost from "../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
 
 const ProfilePage = ({ params }) => {
-    const { userData, setUserData } = useContext(UserContext);
-    const {profile, setProfile } = useContext(PostContext);
-
-
+    const { profile, setProfile, userData, setUserData } = useContext(PostContext);
 
     const [loading, setLoading] = useState(true);
     const [show, setShow] = useState(false);
@@ -29,8 +25,8 @@ const ProfilePage = ({ params }) => {
     // const [profile, setProfile] = useState({});
     const [editFormData, setEditFormData] = useState({
         username: userData.username,
-        name: userData?.fullName?userData.fullName:'',
-        bio: userData?.bio?userData.bio:'',
+        name: userData?.fullName ? userData.fullName : "",
+        bio: userData?.bio ? userData.bio : "",
         avatar: null, // to store the avatar file
         banner: null, // to store the banner file
     });
@@ -42,6 +38,11 @@ const ProfilePage = ({ params }) => {
             setLoading(false);
         }
     }, [userData, params?.id]);
+
+    // useEffect(() => {
+    //     setProfile(profile)
+    //     console.log('data')
+    // },[userData])
 
     // Edit Profile Details
     const editProfleApi = async () => {
@@ -123,7 +124,7 @@ const ProfilePage = ({ params }) => {
     };
 
     // Like/Unlike
-    const handleLikeToggle = async (idx,isLiked,setIsLiked,post) => {
+    const handleLikeToggle = async (idx, isLiked, setIsLiked, post) => {
         const action = isLiked ? "unlike" : "like";
 
         const result = await likeToggle(post._id, action);
@@ -143,6 +144,7 @@ const ProfilePage = ({ params }) => {
         } else {
             console.error("Follow toggle error:", result.error);
         }
+        return result;
     };
 
     useEffect(() => {
@@ -237,7 +239,12 @@ const ProfilePage = ({ params }) => {
                                 {postLoading || loading ? (
                                     <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
                                 ) : params?.id ? (
-                                    <FollowButton isFollowed={isFollowed} handleFollowToggle={handleFollowToggle} />
+                                    <FollowButton
+                                        bgColor={isFollowed ? "!bg-tweet-blue" : "bg-white"}
+                                        textColor={isFollowed ? "!text-white" : "text-balck"}
+                                        isFollowed={isFollowed}
+                                        handleFollowToggle={handleFollowToggle}
+                                    />
                                 ) : (
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
@@ -441,7 +448,14 @@ const ProfilePage = ({ params }) => {
                         //     </li>
                         // ))
                         profile?.tweets?.map((post, idx) => (
-                            <FeedPost key={idx} idx={idx} post={post} profile={profile} handleLikeToggle={handleLikeToggle} userData={userData} />
+                            <FeedPost
+                                key={idx}
+                                idx={idx}
+                                post={post}
+                                profile={profile}
+                                handleLikeToggle={handleLikeToggle}
+                                userData={userData}
+                            />
                         ))
                     ) : (
                         <div className="w-full mt-4">
@@ -496,7 +510,5 @@ const ProfilePage = ({ params }) => {
         </>
     );
 };
-
-
 
 export default ProfilePage;

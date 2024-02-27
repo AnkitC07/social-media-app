@@ -7,11 +7,11 @@ import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../../_context/Post.jsx';
 function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
     const { setCommentModal,commentModal } = useContext(PostContext);
-    const [isLiked, setIsLiked] = useState(post?.likes?.includes(profile._id));
+    const [isLiked, setIsLiked] = useState(profile.tweets[idx]?.likes?.includes(profile._id));
 
     // useEffect(() => {
-    //     console.log("when comment modal state updates=>",commentModal)
-    // },[commentModal,setCommentModal])
+    //     console.log("when comment modal state updates=>",isLiked)
+    // },[commentModal])
     return (
         <>
             <li key={idx}>
@@ -61,7 +61,11 @@ function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
                                         open: true,
                                         post: {
                                             ...post,
-                                            user:userData},
+                                            user: userData
+                                        },
+                                        callback: handleLikeToggle,
+                                        idx:idx
+                                        
                                     })
                                 }
                                 className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400"
@@ -91,7 +95,8 @@ function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
                                     i={`${post?._id}-desktop-profile`}
                                     isLiked={isLiked}
                                     setIsLiked={setIsLiked}
-                                    handleLikeToggle={()=>handleLikeToggle(idx,isLiked,setIsLiked,post)}
+                                    handleLikeToggle={() => handleLikeToggle(idx, isLiked, setIsLiked, post)}
+                                    
                                 />
                                 {post?.likes?.length}
                             </div>

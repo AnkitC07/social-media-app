@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
 import followToggle from "../../functions/api/followToggle";
-import { UserContext } from "../../_context/User";
+import { PostContext } from "../../_context/Post";
 
 const SuggestedUser = ({ user }) => {
-    const { setUserData } = useContext(UserContext);
+    const { setUserData } = useContext(PostContext);
     const [isFollowed, setIsFollowed] = useState(false);
 
     const handleFollowToggle = async (toggle) => {
@@ -43,7 +43,7 @@ const SuggestedUser = ({ user }) => {
             {/* left side */}
 
             {/* <div className="flex gap-2 "> */}
-            <Link href="#" className="md:flex-shrink flex-shrink-0 group block text-nowrap overflow-hidden">
+            <Link href={`/profile/${user._id}`} className="md:flex-shrink flex-shrink-0 group block text-nowrap overflow-hidden">
                 <div className="suggested_user flex gap-4 items-start  ">
                     {/* <Image
                         className="inline-block rounded-sm"

@@ -26,7 +26,7 @@ export const postImages = (post) => {
 };
 
 const Feed = ({ post, i, window, setPosts }) => {
-    const { userData } = useContext(UserContext);
+    const { userData } = useContext(PostContext);
     const { setCommentModal,commentModal } = useContext(PostContext);
 
     const [isLiked, setIsLiked] = useState(post?.likes?.includes(userData._id));
@@ -51,6 +51,7 @@ const Feed = ({ post, i, window, setPosts }) => {
         } else {
             console.error("Follow toggle error:", result.error);
         }
+        return result;
     };
     return (
         <Card style=" w-full ">
@@ -98,6 +99,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                                     setCommentModal({
                                         open: true,
                                         post: post,
+                                        callback:handleLikeToggle
                                     })
                                 }
                                 className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400"

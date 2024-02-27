@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const LikeButton = ({ isLiked, setIsLiked, handleLikeToggle, i }) => {
     
+    useEffect(() => {
+        
+    },[isLiked])
 
     const handleCheckboxChange = (event) => {
         setIsLiked(event.target.checked); // Update state based on checkbox change

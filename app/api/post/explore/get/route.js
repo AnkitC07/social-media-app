@@ -1,24 +1,28 @@
 import { NextResponse } from "next/server";
 import Tweet from "../../../../../models/tweetModel.js";
 import User from "../../../../../models/userModel.js";
-import {connect} from "../../../../../dbConfig/dbConfig.js"
+import { connect } from "../../../../../dbConfig/dbConfig.js";
 
-await connect()
+await connect();
 
 export async function GET(request) {
     try {
+        const limit = 5;
         const requestHeaders = new Headers(request.headers);
         const userId = requestHeaders.get("x-user-_id");
         // Assuming userId is the ID of the currently logged-in user
         const currentUser = await User.findById(userId).exec();
-        // console.log("user ", currentUser);
+        const page = request.nextUrl.searchParams.get("page");
+
 
         if (currentUser) {
             // Get the IDs of users that the current user is following
             const followingUserIds = currentUser.following;
 
             // Use these IDs to retrieve tweets from the users the current user is following
-            const tweetsFromFollowingUsers = await Tweet.find({ user: { $nin:  [...followingUserIds, userId] } })
+            const tweetsFromFollowingUsers = await Tweet.find({ user: { $nin: [...followingUserIds, userId] } })
+                .limit(limit * 1)
+                .skip((page - 1) * limit)
                 .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
                 .populate("user") // Populate the 'user' field with user details
                 .populate("replies") // Populate the 'replies' field with  comments on the post

@@ -8,13 +8,13 @@ import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineR
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { UserContext } from "../../_context/User";
 import ImageSlider from "../common/ImageSlider.jsx";
 import PlaceholderAnimation from "../common/PlaceholderAnimaion";
+import { PostContext } from "../../_context/Post.jsx";
 
 const AddTweet = ({ setPosts }) => {
     // const filesRef = useRef([]);
-    const { userData } = useContext(UserContext);
+    const { userData } = useContext(PostContext);
     const [postText, setPostText] = useState("");
     const [loading, setLoading] = useState(false);
     const [filesRef, setFileRef] = useState([]);
@@ -99,7 +99,7 @@ const AddTweet = ({ setPosts }) => {
                             value={postText}
                             onInput={auto_grow}
                             placeholder={placeholder}
-                            className=" border-0 w-full resize-none bg-[#28343E] focus-visible:outline-none"
+                            className=" border-0 w-full resize-none bg-[#28343E] outline-none"
                         />
                         {/* <PlaceholderAnimation /> */}
                         <div id="media" className="pb-3">
@@ -209,9 +209,9 @@ const AddTweet = ({ setPosts }) => {
                                         filter: "drop-shadow(0px 0px 3px rgb(47 223 154 / 0.5))",
                                         cursor: filesRef?.length >= 4 ? "not-allowed" : "pointer",
                                     }}
-                                    className={"text-[#2FDF9A] "}
+                                    className={"text-[#2FDF9A] hover:scale-105"}
                                 />
-                                <PlayCircleOutlineRoundedIcon
+                                {/* <PlayCircleOutlineRoundedIcon
                                     sx={{
                                         filter: "drop-shadow(0px 0px 3px rgb(0 168 240 / 0.5))",
                                     }}
@@ -222,9 +222,9 @@ const AddTweet = ({ setPosts }) => {
                                         filter: "drop-shadow(0px 0px 3px rgb(251 110 110 / 0.5))",
                                     }}
                                     className="text-[#FB6E6E]"
-                                />
+                                /> */}
                             </div>
-                            <button onClick={addPost} className="py-1 px-4 bg-[#03A9F4] text-sm rounded-2xl">
+                            <button onClick={addPost} className="py-1 px-4 bg-[#03a8f4] text-sm rounded-2xl hover:bg-[#03a8f4c9]">
                                 {loading ? (
                                     <>
                                         <svg

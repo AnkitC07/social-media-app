@@ -3,11 +3,11 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { UserContext } from "../../_context/User";
 import Link from "next/link";
+import { PostContext } from "../../_context/Post";
 
 const LoginPage = () => {
-    const { setUserData } = useContext(UserContext);
+    const { setUserData } = useContext(PostContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
