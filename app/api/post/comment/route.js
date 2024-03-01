@@ -36,6 +36,6 @@ export const POST = async (request) => {
 
     } catch (error) {
         console.log("Error in comment api:".error);
-        return NextResponse.json({ error: "Something went wrong in comment" }),{status:500};
+        return NextResponse.json({ error: "Something went wrong in comment" },{status:500});
     }
 }
