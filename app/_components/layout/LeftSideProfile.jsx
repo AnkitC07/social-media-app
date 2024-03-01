@@ -3,12 +3,13 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import Card from "../common/Card";
 import Profile from "../common/Profile";
-import { UserContext } from "../../_context/User";
+import { PostContext } from "../../_context/Post";
 
 const LeftSideProfile = ({ style = "" }) => {
-    const { userData } = useContext(UserContext);
+    const { userData } = useContext(PostContext);
     return (
         <Card style={style}>
+
             <div className=" m-6 h-auto flex flex-col gap-8   ">
                 {/* <div className="w-[250px] m-6 h-auto flex flex-col gap-8   "> */}
                 <div className="flex flex-col gap-10 items-center text-center">

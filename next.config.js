@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: false,
     images: {
         remotePatterns: [
             {
@@ -25,7 +26,7 @@ const nextConfig = {
         ],
         // domains: ["pbs.twimg.com"],
     },
-    reactStrictMode: false,
+   
 };
 
 module.exports = nextConfig;

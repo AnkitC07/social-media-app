@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Profile from "../common/Profile";
 import formatTimeDifference from '../../functions/getTIme.js'
-import { UserContext } from "../../_context/User";
+import { PostContext } from "../../_context/Post";
 
 const CommentArea = ({ commentModal, comment, setComment }) => {
-    const { userData } = useContext(UserContext)
+    const { userData } = useContext(PostContext)
     console.log(commentModal)
     const handleChange = (e) => {
         setComment({
@@ -40,7 +40,7 @@ const CommentArea = ({ commentModal, comment, setComment }) => {
         )
     }
     return (
-        <div className="pt-4 w-[40%] flex flex-col justify-end ">
+        <div className="pt-4 sm:w-[40%] flex flex-col justify-end ">
             <div className="flex flex-col justify-end">
                 {/* Comments */}
                 <div className="flex flex-col divide-y divide-[#ffffff26] ml-4 overflow-y-auto max-h-[444px]">

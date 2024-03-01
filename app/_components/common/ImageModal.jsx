@@ -34,13 +34,13 @@ const ImageModal = () => {
                         {isImage(modalImage?.url) && (
                             <img
                                 alt="Image modal"
-                                className="h-[48rem] m-auto  object-center"
+                                className="md:h-[48rem] m-auto  object-center"
                                 src={modalImage?.url}
                             />
                         )}
                         {isVideo(modalImage?.url) && (
                             <video
-                                className="h-[48rem] w-full object-cover object-center"
+                                className="md:h-[48rem] w-full object-cover object-center"
                                 autoPlay
                                 src={modalImage?.url}
                                 alt={`modal image of Post`}

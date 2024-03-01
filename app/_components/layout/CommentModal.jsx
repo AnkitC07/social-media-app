@@ -6,16 +6,15 @@ import EmojiPicker from "emoji-picker-react";
 import CommentArea from "../common/CommentArea";
 import axios from "axios";
 import { PostContext } from "../../_context/Post";
-import { postImages } from "./Feed";
 import toast from "react-hot-toast";
-import { UserContext } from "../../_context/User";
 import LikeButton from "../common/LikeButton";
 import likeToggle from "../../functions/api/likeToggle";
 import PostSwiper from "../common/PostSwiper";
 
 const CommentModal = () => {
+    
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
-    const { userData } = useContext(UserContext);
+    const { userData } = useContext(PostContext);
     const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));
 
     const handleClose = () => {
@@ -24,6 +23,7 @@ const CommentModal = () => {
             post: {},
         });
     };
+
 
     useEffect(() => {
         setIsLiked(commentModal.post?.likes?.includes(userData._id));
@@ -57,7 +57,8 @@ const CommentModal = () => {
     const handleLikeToggle = async () => {
         const action = isLiked ? "unlike" : "like";
 
-        const result = await likeToggle(commentModal.post._id, action);
+        const result = await commentModal.callback(commentModal.idx,isLiked,setIsLiked,commentModal.post)
+
         if (!result.error) {
             setCommentModal((prevPosts) => {
                 const newPosts = { ...prevPosts };
@@ -111,8 +112,8 @@ const CommentModal = () => {
                             </div>
 
                             {/* <!--Modal body--> */}
-                            <div className="relative flex px-4 " data-te-modal-body-ref>
-                                <div className="w-[60%] border-r-[0.5px] border-[#ffffff26]">
+                            <div className="relative sm:flex sm:divide-x divide-y divide-[#ffffff26] px-4 " data-te-modal-body-ref>
+                                <div className="sm:w-[60%] ">
                                     <div className="p-4 pl-0">
                                         <Link
                                             href={"/profile/" + commentModal.post?.user?._id}

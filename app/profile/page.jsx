@@ -1,10 +1,9 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EditProfileModal from "../_components/layout/EditProfileModal";
-import { UserContext } from "../_context/User";
 import FollowButton from "../_components/common/FollowButton";
 import followToggle from "../functions/api/followToggle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -12,23 +11,26 @@ import Modal from "../_components/common/Modal";
 import Logout from "./Logout";
 import { PostContext } from "../_context/Post";
 
-import FeedPost from '../_components/common/FeedPost.jsx';
+import FeedPost from "../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
+import InfiniteScroll from "../_components/common/InfiniteScroll";
 
 const ProfilePage = ({ params }) => {
-    const { userData, setUserData } = useContext(UserContext);
-
+    const { profile, setProfile, userData, setUserData, profilePage, setProfilePage } = useContext(PostContext);
 
     const [loading, setLoading] = useState(true);
+    const loadMoreRef = useRef();
+    const [page, setPage] = useState(profilePage);
+    const [inLoading, setInLoading] = useState(true);
     const [show, setShow] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
-    const [profile, setProfile] = useState({});
+    // const [profile, setProfile] = useState({});
     const [editFormData, setEditFormData] = useState({
-        username: "",
-        name: "",
-        bio: "",
+        username: userData.username,
+        name: userData?.fullName ? userData.fullName : "",
+        bio: userData?.bio ? userData.bio : "",
         avatar: null, // to store the avatar file
         banner: null, // to store the banner file
     });
@@ -40,6 +42,11 @@ const ProfilePage = ({ params }) => {
             setLoading(false);
         }
     }, [userData, params?.id]);
+
+    // useEffect(() => {
+    //     setProfile(profile)
+    //     console.log('data')
+    // },[userData])
 
     // Edit Profile Details
     const editProfleApi = async () => {
@@ -78,7 +85,7 @@ const ProfilePage = ({ params }) => {
         editProfleApi();
     };
 
-    // Follow Unfollow
+    // Follow/Unfollow
     const handleFollowToggle = async (toggle) => {
         // Update the UI state based on the follow/unfollow action
         setIsFollowed(toggle);
@@ -120,8 +127,8 @@ const ProfilePage = ({ params }) => {
         }
     };
 
-    // Like Unlike
-    const handleLikeToggle = async (idx,isLiked,setIsLiked,post) => {
+    // Like/Unlike
+    const handleLikeToggle = async (idx, isLiked, setIsLiked, post) => {
         const action = isLiked ? "unlike" : "like";
 
         const result = await likeToggle(post._id, action);
@@ -141,39 +148,79 @@ const ProfilePage = ({ params }) => {
         } else {
             console.error("Follow toggle error:", result.error);
         }
+        return result;
+    };
+
+    // Get profile data
+    const getData = async () => {
+        try {
+            setLoading(true);
+            setPostLoading(true);
+            await axios
+                .get(`/api/users/profile?id=${params?.id == undefined ? "user" : params?.id}`)
+                .then((res) => {
+                    const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
+                    console.log("onload", res.data.data, userData._id);
+                    setProfile(res.data.data);
+                    setEditFormData({
+                        username: res.data.data.username,
+                        name: res.data.data.fullName,
+                        bio: res.data.data.bio,
+                        avatar: res.data.data.avatar, // to store the avatar file
+                        banner: res.data.data.banner, // to store the banner file
+                    });
+                    console.log("is followed", isCurrentUserFollowing);
+                    setIsFollowed(isCurrentUserFollowing);
+                })
+                .finally(() => {
+                    setPostLoading(false);
+                    setLoading(false);
+                });
+        } catch (error) {
+            console.log(error);
+            toast.error("User not found");
+        }
+    };
+
+    const getProfilePots = async (index) => {
+        try {
+            const request = await axios(`/api/post/profile/get?id=${params?.id == undefined ? "user" : params?.id}&page=${index}`);
+            const res = request.data;
+            console.log("Profile Post Data=>", profilePage, res);
+            if (res.length == 0) {
+                setInLoading(false);
+                // return index
+            } else {
+                setProfile((prev) => {
+                    console.log(prev)
+                    return {
+                        ...prev,
+                        tweets:prev.tweets ? [...prev?.tweets, ...res]:[...res],
+                    };
+                });
+                if (res.length < 5) {
+                    setInLoading(false);
+                    // return index
+                } else {
+                    // return index + 1
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
     };
 
     useEffect(() => {
+        console.log(profilePage, "profilePage");
+        if (profilePage !== page) {
+            getProfilePots(profilePage);
+        }
+    }, [profilePage]);
+
+    useEffect(() => {
         if (params?.id !== undefined) {
-            (async () => {
-                try {
-                    setLoading(true);
-                    setPostLoading(true);
-                    await axios
-                        .get(`/api/users/profile?id=${params?.id == undefined ? "user" : params?.id}`)
-                        .then((res) => {
-                            const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
-                            console.log("onload", res.data.data, userData._id);
-                            setProfile(res.data.data);
-                            setEditFormData({
-                                username: res.data.data.username,
-                                name: res.data.data.fullName,
-                                bio: res.data.data.bio,
-                                avatar: res.data.data.avatar, // to store the avatar file
-                                banner: res.data.data.banner, // to store the banner file
-                            });
-                            console.log("is followed", isCurrentUserFollowing);
-                            setIsFollowed(isCurrentUserFollowing);
-                        })
-                        .finally(() => {
-                            setPostLoading(false);
-                            setLoading(false);
-                        });
-                } catch (error) {
-                    console.log(error);
-                    toast.error("User not found");
-                }
-            })();
+            getData();
         }
         // console.log(userData, profile);
     }, []);
@@ -235,7 +282,12 @@ const ProfilePage = ({ params }) => {
                                 {postLoading || loading ? (
                                     <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
                                 ) : params?.id ? (
-                                    <FollowButton isFollowed={isFollowed} handleFollowToggle={handleFollowToggle} />
+                                    <FollowButton
+                                        bgColor={isFollowed ? "!bg-tweet-blue" : "bg-white"}
+                                        textColor={isFollowed ? "!text-white" : "text-balck"}
+                                        isFollowed={isFollowed}
+                                        handleFollowToggle={handleFollowToggle}
+                                    />
                                 ) : (
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
@@ -342,104 +394,18 @@ const ProfilePage = ({ params }) => {
                     </div>
                     <hr className="border-gray-800" />
                 </div>
-                <ul className="list-none">
-                    {profile?.tweets ? (
-                        // profile?.tweets?.map((post, idx) => (
-                        //     <li key={idx}>
-                        //         {/* <!--second tweet--> */}
-                        //         <article className="duration-350 transition ease-in-out hover:bg-gray-800">
-                        //             <div className="p-4 pb-0">
-                        //                 <Link href="#" className="md:flex-shrink group block flex-shrink-0">
-                        //                     <div className="flex items-start">
-                        //                         <div>
-                        //                             <img
-                        //                                 className="inline-block h-10 w-10 rounded-full"
-                        //                                 src={profile.avatar}
-                        //                                 alt="Profile Image"
-                        //                             />
-                        //                         </div>
-                        //                         <div className="ml-4">
-                        //                             <p className=" flex flex-wrap items-baseline mb-3 text-base font-medium leading-6 text-white">
-                        //                                 <span className="mr-2">{profile.fullName}</span>
-                        //                                 <span className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
-                        //                                     {" "}
-                        //                                     @{profile.username} . 16 April{" "}
-                        //                                 </span>
-                        //                             </p>
-                        //                         </div>
-                        //                     </div>
-                        //                 </Link>
-                        //             </div>
+                <ul className="list-none pb-[63px] md:pb-0 ">
+                    {/* {profile?.tweets ? (
 
-                        //             <div className="pl-[75px] pr-5">
-                        //                 <p className="width-auto flex-shrink text-base font-medium text-white whitespace-pre-line">
-                        //                     {post.text}
-                        //                 </p>
-
-                        //                 {/* <div className="pr-6 pt-3 md:flex-shrink">{postImages(post)}</div> */}
-                        //                 <div className="md:flex-shrink pr-6 pt-3">
-                        //                     {post.images?.length > 0 && (
-                        //                         <div className="relative w-full h-[22rem] px-4">
-                        //                             <PostSwiper posts={post.images} />
-                        //                         </div>
-                        //                     )}
-                        //                 </div>
-
-                        //                 <div className="flex items-center py-4">
-                        //                     <div
-                        //                         onClick={() =>
-                        //                             setCommentModal({
-                        //                                 open: true,
-                        //                                 post: post,
-                        //                             })
-                        //                         }
-                        //                         className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400"
-                        //                     >
-                        //                         <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
-                        //                             <g>
-                        //                                 <path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path>
-                        //                             </g>
-                        //                         </svg>
-                        //                         {post.replies.length}
-                        //                     </div>
-                        //                     <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-green-400">
-                        //                         <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
-                        //                             <g>
-                        //                                 <path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path>
-                        //                             </g>
-                        //                         </svg>
-                        //                         14 k
-                        //                     </div>
-                        //                     <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-red-600">
-                        //                         <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
-                        //                             <g>
-                        //                                 <path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
-                        //                             </g>
-                        //                         </svg>
-                        //                         {/* <LikeButton
-                        //                             i={`${post?._id}-desktop-profile`}
-                        //                             isLiked={isLiked}
-                        //                             setIsLiked={setIsLiked}
-                        //                             handleLikeToggle={handleLikeToggle}
-                        //                         /> */}
-                        //                         {post.likes.length}
-                        //                     </div>
-                        //                     <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-blue-400">
-                        //                         <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
-                        //                             <g>
-                        //                                 <path d="M17.53 7.47l-5-5c-.293-.293-.768-.293-1.06 0l-5 5c-.294.293-.294.768 0 1.06s.767.294 1.06 0l3.72-3.72V15c0 .414.336.75.75.75s.75-.336.75-.75V4.81l3.72 3.72c.146.147.338.22.53.22s.384-.072.53-.22c.293-.293.293-.767 0-1.06z"></path>
-                        //                                 <path d="M19.708 21.944H4.292C3.028 21.944 2 20.916 2 19.652V14c0-.414.336-.75.75-.75s.75.336.75.75v5.652c0 .437.355.792.792.792h15.416c.437 0 .792-.355.792-.792V14c0-.414.336-.75.75-.75s.75.336.75.75v5.652c0 1.264-1.028 2.292-2.292 2.292z"></path>
-                        //                             </g>
-                        //                         </svg>
-                        //                     </div>
-                        //                 </div>
-                        //             </div>
-                        //             <hr className="border-gray-800" />
-                        //         </article>
-                        //     </li>
-                        // ))
                         profile?.tweets?.map((post, idx) => (
-                            <FeedPost key={idx} idx={idx} post={post} profile={profile} handleLikeToggle={handleLikeToggle} userData={userData} />
+                            <FeedPost
+                                key={idx}
+                                idx={idx}
+                                post={post}
+                                profile={profile}
+                                handleLikeToggle={handleLikeToggle}
+                                userData={userData}
+                            />
                         ))
                     ) : (
                         <div className="w-full mt-4">
@@ -479,7 +445,41 @@ const ProfilePage = ({ params }) => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )} */}
+                    <InfiniteScroll setPage={setProfilePage} loadMoreRef={loadMoreRef}>
+                        {profile?.tweets?.map((post, idx) => (
+                            <FeedPost
+                                key={idx}
+                                idx={idx}
+                                post={post}
+                                profile={profile}
+                                handleLikeToggle={handleLikeToggle}
+                                userData={userData}
+                            />
+                        ))}
+
+                        {inLoading && (
+                            <div id="#load-more-explore" ref={loadMoreRef} role="status" className="text-center">
+                                <svg
+                                    aria-hidden="true"
+                                    className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                                    viewBox="0 0 100 101"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                        fill="currentFill"
+                                    />
+                                </svg>
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        )}
+                    </InfiniteScroll>
                 </ul>
             </section>
             {openModal && (
@@ -494,7 +494,5 @@ const ProfilePage = ({ params }) => {
         </>
     );
 };
-
-
 
 export default ProfilePage;

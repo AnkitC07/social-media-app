@@ -23,11 +23,10 @@ export const GET = async (request) => {
                 },
             },
         ]);
-console.log("->",userId)
+
         const filteredUsers = users.filter(user => !usersFollowedByYou.following.includes(user._id))
         const suggestedUsers = filteredUsers.slice(0, 4)
         suggestedUsers.forEach(user => user.password = null);
-        console.log("suggseted users",suggestedUsers)
         
         return NextResponse.json({
             success: true,
@@ -44,5 +43,4 @@ console.log("->",userId)
             }
         );
     }
-    return NextResponse.next();
 };
