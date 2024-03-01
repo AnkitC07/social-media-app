@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import Reply from '../../../../models/replyModel';
-import Tweet from '../../../../models/tweetModel';
-import User from '../../../../models/userModel';
+import Reply from '../../../../models/replyModel.js';
+import Tweet from '../../../../models/tweetModel.js';
+import User from '../../../../models/userModel.js';
 
 
 export const POST = async (request) => {
