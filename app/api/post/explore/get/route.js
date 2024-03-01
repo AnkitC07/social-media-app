@@ -14,7 +14,6 @@ export async function GET(request) {
         const currentUser = await User.findById(userId).exec();
         const page = request.nextUrl.searchParams.get("page");
 
-
         if (currentUser) {
             // Get the IDs of users that the current user is following
             const followingUserIds = currentUser.following;
@@ -25,8 +24,13 @@ export async function GET(request) {
                 .skip((page - 1) * limit)
                 .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
                 .populate("user") // Populate the 'user' field with user details
-                .populate("replies") // Populate the 'replies' field with  comments on the post
+                .populate({
+                    path: "replies",
+                    populate: { path: "user" },
+                }) // Populate the replies field with  comments on the post
                 .exec();
+
+            console.log("page-explore", page, tweetsFromFollowingUsers);
 
             // console.log("Tweets from non-following users:", tweetsFromFollowingUsers);
             return NextResponse.json(tweetsFromFollowingUsers);

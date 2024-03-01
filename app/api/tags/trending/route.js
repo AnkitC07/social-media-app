@@ -18,8 +18,6 @@ export async function GET(request) {
             { $limit: 3 }, // Limit to the top N trending hashtags
         ]);
 
-        console.log("Trending Hashtags:", trendingHashtags);
-
         return NextResponse.json({ tags: trendingHashtags, success: true });
     } catch (error) {
         console.error("Error in Trending tags:", error);

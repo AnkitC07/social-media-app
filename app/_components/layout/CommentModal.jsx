@@ -16,7 +16,6 @@ const CommentModal = () => {
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
     const { userData } = useContext(PostContext);
     const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));
-    console.log(commentModal)
 
     const handleClose = () => {
         setCommentModal({

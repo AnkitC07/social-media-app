@@ -18,7 +18,7 @@ const SearchCom = () => {
         users: [],
         hashtags: [],
     });
-    console.log(searchData)
+    // console.log(searchData)
 
 
     // useEffect(() => {

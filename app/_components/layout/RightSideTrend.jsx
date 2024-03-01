@@ -31,7 +31,7 @@ const RightSideTrend = ({ style }) => {
                 axios
                     .get("/api/tags/trending")
                     .then((response) => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         setTrendingTags(response.data.tags)
                     })
                     .finally(() => setLoading(false));

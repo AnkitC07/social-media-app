@@ -17,11 +17,7 @@ export const GET = async (request)=>{
         } else {
             userId = query
         }
-        const user = await User.findOne({ _id: userId }).select("-password").populate({
-            path: 'tweets',
-            options: { sort: { createdAt: -1 } },
-            populate: {path: 'replies'}// Sort tweets by createdAt in descending order
-          });
+        const user = await User.findOne({ _id: userId }).select("-password -tweets")
         return NextResponse.json({
             message: "User Found",
             data: user,

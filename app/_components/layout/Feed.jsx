@@ -51,7 +51,7 @@ const Feed = ({ post, i, window, setPosts }) => {
         } else {
             console.error("Follow toggle error:", result.error);
         }
-        return result;
+        return result; 
     };
     return (
         <Card style=" w-full ">

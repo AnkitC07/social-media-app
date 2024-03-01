@@ -14,7 +14,9 @@ const PostContextProvider = ({ children }) => {
 
 
     const [userData, setUserData] = useState({})
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState({
+        tweets:[]
+    });
     
     useEffect(() => {
         // Validate if the data id present in the state.
