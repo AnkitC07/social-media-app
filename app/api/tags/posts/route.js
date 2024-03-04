@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextResponse } from "next/server";
 import Hashtag from "../../../../models/hashtagModel.js";
 import Tweets from "../../../../models/tweetModel.js";

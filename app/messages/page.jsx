@@ -6,22 +6,22 @@ import axios from "axios"
 
 
 const MessagesPage = () => {
-    useEffect(() => {
-        const socket = io("http://localhost:3001");
+    // useEffect(() => {
+    //     const socket = io("http://localhost:3005");
 
-        // Handle events here
+    //     // Handle events here
 
-        try {
+    //     try {
             
-            axios.get("/api/socket").then(response=>console.log("Messaging data=>",response.data))
+    //         axios.get("/api/socket").then(response=>console.log("Messaging data=>",response.data))
 
-        } catch (error) {
-            console.log(error);
-        }
-        return () => {
-          socket.disconnect();
-        };
-      }, []);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    //     return () => {
+    //       socket.disconnect();
+    //     };
+    //   }, []);
     
   return (
     <div>MessagesPage</div>

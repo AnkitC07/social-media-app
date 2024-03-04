@@ -1,8 +1,9 @@
+export const dynamic = 'force-dynamic'
 import { NextResponse } from "next/server";
 import User from "../../../../models/userModel";
 import Hashtag from "../../../../models/hashtagModel";
 
-export const GET = async (request) => {
+export async function GET (request){
     try {
         const searchParams = request.nextUrl.searchParams;
         const query = searchParams.get("q");
