@@ -3,7 +3,7 @@ import Tweet from "../../../../models/tweetModel";
 import User from "../../../../models/userModel";
 import Reply from "../../../../models/replyModel";
 import { connect } from "../../../../dbConfig/dbConfig.js";
-export const dynamic = 'force-dynamic'
+export const dynamic = 'auto'
 
 await connect();
 
