@@ -3,7 +3,7 @@ import Reply from '../../../../models/replyModel.js';
 import Tweet from '../../../../models/tweetModel.js';
 import User from '../../../../models/userModel.js';
 
-
+0
 export async function POST (request){
     try {
         const { postId, comment } = await request.json();

@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = 'auto'
 import { NextResponse } from "next/server";
 import User from "../../../../models/userModel.js";
 import mongoose from "mongoose";
