@@ -3,6 +3,7 @@ import Tweet from "../../../../../models/tweetModel.js";
 import User from "../../../../../models/userModel.js";
 import { connect } from "../../../../../dbConfig/dbConfig.js";
 import mongoose from "mongoose";
+export const dynamic = 'force-dynamic'
 
 await connect();
 
@@ -61,3 +62,4 @@ export async function GET(request) {
         );
     }
 }
+

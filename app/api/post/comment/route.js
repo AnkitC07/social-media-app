@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import Reply from '../../../../models/replyModel';
-import Tweet from '../../../../models/tweetModel';
-import User from '../../../../models/userModel';
+import Reply from '../../../../models/replyModel.js';
+import Tweet from '../../../../models/tweetModel.js';
+import User from '../../../../models/userModel.js';
 
 
-export const POST = async (request) => {
+export async function POST (request){
     try {
         const { postId, comment } = await request.json();
         console.log(postId,comment)
@@ -27,9 +27,11 @@ export const POST = async (request) => {
          const user =  await User.findById(userId).select('-password').exec();
 
         newComment.user = user;
+
+        console.log()
         
         return NextResponse.json({
-            message: `Comment added successfuly`,
+            message: 'Comment added successfuly',
             success: true,
             reply: newComment,
         });
