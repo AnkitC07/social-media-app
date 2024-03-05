@@ -31,6 +31,9 @@ export async function middleware(request) {
     //     });
     //     return response
     // }
+
+    
+    // // Authenticate non-API calls
     if (!path.startsWith('/api/')) {
         
         if (isPublicPath && token) {
