@@ -14,23 +14,23 @@ export async function middleware(request) {
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
 
-    // // Authenticate API calls
-    // if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup')) {
-    //     const isAuth = await isAuthenticated(request);
-    //     if (!isAuth) {
-    //         // Respond with JSON indicating an error message
-    //         return Response.json({ success: false, message: "authentication failed" }, { status: 401 });
-    //     }
-    //     const requestHeaders = new Headers(request.headers);
-    //     requestHeaders.set("x-user-_id", isAuth._id);
-    //     const response = NextResponse.next({
-    //         request: {
-    //             // New request headers
-    //             headers: requestHeaders,
-    //         },
-    //     });
-    //     return response
-    // }
+    // Authenticate API calls
+    if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup')) {
+        const isAuth = await isAuthenticated(request);
+        if (!isAuth) {
+            // Respond with JSON indicating an error message
+            return Response.json({ success: false, message: "authentication failed" }, { status: 401 });
+        }
+        const requestHeaders = new Headers(request.headers);
+        requestHeaders.set("x-user-_id", isAuth._id);
+        const response = NextResponse.next({
+            request: {
+                // New request headers
+                headers: requestHeaders,
+            },
+        });
+        return response
+    }
 
     
     // // Authenticate non-API calls
