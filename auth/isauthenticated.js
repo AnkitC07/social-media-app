@@ -13,8 +13,8 @@ const isAuthenticated = async (request) => {
                 },
                 body: JSON.stringify(decoded),
             })
-            const res = await request.json()
-            console.log(res)
+            const res = await req.json()
+            console.error("--",res)
             //  fetch("http://z-app.netlify.app/api/auth", {
             //     method: 'POST',
             //     headers: {
