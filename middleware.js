@@ -15,7 +15,9 @@ export async function middleware(request) {
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
 
     // Authenticate API calls
+
     if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup') && !path.endsWith('auth') ) {
+
         const isAuth = await isAuthenticated(request);
         if (!isAuth) {
             // Respond with JSON indicating an error message
