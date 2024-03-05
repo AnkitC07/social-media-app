@@ -1,4 +1,4 @@
-export const dynamic = 'auto'
+export const dynamic = 'force-dynamic'
 import { NextResponse } from "next/server";
 import Tweet from "../../../../models/tweetModel";
 import User from "../../../../models/userModel";
