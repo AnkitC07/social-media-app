@@ -6,7 +6,7 @@ const isAuthenticated = async (request) => {
         if (token) {
             const decoded = await verifyJWT(request);
             let userData;
-            await fetch("http://localhost:3000/api/auth", {
+            await fetch("http://z-app.netlify.app/api/auth", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

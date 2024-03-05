@@ -1,4 +1,4 @@
-export const dynamic = 'auto'
+// export const dynamic = 'auto'
 import { NextResponse } from "next/server";
 import User from "../../../../models/userModel";
 import Hashtag from "../../../../models/hashtagModel";

@@ -1,18 +1,20 @@
+// export const dynamic = 'auto'
 import { NextResponse } from "next/server";
 import Tweet from "../../../../models/tweetModel";
 import User from "../../../../models/userModel";
-import Reply from "../../../../models/replyModel";
+import "../../../../models/replyModel";
 import { connect } from "../../../../dbConfig/dbConfig.js";
-export const dynamic = 'auto'
 
 await connect();
 
-export async function GET(request) {
+export async function GET(request,{params,query}) {
     try {
         const limit = 5;
         const requestHeaders = new Headers(request.headers);
         const userId = requestHeaders.get("x-user-_id");
         const page = request.nextUrl.searchParams.get("page");
+
+        console.log("testing-",request)
        
 
         // Assuming userId is the ID of the currently logged-in user
@@ -33,7 +35,7 @@ export async function GET(request) {
                 }) // Populate the replies field with  comments on the post
                 .populate("user") // Populate the 'user' field with user details
                 .exec();
-                console.log("page-home", page,tweetsFromFollowingUsers);
+                // console.log("page-home", page,tweetsFromFollowingUsers);
             // console.log("Tweets from following users:", tweetsFromFollowingUsers);
             return NextResponse.json(tweetsFromFollowingUsers);
         } else {
