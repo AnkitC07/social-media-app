@@ -4,6 +4,7 @@ import SearchCom from "../_components/common/SearchCom";
 import RightSideTrend from "../_components/layout/RightSideTrend";
 import Feed from "../_components/layout/Feed";
 import axios from "axios";
+import  toast from 'react-hot-toast'
 import SuggestedUsers from "../_components/layout/SuggestedUsers";
 import TrendingPosts from "../_components/layout/TrendingPosts/TrendingPosts.jsx";
 import { PostContext } from "../_context/Post";

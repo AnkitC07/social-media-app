@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -7,22 +7,28 @@ import Link from "next/link";
 import { PostContext } from "../../_context/Post";
 
 const LoginPage = () => {
-    const { setUserData } = useContext(PostContext);
+    const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
+    const [isLogin,loginState] = useState(false)
     const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        if(isLogin){
+            router.push("/");
+        }
+    },[isLogin,loading,userData])
 
     const onLogin = async () => {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
-            console.log("Login Successfull", response.data);
             setUserData(response.data.user);
             toast.success("Login Successfull");
-            router.push("/");
+            loginState(true)
         } catch (error) {
             console.log("Login Failed", error.message);
             toast.error("Login Failed");
@@ -62,6 +68,7 @@ const LoginPage = () => {
                             onClick={onLogin}
                             className="bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                         >
+
                             Login
                         </button>
                     </div>

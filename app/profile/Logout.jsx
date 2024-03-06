@@ -2,7 +2,10 @@
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios"
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { PostContext } from "../_context/Post";
 const Logout = () => {
+    const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
 
     const logout = async () => {
@@ -10,10 +13,11 @@ const Logout = () => {
             await axios.get("/api/users/logout")
                 .then((data) => {
                     if (data?.data?.success) {
-                        setTimeout(() => {
-                            router.push("/");
-                        }, [100]);
                         toast.success("Logged Out Successfull");
+                        setTimeout(()=>{
+                            setUserData(null)
+                        },500)
+                        router.push("/login");
                     } else {
                         throw new Error("Logout Failed")
                     }
@@ -23,8 +27,10 @@ const Logout = () => {
             toast.error("Logout Failed");
         }
     };
+
     return (
         <button
+            type="button"
             onClick={logout}
             // className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap  rounded-full border border-blue-500 bg-transparent px-4 py-2 font-bold text-blue-500 hover:border-blue-800 hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
         >
