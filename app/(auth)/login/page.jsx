@@ -13,22 +13,16 @@ const LoginPage = () => {
         email: "",
         password: "",
     });
-    const [isLogin,loginState] = useState(false)
-    const [loading, setLoading] = useState(false);
 
-    useEffect(()=>{
-        if(isLogin){
-            router.push("/");
-        }
-    },[isLogin,loading,userData])
+    const [loading, setLoading] = useState(false);
 
     const onLogin = async () => {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
-            setUserData(response.data.user);
             toast.success("Login Successfull");
-            loginState(true)
+            setUserData(response.data.user);
+            router.push("/")
         } catch (error) {
             console.log("Login Failed", error.message);
             toast.error("Login Failed");
@@ -37,7 +31,7 @@ const LoginPage = () => {
         }
     };
     return (
-        <div className="flex justify-center items-center min-h-screen flex-col bg-z">
+        <div className="flex items-center fixed inset-x-0 top-0 h-screen justify-center  bg-z">
             <div className="w-full max-w-md rounded-xl box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform hover:-translate-y-3 hover:-translate-x-3 px-4 py-14">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold">Login</h1>

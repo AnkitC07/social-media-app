@@ -7,9 +7,7 @@ import useResponsiveHook from "../common/ResponsiveHook";
 import useGetDeviceWidth from "../common/getDeviceSize";
 
 const PageWrapper = () => {
-    const size = useGetDeviceWidth()
     const layouts = useResponsiveHook()
-    console.log(layouts,"sa9999999999999999999999999999999999999999999999999")
     if (layouts.isMobile || layouts.isLaptop || layouts.isTablet) {
         return (
             <>
