@@ -22,7 +22,7 @@ const TopBar = () => {
                             ) : (
                                 // ""
                                 )} */}
-                                <TextsmsOutlinedIcon className="md:hidden " sx={{ fontSize: "30px" }} />
+                                <TextsmsOutlinedIcon className="md:!hidden " sx={{ fontSize: "30px" }} />
                             <Menu style={'max-md:hidden '} />
                     </div>
                 </>

@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextResponse } from "next/server";
 import Tweet from "../../../../models/tweetModel";
 import User from "../../../../models/userModel";
-import "../../../../models/replyModel";
+import Reply from "../../../../models/replyModel";
 import { connect } from "../../../../dbConfig/dbConfig.js";
 
 await connect();
