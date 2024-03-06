@@ -130,7 +130,6 @@ const ProfilePage = ({ params }) => {
     // Like/Unlike
     const handleLikeToggle = async (idx, isLiked, setIsLiked, post) => {
         const action = isLiked ? "unlike" : "like";
-
         const result = await likeToggle(post._id, action);
         if (!result.error) {
             setProfile((prevPosts) => {
@@ -138,12 +137,6 @@ const ProfilePage = ({ params }) => {
                 newPofile.tweets[idx].likes = result.likes;
                 return newPofile;
             });
-            setUserData((prevPosts) => {
-                const newUser = { ...prevPosts };
-                newUser.tweets[idx].likes = result.likes;
-                return newUser;
-            });
-
             setIsLiked(!isLiked);
         } else {
             console.error("Follow toggle error:", result.error);

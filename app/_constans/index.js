@@ -4,10 +4,6 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Profile from "../_components/common/Profile";
-import Modal from "../_components/common/Modal";
-import Logout from "../profile/Logout"
-import Link from 'next/link'
-
 
 
 export const menu = [
