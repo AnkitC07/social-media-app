@@ -2,24 +2,22 @@
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { PostContext } from "../_context/Post";
 const Logout = () => {
+    const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
-    const [isLogout,stateLogout] = useState(false)
-
-    useEffect(()=>{
-        if(isLogout){
-            router.push("/");
-        }
-    },[isLogout])
 
     const logout = async () => {
         try {
             await axios.get("/api/users/logout")
                 .then((data) => {
                     if (data?.data?.success) {
-                        stateLogout(true)
                         toast.success("Logged Out Successfull");
+                        setTimeout(()=>{
+                            setUserData(null)
+                        },500)
+                        router.push("/login");
                     } else {
                         throw new Error("Logout Failed")
                     }

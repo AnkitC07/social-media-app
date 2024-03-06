@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PostContext } from "../../_context/Post";
 
 const LoginPage = () => {
-    const { setUserData } = useContext(PostContext);
+    const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
@@ -18,10 +18,9 @@ const LoginPage = () => {
 
     useEffect(()=>{
         if(isLogin){
-            console.log("login")
             router.push("/");
         }
-    },[isLogin,loading])
+    },[isLogin,loading,userData])
 
     const onLogin = async () => {
         try {
