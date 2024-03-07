@@ -14,7 +14,7 @@ export async function GET(request,{params,query}) {
         const userId = requestHeaders.get("x-user-_id");
         const page = request.nextUrl.searchParams.get("page");
 
-        console.log("testing-",request)
+        // console.log("testing-",request)
        
 
         // Assuming userId is the ID of the currently logged-in user

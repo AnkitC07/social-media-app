@@ -36,7 +36,7 @@ const ProfilePage = ({ params }) => {
     });
 
     useEffect(() => {
-        console.log(userData._id === params?.id || params?.id === undefined, userData);
+        console.log("------------profile page data-----------",userData._id === params?.id || params?.id === undefined, userData);
         if (userData._id === params?.id || params?.id === undefined) {
             setProfile(userData);
             setLoading(false);

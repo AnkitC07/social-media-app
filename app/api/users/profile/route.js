@@ -1,30 +1,70 @@
-export const dynamic = 'force-dynamic'
-import { NextResponse } from 'next/server'
+export const dynamic = "force-dynamic";
+import { NextResponse } from "next/server";
 import { connect } from "../../../../dbConfig/dbConfig.js";
 import User from "../../../../models/userModel.js";
 import "../../../../models/tweetModel.js";
 import "../../../../models/replyModel.js";
-import { getTokenData } from '../../../../helpers/getTokenData.js';
+import { getTokenData } from "../../../../helpers/getTokenData.js";
+import mongoose from "mongoose";
 
 await connect();
 
-export const GET = async (request)=>{
+export const GET = async (request) => {
     try {
-        const searchParams = request.nextUrl.searchParams
-        const query = searchParams.get('id'); 
+        const searchParams = request.nextUrl.searchParams;
+        const query = searchParams.get("id");
         let userId;
         if (query == "user") {
-             userId = getTokenData(request);
+            userId = getTokenData(request);
         } else {
-            userId = query
+            userId = query;
         }
-        const user = await User.findOne({ _id: userId }).select("-password -tweets")
+        const user = await getUserWithTweetCount(userId);
         return NextResponse.json({
             message: "User Found",
             data: user,
-        })
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+};
+
+async function getUserWithTweetCount(userId) {
+    try {
+        // Create a projection object to exclude password and tweets fields
+        const projection = {
+            _id: 1, // Include the _id field for clarity
+            password: 0,
+            tweets: 0,
+            likedTweet:0,// Exclude tweets to avoid unnecessary data transfer
+        };
+
+        // Use aggregation framework for efficient retrieval and transformation
+        const pipeline = [
+            {
+                $match: { _id: new mongoose.Types.ObjectId(userId) }, // Match document by _id (converted to ObjectId)
+            },
+            {
+                $addFields: {
+                    tweetCount: { $size: "$tweets" }, // Calculate tweet count using $size operator
+                },
+            },
+            {
+                $project: projection, // Apply the projection to exclude unwanted fields
+            },
+        ];
+
+        const user = await User.aggregate(pipeline);
+
+        if (user.length === 0) {
+            return []; // Return null if no user found
+        }
+
+        return user[0]; // Return the first (and expected) document from the aggregation result
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        // Handle errors appropriately, e.g., throw an error or log a message
+        return null; // Indicate failure if desired
     }
 }

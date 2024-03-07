@@ -24,7 +24,7 @@ export async function middleware(request) {
             return Response.json({ success: false, message: "authentication failed" }, { status: 401 });
         }
         const requestHeaders = new Headers(request.headers);
-        requestHeaders.set("x-user-_id", isAuth._id);
+        requestHeaders.set("x-user-_id", isAuth);
         const response = NextResponse.next({
             request: {
                 // New request headers

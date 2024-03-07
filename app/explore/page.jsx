@@ -69,7 +69,7 @@ const Explore = () => {
                         console.log("Suggested Post Data=>", res.data);
                         setSuggestedUsers(res.data.suggestedUsers);
                     })
-                    .finally(() => setSuggestLoading(false));
+                    // .finally(() => setSuggestLoading(false));
             } catch (error) {
                 console.log(error);
                 toast.error(error.message);
@@ -84,10 +84,10 @@ const Explore = () => {
     return (
         // <div className="container mx-auto flex flex-col gap-2">
         <div className="container mx-auto px-2 ">
-            <div className="w-full pb-[30px] -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
+            <div className="w-full  -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-2 w-full pt-[30px]">
                 {/* <div className="sticky top-[140px]">
                 </div> */}
                 <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />

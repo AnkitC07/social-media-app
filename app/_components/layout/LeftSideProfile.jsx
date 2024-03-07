@@ -44,7 +44,7 @@ const LeftSideProfile = ({ style = "" }) => {
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col gap-3">
                             <p className="font-extralight">Tweets</p>
-                            <p className="font-semibold"> {userData?.tweets?.length} </p>
+                            <p className="font-semibold"> {userData?.tweetCount} </p>
                         </div>
                         <div className="flex flex-col gap-3">
                             <p className="font-extralight">Followers</p>

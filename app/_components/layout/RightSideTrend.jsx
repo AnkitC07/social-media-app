@@ -51,7 +51,7 @@ const RightSideTrend = ({ style }) => {
                 <h2 className="font-bold text-lg">Trends for you</h2>
                 <div className="flex flex-col gap-4 divide-y ">
                     <div className="flex flex-col gap-4">
-                        <h3 className="font-medium text-[#6a6a6a]">TRENDING IN INDIA</h3>
+                        <h3 className="font-medium text-[#6a6a6a]">TRENDING TODAY</h3>
                         <div>
                             {
                                 !loading ?
