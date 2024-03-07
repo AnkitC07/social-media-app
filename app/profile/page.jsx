@@ -16,8 +16,7 @@ import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../_components/common/InfiniteScroll";
 
 const ProfilePage = ({ params }) => {
-    const { profile, setProfile, userData,leftProfileData, setUserData, profilePage, setProfilePage } = useContext(PostContext);
-
+    const { profile, setProfile, userData,leftProfileData,setLeftProfileData,setUserData, profilePage, setProfilePage } = useContext(PostContext);
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
     const [page, setPage] = useState(profilePage);
@@ -156,6 +155,7 @@ const ProfilePage = ({ params }) => {
                     const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
                     console.log("onload", res.data.data, userData._id);
                     setProfile(res.data.data);
+                    setLeftProfileData(res.data.data)
                     setEditFormData({
                         username: res.data.data.username,
                         name: res.data.data.fullName,
@@ -206,7 +206,6 @@ const ProfilePage = ({ params }) => {
     };
 
     useEffect(() => {
-        console.log(profilePage, "profilePage");
         if (profilePage !== page) {
             getProfilePots(profilePage);
         }
@@ -215,9 +214,10 @@ const ProfilePage = ({ params }) => {
     useEffect(() => {
         if (params?.id !== undefined) {
             getData();
+        }else if(userData){
+            setLeftProfileData(userData)
         }
-        // console.log(userData, profile);
-    }, []);
+    }, [userData]);
 
     return (
         <>
@@ -298,7 +298,7 @@ const ProfilePage = ({ params }) => {
                                     // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
                                 />
                                 {show && (
-                                    <Modal width={" !z-[999] w-fit bottom-[-75px] right-[-70px] !py-2 !pb-1 "}>
+                                    <Modal width={" !z-[999] w-fit bottom-[-75px] lg:right-[-70px] !py-2 !pb-1 "}>
                                         <p className="flex flex-col text-[16px]">
                                             <span className="border-b-[1px] pb-1 border-gray-800 text-white hover:text-tweet-blue">
                                                 Setting

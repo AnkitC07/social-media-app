@@ -30,21 +30,21 @@ const ImageModal = () => {
                     role="dialog"
                     data-dialog="image-dialog"
                 >
-                    <div className="relative  p-0 font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased">
+                    <div className="relative  flex h-screen  justify-center p-0 font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased">
                         {isImage(modalImage?.url) && (
                             <img
                                 alt="Image modal"
-                                className="md:h-[48rem] m-auto  object-center"
                                 src={modalImage?.url}
                             />
                         )}
                         {isVideo(modalImage?.url) && (
                             <video
-                                className="md:h-[48rem] w-full object-cover object-center"
                                 autoPlay
-                                src={modalImage?.url}
+                                controls
                                 alt={`modal image of Post`}
-                            />
+                            >
+                                  <source src={modalImage?.url} type="video/mp4" />
+                            </video>
                         )}
                         <div>
 

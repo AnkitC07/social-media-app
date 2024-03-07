@@ -132,7 +132,7 @@ const SearchCom = () => {
     useOnClickOutside(modalRef, handleClose);
 
     return (
-        <div ref={modalRef} className="relative min-[425px]:w-[35%] max-[425px]:mx-2 mx-auto">
+        <div ref={modalRef} className="relative min-[425px]:w-[80%] max-[425px]:mx-2 mx-auto my-auto max-w-[500px]">
             <input
                 onClick={openSearchModal}
                 value={search}

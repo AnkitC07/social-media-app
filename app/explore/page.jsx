@@ -9,9 +9,11 @@ import SuggestedUsers from "../_components/layout/SuggestedUsers";
 import TrendingPosts from "../_components/layout/TrendingPosts/TrendingPosts.jsx";
 import { PostContext } from "../_context/Post";
 import InfiniteScroll from "../_components/common/InfiniteScroll";
+import useResponsiveHook from "../_components/common/ResponsiveHook";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
+    const { isMobile } = useResponsiveHook();
     const [suggestLoading, setSuggestLoading] = useState(true);
     const {
         explorePosts,
@@ -84,9 +86,10 @@ const Explore = () => {
     return (
         // <div className="container mx-auto flex flex-col gap-2">
         <div className="container mx-auto px-2 ">
-            <div className="w-full  -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
+            {!isMobile && <div className="w-full  -mt-5 sticky top-[83px] backdrop-blur-[2px] z-[1]">
                 <SearchCom />
             </div>
+            }
             <div className="flex gap-2 w-full pt-[30px]">
                 {/* <div className="sticky top-[140px]">
                 </div> */}
