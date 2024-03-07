@@ -3,9 +3,6 @@ import { usePathname } from "next/navigation";
 import { menu } from "../../_constans";
 import React, { useState } from "react";
 import Link from "next/link";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import Modal from "../common/Modal";
-import Logout from "../../profile/Logout";
 
 // import { menu } from "@/app/_constans";
 

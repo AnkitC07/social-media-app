@@ -14,9 +14,6 @@ const Logout = () => {
                 .then((data) => {
                     if (data?.data?.success) {
                         toast.success("Logged Out Successfull");
-                        setTimeout(()=>{
-                            setUserData(null)
-                        },500)
                         router.push("/login");
                     } else {
                         throw new Error("Logout Failed")
