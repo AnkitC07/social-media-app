@@ -11,6 +11,8 @@ const PostContextProvider = ({ children }) => {
     const [explorePage,setExplorePage] = useState(0)
     const [profilePage,setProfilePage] = useState(0)
 
+    const [leftProfileData, setLeftProfileData] = useState({});
+
 
 
     const [userData, setUserData] = useState({})
@@ -35,7 +37,7 @@ const PostContextProvider = ({ children }) => {
     },[])
 
 
-    console.log("Homeposts")
+    console.log("Homeposts",userData)
     const [posts, setPosts] = useState([]);
     const [homePosts, setHomePosts] = useState([]);
     const [explorePosts, setExplorePosts] = useState([]);
@@ -78,7 +80,8 @@ const PostContextProvider = ({ children }) => {
                 trendingPosts, setTrendingPosts,
                 homePage, setHomePage,
                 explorePage, setExplorePage,
-                profilePage,setProfilePage
+                profilePage, setProfilePage,
+                leftProfileData, setLeftProfileData
             }}
         >
             {children}

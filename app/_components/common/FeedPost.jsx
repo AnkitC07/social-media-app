@@ -21,18 +21,19 @@ function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
                         <Link href="#" className="md:flex-shrink group block flex-shrink-0">
                             <div className="flex items-start">
                                 <div>
+                                    
                                     <img
                                         className="inline-block h-10 w-10 rounded-full"
-                                        src={profile?.avatar}
+                                        src={userData?.avatar}
                                         alt="Profile Image"
                                     />
                                 </div>
                                 <div className="ml-4">
                                     <p className=" flex flex-wrap items-baseline mb-3 text-base font-medium leading-6 text-white">
-                                        <span className="mr-2">{profile?.fullName}</span>
+                                        <span className="mr-2">{userData?.fullName}</span>
                                         <span className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                                             {" "}
-                                            @{profile?.username} . 16 April{" "}
+                                            @{userData?.username} . 16 April{" "}
                                         </span>
                                     </p>
                                 </div>

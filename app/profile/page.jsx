@@ -16,7 +16,7 @@ import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../_components/common/InfiniteScroll";
 
 const ProfilePage = ({ params }) => {
-    const { profile, setProfile, userData, setUserData, profilePage, setProfilePage } = useContext(PostContext);
+    const { profile, setProfile, userData,leftProfileData, setUserData, profilePage, setProfilePage } = useContext(PostContext);
 
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
@@ -35,13 +35,13 @@ const ProfilePage = ({ params }) => {
         banner: null, // to store the banner file
     });
 
-    useEffect(() => {
-        console.log("------------profile page data-----------",userData._id === params?.id || params?.id === undefined, userData);
-        if (userData._id === params?.id || params?.id === undefined) {
-            setProfile(userData);
-            setLoading(false);
-        }
-    }, [userData, params?.id]);
+    // useEffect(() => {
+    //     console.log("------------profile page data-----------",userData._id === params?.id || params?.id === undefined, userData);
+    //     if (userData._id === params?.id || params?.id === undefined) {
+    //         setProfile(userData);
+    //         setLoading(false);
+    //     }
+    // }, [userData, params?.id]);
 
     // useEffect(() => {
     //     setProfile(profile)
@@ -227,8 +227,8 @@ const ProfilePage = ({ params }) => {
                         className="w-full bg-cover bg-center bg-no-repeat"
                         style={{
                             height: "200px",
-                            backgroundImage: profile?.banner
-                                ? `url(${profile?.banner})`
+                            backgroundImage: leftProfileData?.banner
+                                ? `url(${leftProfileData?.banner})`
                                 : "url(https://res.cloudinary.com/deyq54d8b/image/upload/v1708498415/Social-Media-App/default-banner.jpg)",
                         }}
                     ></div>
@@ -248,10 +248,10 @@ const ProfilePage = ({ params }) => {
                                             src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
                                             alt=""
                                         /> */}
-                                        {profile?.avatar ? (
+                                        {leftProfileData?.avatar ? (
                                             <Image
                                                 className="rounded-full border-4 border-gray-900"
-                                                src={profile?.avatar}
+                                                src={leftProfileData?.avatar}
                                                 alt="Profile picture"
                                                 width={225}
                                                 height={225}
@@ -316,7 +316,7 @@ const ProfilePage = ({ params }) => {
                         <div className="ml-3 mt-3 w-full justify-center space-y-1">
                             {/* <!-- User basic--> */}
                             <div>
-                                {!profile?.username ? (
+                                {!leftProfileData?.username ? (
                                     <div
                                         role="status"
                                         className="max-w-sm rounded shadow animate-pulse  dark:border-gray-700"
@@ -326,16 +326,16 @@ const ProfilePage = ({ params }) => {
                                     </div>
                                 ) : (
                                     <>
-                                        <h2 className="text-xl font-bold leading-6 text-white">{profile?.fullName}</h2>
+                                        <h2 className="text-xl font-bold leading-6 text-white">{leftProfileData?.fullName}</h2>
                                         <p className="text-sm font-medium leading-5 text-gray-600">
-                                            @{profile?.username}
+                                            @{leftProfileData?.username}
                                         </p>
                                     </>
                                 )}
                             </div>
                             {/* <!-- Description and others --> */}
                             <div className="mt-3">
-                                <p className="mb-4 leading-tight text-white">{profile?.bio}</p>
+                                <p className="mb-4 leading-tight text-white">{leftProfileData?.bio}</p>
                                 {/* <div className="flex flex-wrap gap-1 text-sm text-gray-600">
                                     <span className="mr-2 flex">
                                         <svg viewBox="0 0 24 24" className="paint-icon h-5 w-5">
@@ -373,13 +373,13 @@ const ProfilePage = ({ params }) => {
                             <div className="flex w-full items-start justify-start divide-x divide-solid divide-gray-800 pt-3">
                                 <div className="pr-3 text-center">
                                     <span className="font-bold text-white">
-                                        {profile?.following?.length < 1 ? 0 : profile?.following?.length}
+                                        {leftProfileData?.followingCount}
                                     </span>
                                     <span className="text-gray-600"> Following</span>
                                 </div>
                                 <div className="px-3 text-center">
                                     <span className="font-bold text-white">
-                                        {profile?.followers?.length < 1 ? 0 : profile?.followers?.length}{" "}
+                                        {leftProfileData?.followerCount}{" "}
                                     </span>
                                     <span className="text-gray-600"> Followers</span>
                                 </div>
@@ -448,7 +448,7 @@ const ProfilePage = ({ params }) => {
                                 post={post}
                                 profile={profile}
                                 handleLikeToggle={handleLikeToggle}
-                                userData={userData}
+                                userData={leftProfileData}
                             />
                         ))}
 
