@@ -6,7 +6,8 @@ const isAuthenticated = async (request) => {
         if (token) {
             const decoded = await verifyJWT(request);
         
-            const req = await fetch("http://z-app.netlify.app/api/auth", {
+            // const req = await fetch("http://z-app.netlify.app/api/auth", {
+            const req = await fetch("http://localhost:3000/api/auth", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -14,7 +15,8 @@ const isAuthenticated = async (request) => {
                 body: JSON.stringify(decoded),
             })
             const res = await req.json()
-            console.error("--",res)
+            // console.error("-isAuthenticated-",res)
+            
             //  fetch("http://z-app.netlify.app/api/auth", {
             //     method: 'POST',
             //     headers: {
@@ -24,7 +26,7 @@ const isAuthenticated = async (request) => {
             // }).then(res=>res.json()).then(data=>userData=data?.user)
             let userData = res?.user
             if (userData) {
-                return userData;
+                return userData._id;
             } else {
                 return false;
             }

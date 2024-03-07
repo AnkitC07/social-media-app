@@ -32,7 +32,7 @@ export async function GET(request) {
                 }) // Populate the replies field with  comments on the post
                 .exec();
 
-            console.log("page-explore", page, tweetsFromFollowingUsers);
+            // console.log("page-explore", page, tweetsFromFollowingUsers);
 
             // console.log("Tweets from non-following users:", tweetsFromFollowingUsers);
             return NextResponse.json(tweetsFromFollowingUsers);
