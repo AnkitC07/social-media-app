@@ -10,10 +10,8 @@ const Logout = () => {
             await axios.get("/api/users/logout")
                 .then((data) => {
                     if (data?.data?.success) {
-                        setTimeout(() => {
-                            router.push("/");
-                        }, [100]);
                         toast.success("Logged Out Successfull");
+                        router.push("/login");
                     } else {
                         throw new Error("Logout Failed")
                     }
