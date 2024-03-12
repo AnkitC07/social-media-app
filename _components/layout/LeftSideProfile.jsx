@@ -29,7 +29,7 @@ const LeftSideProfile = ({ style = "" }) => {
 
     return (
         <Card style={style}>
-            <div className=" m-6 h-auto flex flex-col gap-8   ">
+            <div className="  h-auto flex flex-col gap-8   ">
                 {/* <div className="w-[250px] m-6 h-auto flex flex-col gap-8   "> */}
                 <div className="flex flex-col gap-10 items-center text-center">
                     <div className="flex flex-col gap-4 items-center ">

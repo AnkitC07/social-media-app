@@ -3,23 +3,37 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
-import EditProfileModal from "../_components/layout/EditProfileModal";
-import FollowButton from "../_components/common/FollowButton";
+import EditProfileModal from "../../_components/layout/EditProfileModal";
+import FollowButton from "../../_components/common/FollowButton";
 import followToggle from "../functions/api/followToggle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Modal from "../_components/common/Modal";
+import Modal from "../../_components/common/Modal";
 import Logout from "./Logout";
-import { PostContext } from "../_context/Post";
+import { PostContext } from "../../_context/Post";
 
-import FeedPost from "../_components/common/FeedPost.jsx";
+import FeedPost from "../../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
-import InfiniteScroll from "../_components/common/InfiniteScroll";
+import InfiniteScroll from "../../_components/common/InfiniteScroll";
 
 const ProfilePage = ({ params }) => {
-    const { profile, setProfile, userData,leftProfileData,setLeftProfileData,setUserData, profilePage, setProfilePage } = useContext(PostContext);
+    const {
+        profile,
+        setProfile,
+        userData,
+        leftProfileData,
+        setLeftProfileData,
+        setUserData,
+        profilePage,
+        setProfilePage,
+        unKnownProfilePage,
+        setUnknownProfilePage,
+    } = useContext(PostContext);
+    const selectPage = () => {
+        return params?.id === undefined ? profilePage : unKnownProfilePage;
+    };
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
-    const [page, setPage] = useState(profilePage);
+    const [page, setPage] = useState(selectPage());
     const [inLoading, setInLoading] = useState(true);
     const [show, setShow] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
@@ -132,7 +146,7 @@ const ProfilePage = ({ params }) => {
         const result = await likeToggle(post._id, action);
         if (!result.error) {
             setProfile((prevPosts) => {
-                console.log('profile state=',prevPosts)
+                console.log("profile state=", prevPosts);
                 const newPofile = { ...prevPosts };
                 newPofile.tweets[idx].likes = result.likes;
                 return newPofile;
@@ -152,10 +166,10 @@ const ProfilePage = ({ params }) => {
             await axios
                 .get(`/api/users/profile?id=${params?.id == undefined ? "user" : params?.id}`)
                 .then((res) => {
-                    const isCurrentUserFollowing = res.data.data.followers.includes(userData._id);
-                    console.log("onload", res.data.data, userData._id);
-                    setProfile(res.data.data);
-                    setLeftProfileData(res.data.data)
+                    const isCurrentUserFollowing = res.data.data.isFollowed;
+                    console.log("onload", res.data.data);
+                    // setProfile(res.data.data);
+                    setLeftProfileData(res.data.data);
                     setEditFormData({
                         username: res.data.data.username,
                         name: res.data.data.fullName,
@@ -178,25 +192,24 @@ const ProfilePage = ({ params }) => {
 
     const getProfilePots = async (index) => {
         try {
-            const request = await axios(`/api/post/profile/get?id=${params?.id == undefined ? "user" : params?.id}&page=${index}`);
+            const request = await axios(
+                `/api/post/profile/get?id=${params?.id == undefined ? "user" : params?.id}&page=${index}`
+            );
             const res = request.data;
             console.log("Profile Post Data=>", profilePage, res);
             if (res.length == 0) {
                 setInLoading(false);
-                // return index
             } else {
                 setProfile((prev) => {
-                    console.log(prev)
+                    console.log(prev);
                     return {
                         ...prev,
-                        tweets:prev.tweets ? [...prev?.tweets, ...res]:[...res],
+                        tweets: prev.tweets ? [...prev?.tweets, ...res] : [...res],
                     };
                 });
                 if (res.length < 5) {
                     setInLoading(false);
-                    // return index
                 } else {
-                    // return index + 1
                 }
             }
         } catch (error) {
@@ -206,16 +219,24 @@ const ProfilePage = ({ params }) => {
     };
 
     useEffect(() => {
-        if (profilePage !== page) {
-            getProfilePots(profilePage);
+        console.log(selectPage(), page);
+        if (selectPage() !== page) {
+            getProfilePots(selectPage());
         }
-    }, [profilePage]);
+        return () => {
+            // setProfile({
+            //     tweets: [],
+            // });
+            // params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
+        };
+    }, [selectPage()]);
 
     useEffect(() => {
         if (params?.id !== undefined) {
             getData();
-        }else if(userData){
-            setLeftProfileData(userData)
+        } else if (userData) {
+            setLeftProfileData(userData);
+            setLoading(false);
         }
     }, [userData]);
 
@@ -326,7 +347,9 @@ const ProfilePage = ({ params }) => {
                                     </div>
                                 ) : (
                                     <>
-                                        <h2 className="text-xl font-bold leading-6 text-white">{leftProfileData?.fullName}</h2>
+                                        <h2 className="text-xl font-bold leading-6 text-white">
+                                            {leftProfileData?.fullName}
+                                        </h2>
                                         <p className="text-sm font-medium leading-5 text-gray-600">
                                             @{leftProfileData?.username}
                                         </p>
@@ -372,15 +395,11 @@ const ProfilePage = ({ params }) => {
                             </div>
                             <div className="flex w-full items-start justify-start divide-x divide-solid divide-gray-800 pt-3">
                                 <div className="pr-3 text-center">
-                                    <span className="font-bold text-white">
-                                        {leftProfileData?.followingCount}
-                                    </span>
+                                    <span className="font-bold text-white">{leftProfileData?.followingCount}</span>
                                     <span className="text-gray-600"> Following</span>
                                 </div>
                                 <div className="px-3 text-center">
-                                    <span className="font-bold text-white">
-                                        {leftProfileData?.followerCount}{" "}
-                                    </span>
+                                    <span className="font-bold text-white">{leftProfileData?.followerCount} </span>
                                     <span className="text-gray-600"> Followers</span>
                                 </div>
                             </div>
@@ -440,7 +459,10 @@ const ProfilePage = ({ params }) => {
                             </div>
                         </div>
                     )} */}
-                    <InfiniteScroll setPage={setProfilePage} loadMoreRef={loadMoreRef}>
+                    <InfiniteScroll
+                        setPage={params?.id == undefined ? setProfilePage : setUnknownProfilePage}
+                        loadMoreRef={loadMoreRef}
+                    >
                         {profile?.tweets?.map((post, idx) => (
                             <FeedPost
                                 key={idx}

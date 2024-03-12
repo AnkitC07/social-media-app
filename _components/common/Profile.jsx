@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Profile = ({ src, w, h }) => {
     return (
-        <div className="profile w-12">
+        <div className="profile ">
             {src ? (
                 <Image src={src} alt="Profle Photo" width={w} height={h} className="rounded-full" />
             ) : (

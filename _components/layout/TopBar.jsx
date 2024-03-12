@@ -18,7 +18,7 @@ const TopBar = () => {
                 <>
                     <div className="flex justify-between gap-4 py-6 sticky top-0 bg-[#06141d8f] backdrop-blur-[2px] z-[1] max-[660px]:px-2 ">
                         <TopLeft />
-                        {isMobile && <SearchCom />}
+                        {isMobile &&pathname === "/explore" && <SearchCom />}
                         <div className="flex gap-8 items-center">   
                             <TextsmsOutlinedIcon className="md:!hidden " sx={{ fontSize: "30px" }} />
                             <Menu style={"max-md:hidden "} />

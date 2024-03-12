@@ -53,6 +53,6 @@ export const bottomMenu = [
     },
     {
         path: "/profile",
-        icon: <Profile src={"/assets/User.jpeg"} w={25} h={25} />,
+        icon: '',
     },
 ];

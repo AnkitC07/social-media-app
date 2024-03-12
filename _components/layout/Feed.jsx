@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import Card from "../common/Card";
 import Link from "next/link";
 import Image from "next/image";
-import likeToggle from "../../functions/api/likeToggle.js";
-import { like, comment, retweet, share, liked } from "../../../public/assets/svgs";
+import likeToggle from "../../app/functions/api/likeToggle.js";
+import { like, comment, retweet, share, liked } from "../../public/assets/svgs";
 import PostSwiper from "../common/PostSwiper.jsx";
 import { UserContext } from "../../_context/User.jsx";
 import ImageSlider from "../common/ImageSlider.jsx";
 import LikeButton from "../common/LikeButton.jsx";
 import { PostContext } from "../../_context/Post.jsx";
+import ProfileLink from "../common/ProfileLink";
+import formatTimeDifference from "../../app/functions/getTIme";
 
 export const postImages = (post) => {
     // function isImage(url) {
@@ -56,7 +58,7 @@ const Feed = ({ post, i, window, setPosts }) => {
     return (
         <Card style=" w-full ">
             <div className="p-4 pb-0">
-                <Link href={"/profile/" + post?.user?._id} className="md:flex-shrink flex-shrink-0 group block">
+                <ProfileLink href={"/profile/" + post?.user?._id} className="md:flex-shrink flex-shrink-0 group block">
                     <div className="flex gap-6 items-start">
                         <Image
                             className="inline-block rounded-full"
@@ -70,12 +72,12 @@ const Feed = ({ post, i, window, setPosts }) => {
                             <p className=" flex flex-wrap  items-baseline text-lg leading-6 font-semibold text-white mb-3">
                                 <span className="mr-2">{post?.user?.fullName}</span>
                                 <span className="text-xs leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                                    @{post?.user?.username} . 16 April
+                                    @{post?.user?.username} . {formatTimeDifference(post?.createdAt)}
                                 </span>
                             </p>
                         </div>
                     </div>
-                </Link>
+                </ProfileLink>
             </div>
 
             <div className="pl-20">
@@ -86,7 +88,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                 {/* <div className="md:flex-shrink pr-6 pt-3">{postImages(post)}</div> */}
                 <div className="md:flex-shrink pr-6 pt-3">
                     {post.images?.length > 0 && (
-                        <div className="relative h-[calc(30vw*1.5)] sm:h-[calc(30vw*1.5)] md:w-[56vw] md:h-[calc(16vw*1.5)] md:w-[37vw]   lg:w-full  lg:h-[22rem] px-4">
+                        <div className="relative h-[calc(30vw*1.5)] sm:h-[calc(30vw*1.5)]  md:h-[calc(16vw*1.5)] md:w-[37vw]   lg:w-full  lg:h-[22rem] px-4">
                             <PostSwiper posts={post?.images} />
                         </div>
                     )}

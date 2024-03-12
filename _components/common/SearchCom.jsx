@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Profile from "./Profile.jsx";
+import ProfileLink from '../common/ProfileLink.jsx'
 import { PostContext } from "../../_context/Post.jsx";
 
 const SearchCom = () => {
@@ -150,11 +151,14 @@ const SearchCom = () => {
                                 <span className="font-medium text-gray-600">Try searching for people.</span>
                             ) : (
                                 searchData.users.map((user) => (
-                                    <Link
-                                        key={user._id}
-                                        href={"/profile/" + user?._id}
-                                        className="md:flex-shrink flex-shrink-0 group block my-3"
-                                    >
+                                  
+                                        <ProfileLink
+                                         key={user._id}
+                                         href={"/profile/" + user?._id}
+                                         className="md:flex-shrink flex-shrink-0 group block my-3"
+                                        >
+
+                                        
                                         <div className="flex gap-1 items-start">
                                             {/*<Image
                                                 className="inline-block rounded-sm"
@@ -174,7 +178,7 @@ const SearchCom = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                    </Link>
+                                        </ProfileLink>
                                 ))
                             )}
                         </div>

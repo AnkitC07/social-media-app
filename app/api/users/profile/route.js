@@ -35,6 +35,9 @@ async function getUserWithTweetCount(userId) {
         // Create a projection object to exclude password and tweets fields
         const projection = {
             _id: 1, // Include the _id field for clarity
+            email: 0,
+            followers:0,
+            following:0,
             password: 0,
             tweets: 0,
             likedTweet:0,// Exclude tweets to avoid unnecessary data transfer
@@ -48,6 +51,9 @@ async function getUserWithTweetCount(userId) {
             {
                 $addFields: {
                     tweetCount: { $size: "$tweets" }, // Calculate tweet count using $size operator
+                    followerCount: { $size: "$followers" }, // Calculate tweet count using $size operator
+                    followingCount: { $size: "$following" }, // Calculate tweet count using $size operator
+                    isFollowed: { $in: ["userId", "$followers"] }
                 },
             },
             {

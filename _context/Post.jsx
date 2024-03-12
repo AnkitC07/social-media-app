@@ -10,6 +10,7 @@ const PostContextProvider = ({ children }) => {
     const [homePage,setHomePage] = useState(0)
     const [explorePage,setExplorePage] = useState(0)
     const [profilePage,setProfilePage] = useState(0)
+    const [unKnownProfilePage,setUnknownProfilePage] = useState(0)
 
     const [leftProfileData, setLeftProfileData] = useState({});
 
@@ -81,7 +82,8 @@ const PostContextProvider = ({ children }) => {
                 homePage, setHomePage,
                 explorePage, setExplorePage,
                 profilePage, setProfilePage,
-                leftProfileData, setLeftProfileData
+                leftProfileData, setLeftProfileData,
+                unKnownProfilePage,setUnknownProfilePage
             }}
         >
             {children}

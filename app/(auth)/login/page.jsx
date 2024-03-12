@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import  { PostContext } from "../../_context/Post";
+import  { PostContext } from "../../../_context/Post";
 
 const LoginPage = () => {
     const { setUserData,userData} = useContext(PostContext);

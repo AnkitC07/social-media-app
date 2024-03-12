@@ -1,15 +1,15 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import SearchCom from "../_components/common/SearchCom";
-import RightSideTrend from "../_components/layout/RightSideTrend";
-import Feed from "../_components/layout/Feed";
+import SearchCom from "../../_components/common/SearchCom";
+import RightSideTrend from "../../_components/layout/RightSideTrend";
+import Feed from "../../_components/layout/Feed";
 import axios from "axios";
 import  toast from 'react-hot-toast'
-import SuggestedUsers from "../_components/layout/SuggestedUsers";
-import TrendingPosts from "../_components/layout/TrendingPosts/TrendingPosts.jsx";
-import { PostContext } from "../_context/Post";
-import InfiniteScroll from "../_components/common/InfiniteScroll";
-import useResponsiveHook from "../_components/common/ResponsiveHook";
+import SuggestedUsers from "../../_components/layout/SuggestedUsers";
+import TrendingPosts from "../../_components/layout/TrendingPosts/TrendingPosts.jsx";
+import { PostContext } from "../../_context/Post";
+import InfiniteScroll from "../../_components/common/InfiniteScroll";
+import useResponsiveHook from "../../_components/common/ResponsiveHook";
 
 const Explore = () => {
     const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ const Explore = () => {
         setExplorePosts,
         suggestedUsers,
         setSuggestedUsers,
+        setShowTrendingPost,
         showTrendingPost,
         explorePage,
         setExplorePage,
@@ -81,6 +82,13 @@ const Explore = () => {
             getSuggestedUsers();
         }
         setSuggestLoading(false)
+        return () => {
+            console.log("TrendingPosts exit")
+        setShowTrendingPost({
+            open: false,
+            tag: null,
+        });
+        };
     }, []);
 
     return (

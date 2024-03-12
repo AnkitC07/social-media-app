@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Profile from "../common/Profile";
-import formatTimeDifference from '../../functions/getTIme.js'
+import formatTimeDifference from '../../app/functions/getTIme.js'
 import { PostContext } from "../../_context/Post";
 
 const CommentArea = ({ commentModal, comment, setComment }) => {

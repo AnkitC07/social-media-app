@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import React, { useContext } from "react";
 import Link from "next/link";
-import { bottomMenu } from "../../../app/_constans";
+import { bottomMenu } from "../../_constans";
 import Profile from "../common/Profile";
 import { PostContext } from "../../_context/Post";
 
@@ -22,7 +22,7 @@ const BottomMenu = () => {
                     >
                         {
                             item.path === '/profile' ?
-                                <Profile src={userData.avatar} w={25} h={25} />
+                                <Profile src={userData.avatar} w={27} h={25} />
                                 :
                                 item.icon
                         }

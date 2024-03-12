@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios"
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { PostContext } from "../_context/Post";
+import { PostContext } from "../../_context/Post";
 const Logout = () => {
     const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
