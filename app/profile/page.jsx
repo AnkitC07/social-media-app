@@ -232,11 +232,20 @@ const ProfilePage = ({ params }) => {
     }, [selectPage()]);
 
     useEffect(() => {
+        console.log(userData,leftProfileData)
         if (params?.id !== undefined) {
             getData();
-        } else if (userData) {
+        } else if (JSON.stringify(userData) !== "{}") {
             setLeftProfileData(userData);
+            console.log('userData')
             setLoading(false);
+        } else if(JSON.stringify(leftProfileData) !== "{}") {
+            setUserData(leftProfileData);
+            console.log('leftProfileData')
+            setLoading(false);
+        } else {
+            console.log('else')
+            getData();
         }
     }, [userData]);
 
