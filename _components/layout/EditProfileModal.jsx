@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { convertBase64 } from "../../functions/convertBase64.js";
-import { compressImage } from "../../functions/compressImage.js";
+import { convertBase64 } from "../../app/functions/convertBase64.js";
+import { compressImage } from "../../app/functions/compressImage.js";
 
 const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData, loading }) => {
     const [disable,setDisable] = useState(false)
@@ -55,6 +55,7 @@ const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData
                                     name="username"
                                     value={editFormData.username}
                                     onChange={handleChange}
+                                    maxLength={25}
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white"
                                     // required
                                 />
@@ -69,6 +70,7 @@ const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData
                                     name="name"
                                     value={editFormData.name}
                                     onChange={handleChange}
+                                    maxLength={25}
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white"
                                     // required
                                 />
@@ -83,6 +85,7 @@ const EditProfileModal = ({ onClose, handleSubmit, editFormData, setEditFormData
                                     value={editFormData.bio}
                                     onChange={handleChange}
                                     rows="3"
+                                    maxLength={100}
                                     className="mt-1 p-2 w-full  bg-[#28343E]  rounded bg-1B2730 text-white resize-none"
                                 ></textarea>
                             </div>

@@ -1,36 +1,30 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import { connect } from "../../../../dbConfig/dbConfig.js";
-import User from "../../../../models/userModel.js";
-import "../../../../models/tweetModel.js";
-import "../../../../models/replyModel.js";
-import { getTokenData } from "../../../../helpers/getTokenData.js";
-import mongoose from "mongoose";
+import { connect } from "../../../../../dbConfig/dbConfig.js";
+import User from "../../../../../models/userModel.js";
+import mongoose from "mongoose"
+
 
 await connect();
-
-export const GET = async (request) => {
+export async function GET(request) {
     try {
-        const searchParams = request.nextUrl.searchParams;
-        const query = searchParams.get("id");
-        let userId;
-        if (query == "user") {
-            userId = getTokenData(request);
-        } else {
-            userId = query;
-        }
-        const user = await getUserWithTweetCount(userId);
+        const requestHeaders = new Headers(request.headers);
+        const userId = requestHeaders.get("x-user-_id");
+
+        const user = await getUserData(userId);
+        
         return NextResponse.json({
-            message: "User Found",
+            message: "User Data for left profile",
+            success:true,
             data: user,
         });
     } catch (error) {
-        console.log(error);
-        return NextResponse.json({ error: error.message }, { status: 400 });
+        console.log('Something went wrong in Left profile data api:', error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
-};
+}
 
-async function getUserWithTweetCount(userId) {
+async function getUserData(userId) {
     try {
         // Create a projection object to exclude password and tweets fields
         const projection = {
@@ -53,7 +47,6 @@ async function getUserWithTweetCount(userId) {
                     tweetCount: { $size: "$tweets" }, // Calculate tweet count using $size operator
                     followerCount: { $size: "$followers" }, // Calculate tweet count using $size operator
                     followingCount: { $size: "$following" }, // Calculate tweet count using $size operator
-                    isFollowed: { $in: ["userId", "$followers"] }
                 },
             },
             {
@@ -64,7 +57,7 @@ async function getUserWithTweetCount(userId) {
         const user = await User.aggregate(pipeline);
 
         if (user.length === 0) {
-            return []; // Return null if no user found
+            return {}; // Return null if no user found
         }
 
         return user[0]; // Return the first (and expected) document from the aggregation result

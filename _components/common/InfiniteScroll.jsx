@@ -3,8 +3,6 @@ import { PostContext } from "../../_context/Post";
 
 const InfiniteScroll = ({ loadMoreRef, setPage, children, }) => {
     const cleanup = loadMoreRef.current;
-    const { explorePage } = useContext(PostContext);
-
 
 
     const debounce = (func, delay) => {
@@ -18,6 +16,7 @@ const InfiniteScroll = ({ loadMoreRef, setPage, children, }) => {
     };
 
     const observerCallback = debounce((entries) => {
+        console.log('first')
         entries.forEach(async (entry) => {
             if (entry.isIntersecting) {
                     setPage((prev) => prev + 1);

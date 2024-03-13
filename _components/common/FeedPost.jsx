@@ -1,17 +1,21 @@
 
 import PostSwiper from './PostSwiper.jsx'
-import LikeButton from "./LikeButton";
-import likeToggle from "../../functions/api/likeToggle.js";
+import LikeButton from "./LikeButton.jsx";
+import likeToggle from "../../app/functions/api/likeToggle.js";
 import Link from "next/link";
 import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../../_context/Post.jsx';
+import formatTimeDifference from '../../app/functions/getTIme.js';
+import Profile from './Profile.jsx';
 function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
-    const { setCommentModal,commentModal } = useContext(PostContext);
-    const [isLiked, setIsLiked] = useState(profile.tweets[idx]?.likes?.includes(profile._id));
+    const { setCommentModal, commentModal } = useContext(PostContext);
 
-    // useEffect(() => {
-    //     console.log("when comment modal state updates=>",isLiked)
-    // },[commentModal])
+    const [isLiked, setIsLiked] = useState(profile.tweets[idx]?.likes?.includes(userData._id));
+
+    useEffect(() => {
+        // setIsLiked(profile.tweets[idx]?.likes?.includes(profile._id))
+        console.log("when liked",isLiked)
+    },[isLiked])
     return (
         <>
             <li key={idx}>
@@ -20,19 +24,21 @@ function FeedPost({ profile, post, idx, handleLikeToggle, userData }) {
                     <div className="p-4 pb-0">
                         <Link href="#" className="md:flex-shrink group block flex-shrink-0">
                             <div className="flex items-start">
-                                <div>
+
+                                    <Profile src={userData?.avatar} w={50} h={25} />
+                                {/* <div>
                                     <img
                                         className="inline-block h-10 w-10 rounded-full"
-                                        src={profile?.avatar}
+                                        src={userData?.avatar}
                                         alt="Profile Image"
                                     />
-                                </div>
+                                </div> */}
                                 <div className="ml-4">
                                     <p className=" flex flex-wrap items-baseline mb-3 text-base font-medium leading-6 text-white">
-                                        <span className="mr-2">{profile?.fullName}</span>
+                                        <span className="mr-2">{userData?.fullName}</span>
                                         <span className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                                             {" "}
-                                            @{profile?.username} . 16 April{" "}
+                                            @{userData?.username} . {formatTimeDifference(post?.createdAt)}
                                         </span>
                                     </p>
                                 </div>

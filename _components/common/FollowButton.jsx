@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import followToggle from "../../functions/api/followToggle.js";
+import followToggle from "../../app/functions/api/followToggle.js";
 
 const FollowButton = ({ textColor = "white", bgColor = "blue-400", size, isFollowed, handleFollowToggle }) => {
     return (

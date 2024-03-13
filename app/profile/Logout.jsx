@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios"
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { PostContext } from "../_context/Post";
+import { PostContext } from "../../_context/Post";
 const Logout = () => {
     const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
@@ -15,6 +15,7 @@ const Logout = () => {
                     if (data?.data?.success) {
                         toast.success("Logged Out Successfull");
                         router.push("/login");
+                        setUserData({})
                     } else {
                         throw new Error("Logout Failed")
                     }

@@ -8,8 +8,10 @@ import axios from "axios";
 import { PostContext } from "../../_context/Post";
 import toast from "react-hot-toast";
 import LikeButton from "../common/LikeButton";
-import likeToggle from "../../functions/api/likeToggle";
+import likeToggle from "../../app/functions/api/likeToggle";
 import PostSwiper from "../common/PostSwiper";
+import ProfileLink from "../common/ProfileLink";
+import formatTimeDifference from "../../app/functions/getTIme";
 
 const CommentModal = () => {
     
@@ -115,7 +117,7 @@ const CommentModal = () => {
                             <div className="relative sm:flex sm:divide-x divide-y divide-[#ffffff26] px-4 " data-te-modal-body-ref>
                                 <div className="sm:w-[60%] ">
                                     <div className="p-4 pl-0">
-                                        <Link
+                                        <ProfileLink
                                             href={"/profile/" + commentModal.post?.user?._id}
                                             onClick={handleClose}
                                             className="md:flex-shrink group block flex-shrink-0"
@@ -131,7 +133,7 @@ const CommentModal = () => {
                                                                 {commentModal.post.user.fullName}
                                                             </span>
                                                             <span className="text-sm  leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
-                                                                @{commentModal.post.user.username} . 16 April{" "}
+                                                                @{commentModal.post.user.username} . {formatTimeDifference(commentModal.post?.createdAt)}
                                                             </span>
                                                         </p>
                                                         {/* <p>{commentModal?.post?.text}</p> */}
@@ -144,7 +146,7 @@ const CommentModal = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                        </Link>
+                                        </ProfileLink>
                                     </div>
                                     <div className="pl-[60px] pr-5">
                                         <p className="width-auto flex-shrink text-base font-medium text-white whitespace-pre-line">
