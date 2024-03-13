@@ -7,7 +7,7 @@ const isAuthenticated = async (request) => {
             const decoded = await verifyJWT(request);
         
             // const req = await fetch("http://localhost:3000/api/auth", {
-             const req = await fetch(process.env.NEXT_PUBLIC_SITE_URL, {
+             const req = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
