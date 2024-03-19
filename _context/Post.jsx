@@ -49,8 +49,7 @@ const PostContextProvider = ({ children }) => {
     });
     const [commentModal, setCommentModal] = useState({
         open: false,
-        post: {},
-        callback: () => {}
+        post: {}, 
     });
     const [comment, setComment] = useState({
         text: "",
