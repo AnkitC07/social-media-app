@@ -13,13 +13,15 @@ export const GET = async (request) => {
     try {
         const searchParams = request.nextUrl.searchParams;
         const query = searchParams.get("id");
-        let userId;
+        let userId,profileId;
         if (query == "user") {
             userId = getTokenData(request);
+            profileId = getTokenData(request);
         } else {
-            userId = query;
+            profileId = query;
+            userId = getTokenData(request);
         }
-        const user = await getUserWithTweetCount(userId);
+        const user = await getUserWithCount(userId,profileId);
         return NextResponse.json({
             message: "User Found",
             data: user,
@@ -30,7 +32,8 @@ export const GET = async (request) => {
     }
 };
 
-async function getUserWithTweetCount(userId) {
+async function getUserWithCount(userId, profileId) {
+    // console.log("getUserWithTweetCount: ",userId,profileId);
     try {
         // Create a projection object to exclude password and tweets fields
         const projection = {
@@ -46,14 +49,14 @@ async function getUserWithTweetCount(userId) {
         // Use aggregation framework for efficient retrieval and transformation
         const pipeline = [
             {
-                $match: { _id: new mongoose.Types.ObjectId(userId) }, // Match document by _id (converted to ObjectId)
+                $match: { _id: new mongoose.Types.ObjectId(profileId) }, // Match document by _id (converted to ObjectId)
             },
             {
                 $addFields: {
                     tweetCount: { $size: "$tweets" }, // Calculate tweet count using $size operator
                     followerCount: { $size: "$followers" }, // Calculate tweet count using $size operator
                     followingCount: { $size: "$following" }, // Calculate tweet count using $size operator
-                    isFollowed: { $in: ["userId", "$followers"] }
+                    isFollowed: { $in: [new mongoose.Types.ObjectId(userId), "$followers"] }
                 },
             },
             {

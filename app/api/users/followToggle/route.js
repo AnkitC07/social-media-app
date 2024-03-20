@@ -10,7 +10,6 @@ export async function POST(request) {
         const requestHeaders = new Headers(request.headers);
         const userId = requestHeaders.get("x-user-_id");
         const followerId = userId;
-        console.log(followerId)
 
         let updateQuery,updateQuery1;
 

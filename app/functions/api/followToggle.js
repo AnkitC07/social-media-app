@@ -1,6 +1,12 @@
 import axios from "axios";
 
-async function followToggle(followeeId, action) {
+async function followToggle(socket,followerId,followeeId, action) {
+
+    socket.emit('follow', {type:action ,senderId:followerId,receiverId:followeeId});
+    // if (action == 'follow') {
+    // } else {
+    //     socket.emit('unfollow', { followedUserId: followeeId });
+    // }
     try {
         const response =  await axios.post('/api/users/followToggle', {
             followeeId,

@@ -1,11 +1,12 @@
 "use client";
 import axios from "axios";
+import io from 'socket.io-client'
 import { createContext, useEffect, useState } from "react";
 
 export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
-
+    const [socket, setSocket] = useState(null)
 
     const [homePage,setHomePage] = useState(0)
     const [explorePage,setExplorePage] = useState(0)
@@ -29,6 +30,12 @@ const PostContextProvider = ({ children }) => {
                     console.log('useEffect userData')
                     await axios.get('/api/users/profile?id=user').then(res => {
                         setUserData(res.data.data)
+                        const socket1 = io('http://localhost:3001')
+                        setSocket(socket1)
+                        socket1.emit('addUser', res.data.data._id);
+                        socket1.on("getUsers", (data) => {
+                            console.log("User",data)
+                        })
                     })
                 } catch (error) {
                     console.log('Error while fetching user data', error)
@@ -82,7 +89,8 @@ const PostContextProvider = ({ children }) => {
                 explorePage, setExplorePage,
                 profilePage, setProfilePage,
                 leftProfileData, setLeftProfileData,
-                unKnownProfilePage,setUnknownProfilePage
+                unKnownProfilePage,setUnknownProfilePage,
+                socket, setSocket
             }}
         >
             {children}

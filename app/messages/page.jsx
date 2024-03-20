@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import io from "socket.io-client";
+import {socket} from '../layout.jsx'
 import axios from "axios";
 
 const MessagesPage = () => {
-    const socket = io("http://localhost:3001");
     useEffect(() => {
         socket.on("connect", () => {
             console.log("Connected:", socket.id);
