@@ -28,14 +28,25 @@ const NotificationPage = () => {
     //     };
     // }, [socket,userData]);
 
-    useEffect(() => {
-        console.log(socket);
-        // if (socket) {
-            socket?.on("followRequest", (data) => {
-                console.log("followRequest >>> ", data);
-            });
-        // }
-    }, [socket]);
+    // useEffect(() => {
+    //     console.log(socket);
+    //     // if (socket) {
+    //         socket?.on("new_friend_request", (data) => {
+    //             console.log("i am the reciever >>> ", data);
+    //         });
+    //         socket?.on("request_sent", (data) => {
+    //             console.log("i am the sender >>> ", data);
+    //         });
+    //         // socket.on("new_friend_request", (data) => {
+    //         //     dispatch(
+    //         //       showSnackbar({
+    //         //         severity: "success",
+    //         //         message: "New friend request received",
+    //         //       })
+    //         //     );
+    //         //   });
+    //     // }
+    // }, [socket]);
 
     return <div>NotificationPage</div>;
 };

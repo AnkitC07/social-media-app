@@ -14,7 +14,7 @@ import { PostContext } from "../../_context/Post";
 import FeedPost from "../../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../../_components/common/InfiniteScroll";
-import { UserContext } from "../../_context/User";
+import { socket } from "../../helpers/socket";
 
 const ProfilePage = ({ params }) => {
     const {
@@ -28,7 +28,6 @@ const ProfilePage = ({ params }) => {
         setProfilePage,
         unKnownProfilePage,
         setUnknownProfilePage,
-        socket
     } = useContext(PostContext);
     const selectPage = () => {
         return params?.id === undefined ? profilePage : unKnownProfilePage;

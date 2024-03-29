@@ -8,6 +8,8 @@ export const PostContext = createContext();
 const PostContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null)
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     const [homePage,setHomePage] = useState(0)
     const [explorePage,setExplorePage] = useState(0)
     const [profilePage,setProfilePage] = useState(0)
@@ -23,26 +25,25 @@ const PostContextProvider = ({ children }) => {
     });
     
     useEffect(() => {
+        console.log('loop')
         // Validate if the data id present in the state.
         if (!userData?._id) {
             (async() => {
                 try {
+
                     console.log('useEffect userData')
                     await axios.get('/api/users/profile?id=user').then(res => {
                         setUserData(res.data.data)
-                        const socket1 = io('http://localhost:3001')
-                        setSocket(socket1)
-                        socket1.emit('addUser', res.data.data._id);
-                        socket1.on("getUsers", (data) => {
-                            console.log("User",data)
-                        })
+                        if (res.data.success) {
+                            // setIsLoggedIn(true)
+                        }
                     })
                 } catch (error) {
                     console.log('Error while fetching user data', error)
                 }
             })()
         }
-    },[])
+    },[isLoggedIn])
 
 
     console.log("Homeposts",userData)
@@ -90,7 +91,8 @@ const PostContextProvider = ({ children }) => {
                 profilePage, setProfilePage,
                 leftProfileData, setLeftProfileData,
                 unKnownProfilePage,setUnknownProfilePage,
-                socket, setSocket
+                socket, setSocket,
+                isLoggedIn, setIsLoggedIn
             }}
         >
             {children}

@@ -25,10 +25,11 @@ export const GET = async (request) => {
         return NextResponse.json({
             message: "User Found",
             data: user,
+            success:true,
         });
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ error: error.message }, { status: 400 });
+        return NextResponse.json({ error: error.message,success:false }, { status: 400 });
     }
 };
 
