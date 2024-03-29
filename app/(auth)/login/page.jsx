@@ -7,7 +7,7 @@ import Link from "next/link";
 import  { PostContext } from "../../../_context/Post";
 
 const LoginPage = () => {
-    const { setUserData,userData} = useContext(PostContext);
+    const { setUserData,userData, setIsLoggedIn} = useContext(PostContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
@@ -20,6 +20,7 @@ const LoginPage = () => {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
             toast.success("Login Successfull");
+            setIsLoggedIn(true)
             // setUserData(response.data?.user)
             router.push("/");
         } catch (error) {

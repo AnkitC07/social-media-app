@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
 import followToggle from "../../app/functions/api/followToggle";
+
 import { PostContext } from "../../_context/Post";
 import ProfileLink from "./ProfileLink";
+import { socket } from "../../helpers/socket";
 
-const SuggestedUser = ({ user }) => {
-    const { setUserData } = useContext(PostContext);
+const SuggestedUser = ({ user, }) => {
+    const { setUserData,userData } = useContext(PostContext);
     const [isFollowed, setIsFollowed] = useState(false);
 
     const handleFollowToggle = async (toggle) => {
@@ -16,7 +18,7 @@ const SuggestedUser = ({ user }) => {
         setIsFollowed(toggle);
         console.log("handleFollowToggle=>", toggle);
         const action = toggle ? "follow" : "unfollow";
-        const result = await followToggle(user._id, action);
+        const result = await followToggle(socket,userData?._id,user._id, action);
 
         if (!result.error) {
             if (toggle) {

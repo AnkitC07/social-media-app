@@ -10,6 +10,7 @@ const middleware1 = async (request) => {
 export async function middleware(request) {
 
     const path = request.nextUrl.pathname;
+    console.log(path)
     const token = request.cookies.get("token")?.value 
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";

@@ -14,6 +14,7 @@ import { PostContext } from "../../_context/Post";
 import FeedPost from "../../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../../_components/common/InfiniteScroll";
+import { socket } from "../../helpers/socket";
 
 const ProfilePage = ({ params }) => {
     const {
@@ -104,35 +105,37 @@ const ProfilePage = ({ params }) => {
         setIsFollowed(toggle);
         console.log("handleFollowToggle=>", toggle);
         const action = toggle ? "follow" : "unfollow";
-        const result = await followToggle(profile._id, action);
+        const result = await followToggle(socket,userData?._id,params.id, action);
 
         if (!result.error) {
             if (toggle) {
                 setProfile((state) => {
                     return {
                         ...state,
-                        followers: [...state.followers, profile._id],
+                        followerCount: state.followerCount + 1,
                     };
                 });
                 setUserData((state) => {
                     return {
                         ...state,
-                        following: [...state.following, profile._id],
+                        followingCount: state.followingCount + 1,
                     };
                 });
+                setIsFollowed(true)
             } else {
                 setProfile((state) => {
                     return {
                         ...state,
-                        followers: state.followers.filter((follower) => follower !== profile._id),
+                        followerCount: state.followerCount - 1,
                     };
                 });
                 setUserData((state) => {
                     return {
                         ...state,
-                        following: state.following.filter((followin) => followin !== profile._id),
+                        followingCount: state.followingCount - 1,
                     };
                 });
+                setIsFollowed(false)
             }
         } else {
             // Handle the error (e.g., show an error message)

@@ -7,14 +7,16 @@ export const UserContext = createContext()
 
 const UserContextProvider = ({ children }) => {
     const [userData, setUserData] = useState({})
-    
+
+console.log('user context')
     useEffect(() => {
         // Validate if the data id present in the state.
         if (!userData?._id) {
             (async() => {
                 try {
                     await axios.get('/api/users/profile?id=user').then(res => {
-                        setUserData(res.data.data)
+                        console.log(res.data.data)
+                       
                     })
                 } catch (error) {
                     console.log('Error while fetching user data', error)

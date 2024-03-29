@@ -1,11 +1,14 @@
 "use client";
 import axios from "axios";
+import io from 'socket.io-client'
 import { createContext, useEffect, useState } from "react";
 
 export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
+    const [socket, setSocket] = useState(null)
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [homePage,setHomePage] = useState(0)
     const [explorePage,setExplorePage] = useState(0)
@@ -22,20 +25,25 @@ const PostContextProvider = ({ children }) => {
     });
     
     useEffect(() => {
+        console.log('loop')
         // Validate if the data id present in the state.
         if (!userData?._id) {
             (async() => {
                 try {
+
                     console.log('useEffect userData')
                     await axios.get('/api/users/profile?id=user').then(res => {
                         setUserData(res.data.data)
+                        if (res.data.success) {
+                            // setIsLoggedIn(true)
+                        }
                     })
                 } catch (error) {
                     console.log('Error while fetching user data', error)
                 }
             })()
         }
-    },[])
+    },[isLoggedIn])
 
 
     console.log("Homeposts",userData)
@@ -49,8 +57,7 @@ const PostContextProvider = ({ children }) => {
     });
     const [commentModal, setCommentModal] = useState({
         open: false,
-        post: {},
-        callback: () => {}
+        post: {}, 
     });
     const [comment, setComment] = useState({
         text: "",
@@ -83,7 +90,9 @@ const PostContextProvider = ({ children }) => {
                 explorePage, setExplorePage,
                 profilePage, setProfilePage,
                 leftProfileData, setLeftProfileData,
-                unKnownProfilePage,setUnknownProfilePage
+                unKnownProfilePage,setUnknownProfilePage,
+                socket, setSocket,
+                isLoggedIn, setIsLoggedIn
             }}
         >
             {children}
