@@ -32,7 +32,7 @@ const LoginPage = () => {
     };
     return (
         <div className="flex items-center fixed inset-x-0 top-0 h-screen justify-center bg-z">
-            <div className="w-full max-w-md rounded-xl box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform hover:-translate-y-3 hover:-translate-x-3 px-4 py-14">
+            <div className="w-full max-w-md rounded-xl sm:box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform sm:hover:-translate-y-3 sm:hover:-translate-x-3 px-4 py-14">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold">Login</h1>
                     {/* <p className="text-sm mt-1">Please login to continue</p> */}
@@ -41,7 +41,9 @@ const LoginPage = () => {
                     <input
                         type="text"
                         value={user.email}
-                        onChange={(e) => setUser({ ...user, email: e.target.value })}
+                        onChange={(e) => {
+                            setUser({ ...user, email: (e.target.value).toLowerCase() })
+                        }}
                         placeholder="Email"
                         className="border-2 text-black border-black rounded-lg py-2.5 px-4 w-full outline-none input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                     />
@@ -50,7 +52,7 @@ const LoginPage = () => {
                         value={user.password}
                         onChange={(e) => setUser({ ...user, password: e.target.value })}
                         placeholder="Password"
-                        className="border-2 text-black border-black rounded-lg py-2.5 px-4 mt-4 w-full outline-none input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
+                        className="border-2 text-black border-black  rounded-lg py-2.5 px-4 mt-4 w-full outline-none input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                     />
                     <div className="flex justify-between w-full items-baseline">
                         <span>

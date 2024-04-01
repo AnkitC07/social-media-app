@@ -31,7 +31,7 @@ const SignupPage = () => {
 
     return (
         <div className="flex items-center fixed inset-x-0 top-0 h-screen justify-center  bg-z">
-            <div className="w-full max-w-md rounded-xl box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform hover:-translate-y-3 hover:-translate-x-3 px-4 py-14">
+            <div className="w-full max-w-md rounded-xl sm:box-on-hover hover:bg-[#06141D] border ease-in-out duration-100 transform sm:hover:-translate-y-3 sm:hover:-translate-x-3 px-4 py-14">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold">Signup</h1>
                     {/* <p className="text-sm mt-1">Please login to continue</p> */}
@@ -50,7 +50,7 @@ const SignupPage = () => {
                     <input
                         value={user.email}
                         onChange={(e) => {
-                            setUser({ ...user, email: e.target.value });
+                            setUser({ ...user, email: (e.target.value).toLowerCase() });
                         }}
                         type="email"
                         placeholder="Email"

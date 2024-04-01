@@ -8,12 +8,12 @@ import useResponsiveHook from "../common/ResponsiveHook";
 import { socket, connectSocket } from "../../helpers/socket";
 import { PostContext } from "../../_context/Post";
 
-const PageWrapper = () => {
+const PageWrapper = ({token}) => {
     const layouts = useResponsiveHook();
     const { userData, isLoggedIn } = useContext(PostContext);
 console.log('pagewrapper------_-----------------------------',isLoggedIn)
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn || token) {
             console.log(">>>>>>>>>>>>>",userData,socket);
             if (!socket && userData?._id) {
                 console.log(">>>>>inside socket connection",)
