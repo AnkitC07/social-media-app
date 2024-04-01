@@ -7,7 +7,7 @@ export const GET = async (request) => {
             success: true
         });
         // Remove the token from cookie
-        response.cookies.set("token", "", {
+       response.cookies.set("token", "", {
             httpOnly: true,
             expires: new Date(0)
         });

@@ -203,6 +203,7 @@ const ProfilePage = ({ params }) => {
             if (res.length == 0) {
                 setInLoading(false);
             } else {
+                    
                 setProfile((prev) => {
                     console.log(prev);
                     return {
@@ -210,9 +211,10 @@ const ProfilePage = ({ params }) => {
                         tweets: prev.tweets ? [...prev?.tweets, ...res] : [...res],
                     };
                 });
+                
+                    
                 if (res.length < 5) {
                     setInLoading(false);
-                } else {
                 }
             }
         } catch (error) {
@@ -230,7 +232,7 @@ const ProfilePage = ({ params }) => {
             // setProfile({
             //     tweets: [],
             // });
-            // params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
+            params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
         };
     }, [selectPage()]);
 
