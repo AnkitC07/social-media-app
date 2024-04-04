@@ -3,7 +3,10 @@ import verifyJWT from "../jwt/verifyOnEdge";
 const isAuthenticated = async (request) => {
     try {
         const token = request.cookies.get("token")?.value || "";
-        if (token) {
+        const requestHeaders = new Headers(request.headers);
+        const headerToken = requestHeaders.get("token");
+        console.log(headerToken,'headerToken')
+        if (token ||headerToken) {
             const decoded = await verifyJWT(request);
         
             // const req = await fetch("http://localhost:3000/api/auth", {

@@ -1,5 +1,7 @@
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
+// import { cookies } from 'next/headers'
+
 
 
 const Wrapper = ({ childs }) => {

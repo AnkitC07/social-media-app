@@ -1,8 +1,8 @@
 import axios from "axios";
 
-async function followToggle(socket,followerId,followeeId, action) {
+async function followToggle(socket,followerId,followeeId, action,token) {
 
-    socket.emit('follow', {type:action ,senderId:followerId,receiverId:followeeId});
+    socket.emit('follow', {type:action ,token,senderId:followerId,receiverId:followeeId});
     // if (action == 'follow') {
     // } else {
     //     socket.emit('unfollow', { followedUserId: followeeId });

@@ -17,6 +17,7 @@ const AddTweet = ({ setPosts }) => {
     const { userData } = useContext(PostContext);
     const [postText, setPostText] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(true);
     const [filesRef, setFileRef] = useState([]);
     const inputRef = useRef(null);
     const [placeholder, setPlaceholder] = useState("");
@@ -25,6 +26,8 @@ const AddTweet = ({ setPosts }) => {
     const text = "What is on your mind ?"; // Replace with your email
     const typingSpeed = 100; // Adjust typing speed if desired
 
+
+    // Placeholder animation
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setCurrentChar((prevChar) => (prevChar + 1) % text.length);
@@ -36,11 +39,14 @@ const AddTweet = ({ setPosts }) => {
         return () => clearTimeout(timeoutId); // Clear timeout on cleanup
     }, [currentChar,typingSpeed, text]);
 
+    // auto grow input field
     function auto_grow(element) {
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
     }
 
+
+    // add post function
     const addPost = async () => {
         setLoading(true);
         const formData = new FormData();
@@ -84,6 +90,16 @@ const AddTweet = ({ setPosts }) => {
         //     toast.error("Add post failed");
         // }
     };
+
+    useEffect(() => {
+
+        console.log(filesRef,'testing')
+        if (postText.length > 0 || filesRef.length > 0)  { 
+            setIsDisabled(false)
+        } else {
+            setIsDisabled(true)
+        }
+    },[postText,filesRef]);
 
     return (
         <Card>
@@ -224,7 +240,7 @@ const AddTweet = ({ setPosts }) => {
                                     className="text-[#FB6E6E]"
                                 /> */}
                             </div>
-                            <button onClick={addPost} className="py-1 px-4 bg-[#03a8f4] text-sm rounded-2xl hover:bg-[#03a8f4c9]">
+                            <button disabled={isDisabled} onClick={addPost} className={"py-1 px-4 bg-[#03a8f4] text-sm rounded-2xl " + (isDisabled?" cursor-not-allowed":' hover:bg-[#03a8f4c9]')}>
                                 {loading ? (
                                     <>
                                         <svg
