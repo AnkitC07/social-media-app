@@ -35,8 +35,7 @@ const ProfilePage = ({ params }) => {
     };
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
-    // const [page, setPage] = useState(selectPage());
-    const page = selectPage();
+    const [page, setPage] = useState(selectPage());
     const [inLoading, setInLoading] = useState(true);
     const [show, setShow] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
@@ -234,7 +233,7 @@ const ProfilePage = ({ params }) => {
 
     // This is for Posts
     useEffect(() => {
-        // console.log(selectPage(), page);
+        console.log(selectPage(), page);
         if (selectPage() !== page) {
             getProfilePots(selectPage());
         }
