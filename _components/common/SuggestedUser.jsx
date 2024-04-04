@@ -10,7 +10,7 @@ import ProfileLink from "./ProfileLink";
 import { socket } from "../../helpers/socket";
 
 const SuggestedUser = ({ user, }) => {
-    const { setUserData,userData } = useContext(PostContext);
+    const { setUserData,userData,token } = useContext(PostContext);
     const [isFollowed, setIsFollowed] = useState(false);
 
     const handleFollowToggle = async (toggle) => {
@@ -18,7 +18,7 @@ const SuggestedUser = ({ user, }) => {
         setIsFollowed(toggle);
         console.log("handleFollowToggle=>", toggle);
         const action = toggle ? "follow" : "unfollow";
-        const result = await followToggle(socket,userData?._id,user._id, action);
+        const result = await followToggle(socket,userData?._id,user._id, action,token);
 
         if (!result.error) {
             if (toggle) {

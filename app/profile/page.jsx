@@ -28,13 +28,15 @@ const ProfilePage = ({ params }) => {
         setProfilePage,
         unKnownProfilePage,
         setUnknownProfilePage,
+        token
     } = useContext(PostContext);
     const selectPage = () => {
         return params?.id === undefined ? profilePage : unKnownProfilePage;
     };
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
-    const [page, setPage] = useState(selectPage());
+    // const [page, setPage] = useState(selectPage());
+    const page = selectPage();
     const [inLoading, setInLoading] = useState(true);
     const [show, setShow] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
@@ -62,6 +64,9 @@ const ProfilePage = ({ params }) => {
     //     console.log('data')
     // },[userData])
 
+
+
+
     // Edit Profile Details
     const editProfleApi = async () => {
         setLoading(true);
@@ -70,7 +75,7 @@ const ProfilePage = ({ params }) => {
 
             request
                 .then((res) => {
-                    console.log("Edit Profile Successfull", res.data);
+                    // console.log("Edit Profile Successfull", res.data);
 
                     setEditFormData({
                         username: res.data.data.username,
@@ -95,7 +100,7 @@ const ProfilePage = ({ params }) => {
     // Profile Edit Submit Button
     const handleSubmit = (e, editFormData) => {
         e.preventDefault();
-        console.log(editFormData);
+        // console.log(editFormData);
         editProfleApi();
     };
 
@@ -103,9 +108,10 @@ const ProfilePage = ({ params }) => {
     const handleFollowToggle = async (toggle) => {
         // Update the UI state based on the follow/unfollow action
         setIsFollowed(toggle);
-        console.log("handleFollowToggle=>", toggle);
+        // console.log("handleFollowToggle=>", toggle);
         const action = toggle ? "follow" : "unfollow";
-        const result = await followToggle(socket,userData?._id,params.id, action);
+        token
+        const result = await followToggle(socket,userData?._id,params.id, action,token);
 
         if (!result.error) {
             if (toggle) {
@@ -149,7 +155,7 @@ const ProfilePage = ({ params }) => {
         const result = await likeToggle(post._id, action);
         if (!result.error) {
             setProfile((prevPosts) => {
-                console.log("profile state=", prevPosts);
+                // console.log("profile state=", prevPosts);
                 const newPofile = { ...prevPosts };
                 newPofile.tweets[idx].likes = result.likes;
                 return newPofile;
@@ -180,7 +186,7 @@ const ProfilePage = ({ params }) => {
                         avatar: res.data.data.avatar, // to store the avatar file
                         banner: res.data.data.banner, // to store the banner file
                     });
-                    console.log("is followed", isCurrentUserFollowing);
+                    // console.log("is followed", isCurrentUserFollowing);
                     setIsFollowed(isCurrentUserFollowing);
                 })
                 .finally(() => {
@@ -193,6 +199,7 @@ const ProfilePage = ({ params }) => {
         }
     };
 
+    // Get posts
     const getProfilePots = async (index) => {
         try {
             const request = await axios(
@@ -204,6 +211,7 @@ const ProfilePage = ({ params }) => {
                 setInLoading(false);
             } else {
                     
+               
                 setProfile((prev) => {
                     console.log(prev);
                     return {
@@ -223,36 +231,57 @@ const ProfilePage = ({ params }) => {
         }
     };
 
+
+    // This is for Posts
     useEffect(() => {
-        console.log(selectPage(), page);
+        // console.log(selectPage(), page);
         if (selectPage() !== page) {
             getProfilePots(selectPage());
         }
         return () => {
-            // setProfile({
-            //     tweets: [],
+            // setProfile(state => {
+            //     return {
+            //         ...state,
+            //         tweets: [],
+            //     }
             // });
-            params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
+            // params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
         };
     }, [selectPage()]);
 
+
+    // This is for User Data
     useEffect(() => {
-        console.log(userData,leftProfileData)
+        // console.log(userData,leftProfileData)
         if (params?.id !== undefined) {
             getData();
         } else if (JSON.stringify(userData) !== "{}") {
             setLeftProfileData(userData);
-            console.log('userData')
+            // console.log('userData')
             setLoading(false);
         } else if(JSON.stringify(leftProfileData) !== "{}") {
             setUserData(leftProfileData);
-            console.log('leftProfileData')
+            // console.log('leftProfileData')
             setLoading(false);
         } else {
-            console.log('else')
+            // console.log('else')
             getData();
         }
-    }, [userData]);
+    }, [userData]); 
+
+
+    // This if to only cleanup function of posts state
+    useEffect(() => {   
+        return () => {
+            setProfile(state => {
+                return {
+                    ...state,
+                    tweets: [],
+                }
+            });
+            params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
+        } 
+    },[])
 
     return (
         <>

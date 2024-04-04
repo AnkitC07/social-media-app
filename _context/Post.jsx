@@ -7,6 +7,7 @@ export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null)
+    const [token,setToken] = useState(null)
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -69,6 +70,10 @@ const PostContextProvider = ({ children }) => {
         open: false,
         tag:null
     })
+
+
+
+    const [notificationsArr,setNotificationsArr] = useState([]);
     
 
     return (
@@ -92,7 +97,9 @@ const PostContextProvider = ({ children }) => {
                 leftProfileData, setLeftProfileData,
                 unKnownProfilePage,setUnknownProfilePage,
                 socket, setSocket,
-                isLoggedIn, setIsLoggedIn
+                isLoggedIn, setIsLoggedIn,
+                token, setToken,
+                notificationsArr,setNotificationsArr
             }}
         >
             {children}
