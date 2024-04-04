@@ -22,17 +22,30 @@ const SuggestedUser = ({ user, }) => {
 
         if (!result.error) {
             if (toggle) {
+                // setUserData((state) => {
+                //     return {
+                //         ...state,
+                //         following: [...state.following, user._id],
+                //     };
+                // });
+                
                 setUserData((state) => {
                     return {
                         ...state,
-                        following: [...state.following, user._id],
+                        followingCount: state.followingCount + 1,
                     };
                 });
             } else {
+                // setUserData((state) => {
+                //     return {
+                //         ...state,
+                //         following: state.following.filter((followin) => followin !== user._id),
+                //     };
+                // });
                 setUserData((state) => {
                     return {
                         ...state,
-                        following: state.following.filter((followin) => followin !== user._id),
+                        followingCount: state.followingCount - 1,
                     };
                 });
             }
