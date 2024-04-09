@@ -7,6 +7,7 @@ import EditProfileModal from "../../_components/layout/EditProfileModal";
 import FollowButton from "../../_components/common/FollowButton";
 import followToggle from "../functions/api/followToggle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Modal from "../../_components/common/Modal";
 import Logout from "./Logout";
 import { PostContext } from "../../_context/Post";
@@ -28,7 +29,7 @@ const ProfilePage = ({ params }) => {
         setProfilePage,
         unKnownProfilePage,
         setUnknownProfilePage,
-        token
+        token,
     } = useContext(PostContext);
     const selectPage = () => {
         return params?.id === undefined ? profilePage : unKnownProfilePage;
@@ -62,9 +63,6 @@ const ProfilePage = ({ params }) => {
     //     setProfile(profile)
     //     console.log('data')
     // },[userData])
-
-
-
 
     // Edit Profile Details
     const editProfleApi = async () => {
@@ -109,8 +107,8 @@ const ProfilePage = ({ params }) => {
         setIsFollowed(toggle);
         // console.log("handleFollowToggle=>", toggle);
         const action = toggle ? "follow" : "unfollow";
-        token
-        const result = await followToggle(socket,userData?._id,params.id, action,token);
+        token;
+        const result = await followToggle(socket, userData?._id, params.id, action, token);
 
         if (!result.error) {
             if (toggle) {
@@ -126,7 +124,7 @@ const ProfilePage = ({ params }) => {
                         followingCount: state.followingCount + 1,
                     };
                 });
-                setIsFollowed(true)
+                setIsFollowed(true);
             } else {
                 setProfile((state) => {
                     return {
@@ -140,7 +138,7 @@ const ProfilePage = ({ params }) => {
                         followingCount: state.followingCount - 1,
                     };
                 });
-                setIsFollowed(false)
+                setIsFollowed(false);
             }
         } else {
             // Handle the error (e.g., show an error message)
@@ -209,8 +207,6 @@ const ProfilePage = ({ params }) => {
             if (res.length == 0) {
                 setInLoading(false);
             } else {
-                    
-               
                 setProfile((prev) => {
                     console.log(prev);
                     return {
@@ -218,8 +214,7 @@ const ProfilePage = ({ params }) => {
                         tweets: prev.tweets ? [...prev?.tweets, ...res] : [...res],
                     };
                 });
-                
-                    
+
                 if (res.length < 5) {
                     setInLoading(false);
                 }
@@ -230,24 +225,13 @@ const ProfilePage = ({ params }) => {
         }
     };
 
-
     // This is for Posts
     useEffect(() => {
         console.log(selectPage(), page);
         if (selectPage() !== page) {
             getProfilePots(selectPage());
         }
-        return () => {
-            // setProfile(state => {
-            //     return {
-            //         ...state,
-            //         tweets: [],
-            //     }
-            // });
-            // params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
-        };
     }, [selectPage()]);
-
 
     // This is for User Data
     useEffect(() => {
@@ -258,7 +242,7 @@ const ProfilePage = ({ params }) => {
             setLeftProfileData(userData);
             // console.log('userData')
             setLoading(false);
-        } else if(JSON.stringify(leftProfileData) !== "{}") {
+        } else if (JSON.stringify(leftProfileData) !== "{}") {
             setUserData(leftProfileData);
             // console.log('leftProfileData')
             setLoading(false);
@@ -266,21 +250,20 @@ const ProfilePage = ({ params }) => {
             // console.log('else')
             getData();
         }
-    }, [userData]); 
-
+    }, [userData]);
 
     // This if to only cleanup function of posts state
-    useEffect(() => {   
+    useEffect(() => {
         return () => {
-            setProfile(state => {
+            setProfile((state) => {
                 return {
                     ...state,
                     tweets: [],
-                }
+                };
             });
             params?.id === undefined ? setProfilePage(0) : setUnknownProfilePage(0);
-        } 
-    },[])
+        };
+    }, []);
 
     return (
         <>
@@ -305,12 +288,6 @@ const ProfilePage = ({ params }) => {
                                         style={{ height: "9rem", width: "9rem" }}
                                         className="md avatar relative rounded-full"
                                     >
-                                        {/* <img
-                                            style={{ height: "9rem", width: "9rem" }}
-                                            className="md relative rounded-full border-4 border-gray-900"
-                                            src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
-                                            alt=""
-                                        /> */}
                                         {leftProfileData?.avatar ? (
                                             <Image
                                                 className="rounded-full border-4 border-gray-900"
@@ -352,6 +329,21 @@ const ProfilePage = ({ params }) => {
                                     >
                                         Edit Profile
                                     </button>
+                                )}
+                                {params?.id  && isFollowed? (
+                                    <ChatBubbleOutlineIcon
+                                        sx={{
+                                            fontSize: "25px",
+                                            marginLeft: "10px",
+                                        }}
+                                        onClick={() => {
+                                            console.log({to:params?.id, from:userData?._id})
+                                            socket?.emit("start_conversation",{to:params?.id, from:userData?._id})
+                                        }}
+                                        // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
+                                    />
+                                ) : (
+                                    ""
                                 )}
                                 <MoreVertIcon
                                     sx={{

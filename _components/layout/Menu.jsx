@@ -20,7 +20,7 @@ const Menu = (
                         key={idx}
                         href={item.path}
                         className={
-                            style +   "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")  + (item.path == '/messages' || item.path == '/notifications' ? " cursor-not-allowed ":'')
+                            style +   "flex justify-start items-center gap-2" + (pathname == item.path ? " text-tweet-blue" : "")  + (item.path == '/messages' || item.path == '/notifications' ? "  ":'')
                         }
                         onClick={() => item.path === "#" && setShow(!show)}
                         

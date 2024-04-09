@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
     try {
+        console.log('logout api request')
         const response = NextResponse.json({
             message: 'Logout successfull',
             success: true

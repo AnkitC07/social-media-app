@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: [true, "Please provide a email"], unique: true },
     password: { type: String, required: [true, "Please provide a password"] },
     isVerified: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: false },
+    isLoggedin: { type: Boolean, default: false },
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
     verifyToken: String,
@@ -22,7 +24,10 @@ const userSchema = new mongoose.Schema({
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: "tweets" }],
-    likedTweet: [{type: mongoose.Schema.Types.ObjectId, ref: 'tweets'}]
+    likedTweet: [{ type: mongoose.Schema.Types.ObjectId, ref: 'tweets' }],
+    socket_id: {
+        type: String
+      },
 });
 const User = mongoose?.models?.users || mongoose.model("users", userSchema);
 

@@ -7,7 +7,7 @@ import Link from "next/link";
 import  { PostContext } from "../../../_context/Post";
 
 const LoginPage = () => {
-    const { setUserData,userData, setIsLoggedIn} = useContext(PostContext);
+    const {  setIsLoggedIn} = useContext(PostContext);
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
