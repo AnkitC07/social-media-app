@@ -22,11 +22,11 @@ export const menu = [
         icon: <TextsmsOutlinedIcon  sx={{ fontSize: "20px", }} />,
         lable: "Messages",
     },
-    {
-        path: "/notifications",
-        icon: <NotificationsNoneOutlinedIcon sx={{ fontSize: "20px" }} />,
-        lable: "Notifications",
-    },
+    // {
+    //     path: "/notifications",
+    //     icon: <NotificationsNoneOutlinedIcon sx={{ fontSize: "20px" }} />,
+    //     lable: "Notifications",
+    // },
     {
         path: "/profile",
         icon: <PersonOutlinedIcon sx={{ fontSize: "20px" }} />,
