@@ -3,7 +3,6 @@ import isAuthenticated from "./auth/isauthenticated.js";
 
 const middleware1 = async (request) => {
     console.log("middleware1=>", request.nextUrl.pathname);
-
     return NextResponse.next();
 };
 
