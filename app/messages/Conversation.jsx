@@ -60,7 +60,7 @@ export const Conversation = () => {
             <div class="relative w-full p-6 overflow-y-auto h-[40rem]">
                 <ul class="space-y-2">
                     {directChat?.current_messages.map((el, idx) => (
-                        <li class={"flex " + (el?.incoming ? "justify-start" : "justify-end")}>
+                        <li key={idx} class={"flex " + (el?.incoming ? "justify-start" : "justify-end")}>
                             <div
                                 class={
                                     "relative max-w-xl px-4 py-2  rounded shadow " + (el?.incoming

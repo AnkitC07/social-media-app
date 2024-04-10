@@ -53,11 +53,6 @@ const ChatList = ({ users }) => {
                     directChat?.conversations.map((el, idx) => {
                         return <ListItem key={idx} {...el} />;
                     })
-                
-                    // users.map((user, i) => {
-                    //     let isActive = false; // user.id === activeUserId ? true : false;
-                    //     return <ListItem key={i} user={user} isActive={isActive} />;
-                    // })
                 }
             </ul>
         </div>
