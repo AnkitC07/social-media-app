@@ -25,7 +25,7 @@ export async function POST(request) {
             id: user._id,
             username: user.username,
             email: user.email,
-            password: password,
+            password: user.password,
         };
 
         // Create token
@@ -44,6 +44,7 @@ export async function POST(request) {
             message: "Logged in successfully!",
             success: true,
             user: userCopy,
+            token
         });
         response.cookies.set("token", token, {
             httpOnly: true,

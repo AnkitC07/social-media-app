@@ -5,6 +5,7 @@ import { createContext, useEffect, useState } from "react";
 export const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
+  const [socketState,setSocketState] = useState(null)
     const [chatType, setChatType] = useState(null);
     const [roomId, setRoomId] = useState(null);
     const [directChat, setDirectChat] = useState({
@@ -14,7 +15,6 @@ const ChatContextProvider = ({ children }) => {
     });
 
     function fetchDirectConversations({ conversations, user_id }) {
-        console.log(conversations, user_id);
         const list = conversations.map((el) => {
             const user = el.participants.find((elm) => elm._id.toString() !== user_id);
             return {
@@ -30,11 +30,20 @@ const ChatContextProvider = ({ children }) => {
                 // about: user?.about,
             };
         });
-        console.log(list);
+      
+      //updated the state with current data
+        // setDirectChat((state) => {
+        //     return {
+        //         ...state,
+        //         conversations: [...state.conversations, ...list],
+        //     };
+      // });
+      
+      // only updated retrived data
         setDirectChat((state) => {
             return {
                 ...state,
-                conversations: [...state.conversations, ...list],
+                conversations: [...list],
             };
         });
     }
@@ -49,15 +58,25 @@ const ChatContextProvider = ({ children }) => {
             incoming: el.to === user_id,
             outgoing: el.from === user_id,
         }));
+       //updated the state with current data
+        // setDirectChat((state) => {
+        //     return {
+        //         ...state,
+        //         current_messages: [...state.current_messages, ...formatted_messages],
+        //     };
+      // });
+      
+      // only updated retrived data
         setDirectChat((state) => {
             return {
                 ...state,
-                current_messages: [...state.current_messages, ...formatted_messages],
+                current_messages: [...formatted_messages],
             };
         });
     }
 
-    function addDirectMessage(message) {
+  function addDirectMessage(message) {
+      
         setDirectChat((state) => {
             return {
                 ...state,
@@ -102,7 +121,8 @@ const ChatContextProvider = ({ children }) => {
                 setDirectChat,
                 fetchDirectConversations,
                 fetchCurrentMessages,
-                addDirectMessage,
+          addDirectMessage,
+          socketState,setSocketState
             }}
         >
             {children}
