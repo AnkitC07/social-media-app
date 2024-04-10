@@ -13,6 +13,7 @@ const Logout = () => {
             await axios.get("/api/users/logout")
                 .then((data) => {
                     if (data?.data?.success) {
+                        window.localStorage.removeItem("token")
                         toast.success("Logged Out Successfull");
                         router.push("/login");
                         setUserData({})

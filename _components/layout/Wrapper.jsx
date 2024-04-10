@@ -1,5 +1,6 @@
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
+import SocketConnect from '../layout/SocketConnect'
 // import { cookies } from 'next/headers'
 
 
@@ -9,6 +10,7 @@ const Wrapper = ({ childs }) => {
     return (
         <main className="wrapper container mx-auto relative">
             <TopBar />
+            {/* <SocketConnect /> */}
             {childs}
             {/* Skeleton */}
             {/* <div className="max-w-lg mx-auto">

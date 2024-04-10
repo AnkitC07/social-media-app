@@ -21,16 +21,16 @@ export async function POST(request) {
         if (!user) return NextResponse.json({ error: "User not found" }, { status: 400 });
 
         // Validate the password
-        const validPassword = await bcryptjs.compare(decoded.password, user.password);
+
+        // const validPassword = await bcryptjs.compare(decoded.password, user.password);
+        const validPassword = decoded.password === user.password;
         if (!validPassword) return NextResponse.json({ error: "Invalid Password!" }, { status: 400 });
 
-        return NextResponse.json(
-            {
-                message: "User found successfully!",
-                success: true,
-                user: user,
-            }
-        );
+        return NextResponse.json({
+            message: "User found successfully!",
+            success: true,
+            user: user,
+        });
     } catch (error) {
         console.log(error);
         return NextResponse.json(

@@ -19,9 +19,11 @@ const LoginPage = () => {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
+            const token = response.data.token;
             toast.success("Login Successfull");
             setIsLoggedIn(true)
             // setUserData(response.data?.user)
+            window.localStorage.setItem("token", token);
             router.push("/");
         } catch (error) {
             console.log("Login Failed", error.message);
