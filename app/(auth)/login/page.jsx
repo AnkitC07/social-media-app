@@ -15,7 +15,8 @@ const LoginPage = () => {
     });
     const [loading, setLoading] = useState(false);
 
-    const onLogin = async () => {
+    const onLogin = async (e) => {
+        e.preventDefault()
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
@@ -39,6 +40,8 @@ const LoginPage = () => {
                     <h1 className="text-3xl font-bold">Login</h1>
                     {/* <p className="text-sm mt-1">Please login to continue</p> */}
                 </div>
+                <form onSubmit={onLogin}>
+
                 <div className="flex flex-col justify-center items-end my-8 px-10">
                     <input
                         type="text"
@@ -62,8 +65,9 @@ const LoginPage = () => {
                             <Link  href={'/signup'} className="text-blue-500"> Signup</Link>
                         </span>
 
-                        <button
-                            onClick={onLogin}
+                            <button
+                                type="submit"
+                            // onClick={onLogin}
                             className="flex items-center bg-black text-white rounded-lg px-4 py-2.5 mt-4 hover:bg-gray-800 input-on-hover ease-in-out duration-100 transform hover:-translate-y-0.5 hover:-translate-x-0.5"
                         >
                             {loading ? (
@@ -93,7 +97,9 @@ const LoginPage = () => {
                             
                         </button>
                     </div>
-                </div>
+                    </div>
+                </form>
+                    
             </div>
         </div>
     );

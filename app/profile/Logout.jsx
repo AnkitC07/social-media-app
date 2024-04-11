@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios"
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { PostContext } from "../../_context/Post";
+import { socket } from "../../helpers/socket";
 const Logout = () => {
     const { setUserData,userData} = useContext(PostContext);
     const router = useRouter();
@@ -15,6 +16,7 @@ const Logout = () => {
                     if (data?.data?.success) {
                         window.localStorage.removeItem("token")
                         toast.success("Logged Out Successfull");
+                        socket.emit("end",{user_id:userData?._id})
                         router.push("/login");
                         setUserData({})
                     } else {
