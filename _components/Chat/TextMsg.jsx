@@ -13,24 +13,18 @@ const TextMsg = ({ el }) => {
     console.log('------------')
 
     return (
-        <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
-            <Box
-                px={1.5}
-                py={1.5}
-                sx={{
-                    backgroundColor: el.incoming
-                        ? "white"
-                        : "blueviolet",
-                    borderRadius: 1.5,
-                    width: "max-content",
-                }}
-            >
-                <Typography variant="body2" color={el.incoming ? theme.palette.text : "#fff"}>
-                    {el.message}
-                </Typography>
-            </Box>
-            {/* {menu && <MessageOption />} */}
-        </Stack>
+        
+            <li key={idx} class={"flex " + (el?.incoming ? "justify-start" : "justify-end")}>
+                <div
+                    class={
+                        "relative max-w-xl px-4 py-2  rounded shadow " +
+                        (el?.incoming ? "bg-bg-card" : "text-gray-700 bg-gray-100")
+                    }
+                >
+                    <span class="block">{el?.message}</span>
+                </div>
+            </li>
+        
     );
 };
 

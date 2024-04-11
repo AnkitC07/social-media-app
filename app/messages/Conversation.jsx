@@ -16,7 +16,7 @@ function containsUrl(text) {
     return urlRegex.test(text);
 }
 
-export const Conversation = ({messageListRef}) => {
+export const Conversation = ({ messageListRef }) => {
     const { roomId, directChat, setDirectChat, fetchCurrentMessages } = useContext(ChatContext);
     const { userData } = useContext(PostContext);
 
@@ -25,7 +25,6 @@ export const Conversation = ({messageListRef}) => {
     console.log(roomId);
 
     useEffect(() => {
-
         const current = directChat.conversations.find((el) => el?.id === roomId);
 
         socket?.emit("get_messages", { conversation_id: current?.id }, (data) => {
@@ -42,7 +41,7 @@ export const Conversation = ({messageListRef}) => {
     }, [roomId]);
 
     const handleSend = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         socket?.emit("text_message", {
             message: linkify(value),
             conversation_id: roomId,
@@ -51,7 +50,7 @@ export const Conversation = ({messageListRef}) => {
             type: containsUrl(value) ? "Link" : "Text",
         });
         setValue("");
-    }
+    };
     return (
         <div class="w-full">
             <div class="relative flex items-center p-3 border-b border-gray-300">
@@ -72,6 +71,52 @@ export const Conversation = ({messageListRef}) => {
             </div>
             <div ref={messageListRef} class="relative w-full p-6 overflow-y-auto h-[40rem]">
                 <ul class="space-y-2">
+                    {/* {current_messages.map((el, idx) => {
+          switch (el.type) {
+            case "divider":
+              return (
+                // Timeline
+                <Timeline el={el} />
+              );
+
+            case "msg":
+              switch (el.subtype) {
+                case "img":
+                  return (
+                    // Media Message
+                    <MediaMsg el={el} menu={menu} />
+                  );
+
+                case "doc":
+                  return (
+                    // Doc Message
+                    <DocMsg el={el} menu={menu} />
+                  );
+                case "Link":
+                  return (
+                    //  Link Message
+                    <LinkMsg el={el} menu={menu} />
+                  );
+
+                case "reply":
+                  return (
+                    //  ReplyMessage
+                    <ReplyMsg el={el} menu={menu} />
+                  );
+
+                default:
+                  return (
+                    // Text Message
+                    <TextMsg el={el} menu={menu} />
+                  );
+              }
+
+            default:
+              return <></>;
+          }
+        })} */}
+
+                    {/* Moved to TextMsg component */}
                     {directChat?.current_messages.map((el, idx) => (
                         <li key={idx} class={"flex " + (el?.incoming ? "justify-start" : "justify-end")}>
                             <div
@@ -104,7 +149,10 @@ export const Conversation = ({messageListRef}) => {
             </div>
 
             <div class="">
-                <form className="flex items-center justify-between w-full p-3 border-t border-gray-300" onSubmit={handleSend} >
+                <form
+                    className="flex items-center justify-between w-full p-3 border-t border-gray-300"
+                    onSubmit={handleSend}
+                >
                     <button>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -151,9 +199,9 @@ export const Conversation = ({messageListRef}) => {
                     />
                     <button
                         type="submit"
-                    //     onClick={() => {
-                    //         handleSend()
-                    // }}
+                        //     onClick={() => {
+                        //         handleSend()
+                        // }}
                     >
                         <svg
                             class="w-5 h-5 text-gray-500 origin-center transform rotate-90"
@@ -199,9 +247,9 @@ const ChatComponent = () => {
             {/*  */}
             {/* <ChatHeader /> */}
 
-                {/* <SimpleBarStyle timeout={500} clickOnTrack={false}> */}
-                    <Conversation messageListRef={messageListRef}  isMobile={false} />
-                {/* </SimpleBarStyle> */}
+            {/* <SimpleBarStyle timeout={500} clickOnTrack={false}> */}
+            <Conversation messageListRef={messageListRef} isMobile={false} />
+            {/* </SimpleBarStyle> */}
 
             {/*  */}
             {/* <ChatFooter /> */}
