@@ -11,7 +11,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Modal from "../../_components/common/Modal";
 import Logout from "./Logout";
 import { PostContext } from "../../_context/Post";
-
+import Link from "next/link.js";
 import FeedPost from "../../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../../_components/common/InfiniteScroll";
@@ -330,7 +330,8 @@ const ProfilePage = ({ params }) => {
                                         Edit Profile
                                     </button>
                                 )}
-                                {params?.id  && isFollowed? (
+                                {params?.id && isFollowed ? (
+                                    <Link href={"/messages"}>
                                     <ChatBubbleOutlineIcon
                                         sx={{
                                             fontSize: "25px",
@@ -338,10 +339,12 @@ const ProfilePage = ({ params }) => {
                                         }}
                                         onClick={() => {
                                             console.log({to:params?.id, from:userData?._id})
-                                            socket?.emit("start_conversation",{to:params?.id, from:userData?._id})
+                                            socket?.emit("start_conversation", { to: params?.id, from: userData?._id })
+                                            
                                         }}
                                         // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
-                                    />
+                                        />
+                                        </Link>
                                 ) : (
                                     ""
                                 )}

@@ -8,17 +8,21 @@ const middleware1 = async (request) => {
 };
 
 export async function middleware(request) {
-
     const path = request.nextUrl.pathname;
-    console.log(path)
-    const token = request.cookies.get("token")?.value 
+    console.log(path);
+    const token = request.cookies.get("token")?.value;
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
 
     // Authenticate API calls
 
-    if (!isPublicPath && path.startsWith("/api/") && !path.endsWith('login') && !path.endsWith('signup') && !path.endsWith('auth') ) {
-
+    if (
+        !isPublicPath &&
+        path.startsWith("/api/") &&
+        !path.endsWith("login") &&
+        !path.endsWith("signup") &&
+        !path.endsWith("auth")
+    ) {
         const isAuth = await isAuthenticated(request);
         if (!isAuth) {
             // Respond with JSON indicating an error message
@@ -32,17 +36,15 @@ export async function middleware(request) {
                 headers: requestHeaders,
             },
         });
-        return response
+        return response;
     }
 
-
     // // Authenticate non-API calls
-    if (!path.startsWith('/api/')) {
-        
+    if (!path.startsWith("/api/")) {
         if (isPublicPath && token) {
             return NextResponse.redirect(new URL("/", request.nextUrl));
         }
-        
+
         if (!isPublicPath && !token && token !== "") {
             return NextResponse.redirect(new URL("/login", request.nextUrl));
         }
@@ -53,5 +55,5 @@ export async function middleware(request) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ["/", "/login", "/signup", "/explore", "/profile", "/api/:path*"],
+    matcher: ["/", "/login", "/signup", "/messages","/notifications", "/explore", "/profile", "/api/:path*"],
 };

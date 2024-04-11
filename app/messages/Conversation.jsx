@@ -16,7 +16,7 @@ function containsUrl(text) {
     return urlRegex.test(text);
 }
 
-export const Conversation = () => {
+export const Conversation = ({messageListRef}) => {
     const { roomId, directChat, setDirectChat, fetchCurrentMessages } = useContext(ChatContext);
     const { userData } = useContext(PostContext);
 
@@ -70,7 +70,7 @@ export const Conversation = () => {
                     ""
                 )}
             </div>
-            <div class="relative w-full p-6 overflow-y-auto h-[40rem]">
+            <div ref={messageListRef} class="relative w-full p-6 overflow-y-auto h-[40rem]">
                 <ul class="space-y-2">
                     {directChat?.current_messages.map((el, idx) => (
                         <li key={idx} class={"flex " + (el?.incoming ? "justify-start" : "justify-end")}>
@@ -198,20 +198,10 @@ const ChatComponent = () => {
         <Stack height={"100%"} maxHeight={"100vh"} width={false ? "100vw" : "auto"}>
             {/*  */}
             {/* <ChatHeader /> */}
-            <Box
-                ref={messageListRef}
-                width={"100%"}
-                sx={{
-                    position: "relative",
-                    flexGrow: 1,
-                    overflow: "scroll",
-                    boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
-                }}
-            >
+
                 {/* <SimpleBarStyle timeout={500} clickOnTrack={false}> */}
-                <Conversation isMobile={false} />
+                    <Conversation messageListRef={messageListRef}  isMobile={false} />
                 {/* </SimpleBarStyle> */}
-            </Box>
 
             {/*  */}
             {/* <ChatFooter /> */}

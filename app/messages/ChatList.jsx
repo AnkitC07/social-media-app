@@ -49,7 +49,7 @@ const ChatList = ({ users }) => {
     </div> */}
 
             <ul className="overflow-auto h-[32rem]">
-                <h2 className="my-2 mb-2 ml-2 text-lg text-gray-600">Chats</h2>
+                <h2 className="my-2 mb-2 ml-2 text-xl font-medium ">Chats</h2>
                 {console.log(directChat.conversations)}
                 {users.length > 0 &&
                 
