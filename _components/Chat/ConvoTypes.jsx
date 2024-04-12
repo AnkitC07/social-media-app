@@ -129,7 +129,7 @@ const MediaMsg = ({ el, menu }) => {
           /> */}
           <Typography
             variant="body2"
-            color={el.incoming ? theme.palette.text : "#fff"}
+            color={el.incoming ? theme.palette.text : "#000"}
           >
             {el.message}
           </Typography>
