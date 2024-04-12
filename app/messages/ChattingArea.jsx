@@ -1,25 +1,36 @@
-'use client'
-import React, { useContext } from "react";
+"use client";
+import React, { useContext, useEffect } from "react";
 import NoChat from "./NoChat";
 import { ChatContext } from "../../_context/Chat";
 import ChatComponent from "./Conversation";
+import useResponsiveHook from "../../_components/common/ResponsiveHook";
+import Link from "next/link";
 
 const ChattingArea = () => {
-    const { chatType, RoomId } = useContext(ChatContext);
+    const layouts = useResponsiveHook();
+    const { chatType, roomId,setRoomId } = useContext(ChatContext);
+
+    useEffect(() => {
+        return (() => {
+           setRoomId(null)
+       }) 
+    },[])
 
     return (
-        <div class="hidden lg:col-span-2 lg:block">
-            {chatType === "individual" && RoomId !== null ? (
-              <ChatComponent />
+        <div className="md:col-span-2 lg:block">
+            {chatType === "individual" && roomId !== null ? (
+                <ChatComponent />
+            ) : layouts.isMobile ? (
+                ""
             ) : (
-                <div class="chat-container flex flex-col items-center justify-center h-[40rem] ">
+                <div className="chat-container flex flex-col items-center justify-center h-[40rem] ">
                     <NoChat />
 
-                    <p class="text-center mt-4">
+                    <p className="text-center mt-4">
                         Select a conversation or start a{" "}
-                        <a href="/" class="text-primary underline hover:no-underline">
+                        <Link href="/" className="text-primary underline hover:no-underline">
                             new one
-                        </a>
+                        </Link>
                     </p>
                 </div>
             )}

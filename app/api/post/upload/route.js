@@ -19,6 +19,7 @@ const uploadFiles = async (files) => {
         console.log("-=-=-=-=-=-", file.toString("base64"));
 
         const fileStream = Buffer.from(await file.arrayBuffer());
+        console.log("fileStream",fileStream)
         const base64Data = fileStream.toString("base64");
         const finalData = `data:video/mp4;base64,` + base64Data;
         const uploadMethod = file.size > 10 * 1024 * 1024 ? "upload_large" : "upload";
