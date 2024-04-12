@@ -6,7 +6,6 @@ import { Toaster } from "react-hot-toast";
 import UserContextProvider from "../_context/User";
 import PostContextProvider from "../_context/Post";
 import ChatContextProvider from "../_context/Chat";
-import { SocketProvider } from "../_context/Socket";
 import ImageModal from "../_components/common/ImageModal";
 import CommentModal from "../_components/layout/CommentModal.jsx";
 import SocketConnect from "../_components/layout/SocketConnect";
@@ -20,19 +19,17 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <head></head>
             <body className={inter.className + "mx-10 md:px-[15px]"}>
-                <ChatContextProvider>
-                    <UserContextProvider>
-                        <PostContextProvider>
-                            <SocketProvider>
-                                <CommentModal />
-                                <ImageModal />
-                                <Toaster position="bottom-center" reverseOrder={false} />
-                                <Wrapper childs={children} />
-                                <SocketConnect />
-                            </SocketProvider>
-                        </PostContextProvider>
-                    </UserContextProvider>
-                </ChatContextProvider>
+                <PostContextProvider>
+                    <ChatContextProvider>
+                        <UserContextProvider>
+                            <CommentModal />
+                            <ImageModal />
+                            <Toaster position="bottom-center" reverseOrder={false} />
+                            <Wrapper childs={children} />
+                            <SocketConnect />
+                        </UserContextProvider>
+                    </ChatContextProvider>
+                </PostContextProvider>
             </body>
         </html>
     );

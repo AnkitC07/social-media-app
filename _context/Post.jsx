@@ -2,11 +2,12 @@
 import axios from "axios";
 import io from 'socket.io-client'
 import { createContext, useEffect, useState } from "react";
+import { connectSocket } from "../helpers/socket";
 
 export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
-    const [socket, setSocket] = useState(null)
+    const [socketData, setSocketData] = useState(null)
     const [token,setToken] = useState(null)
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,16 +27,16 @@ const PostContextProvider = ({ children }) => {
     });
     
     useEffect(() => {
-        console.log('loop')
         // Validate if the data id present in the state.
         if (!userData?._id) {
             (async() => {
                 try {
 
-                    console.log('useEffect userData')
+                    // console.log('useEffect userData')
                     await axios.get('/api/users/profile?id=user').then(res => {
                         setUserData(res.data.data)
                         if (res.data.success) {
+                            // connectSocket(res.data?.data?._id,setSocketData)
                             // setIsLoggedIn(true)
                         }
                     })
@@ -47,7 +48,7 @@ const PostContextProvider = ({ children }) => {
     },[isLoggedIn])
 
 
-    console.log("Homeposts",userData)
+    // console.log("Homeposts",userData)
     const [posts, setPosts] = useState([]);
     const [homePosts, setHomePosts] = useState([]);
     const [explorePosts, setExplorePosts] = useState([]);
@@ -96,7 +97,7 @@ const PostContextProvider = ({ children }) => {
                 profilePage, setProfilePage,
                 leftProfileData, setLeftProfileData,
                 unKnownProfilePage,setUnknownProfilePage,
-                socket, setSocket,
+                socketData, setSocketData,
                 isLoggedIn, setIsLoggedIn,
                 token, setToken,
                 notificationsArr,setNotificationsArr
