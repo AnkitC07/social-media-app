@@ -104,9 +104,9 @@ export const Conversation = ({ messageListRef }) => {
         return filename.split(".").pop();
     }
 
-    const handleSend = (e) => {
+     const handleSend = (e) => {
         e.preventDefault();
-        if (filesRef.length == 0) {
+        if (filesRef.length == 0 && value !== "") {
             socket?.emit("text_message", {
                 message: linkify(value),
                 conversation_id: roomId,
@@ -114,7 +114,7 @@ export const Conversation = ({ messageListRef }) => {
                 to: directChat.current_conversation.user_id,
                 type: containsUrl(value) ? "Link" : "Text",
             });
-        } else {
+        } else if(filesRef.length > 0){
             console.log(filesRef);
             socket.emit(
                 "file_message",
