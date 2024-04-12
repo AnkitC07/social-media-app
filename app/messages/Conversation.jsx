@@ -241,7 +241,7 @@ export const Conversation = ({ messageListRef }) => {
                             }}
                         />
                     </Box>
-                    <button onClick={() => setOpenPicker(!openPicker)}>
+                    <div onClick={() => setOpenPicker(!openPicker)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6 text-white"
@@ -256,7 +256,7 @@ export const Conversation = ({ messageListRef }) => {
                                 d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                         </svg>
-                    </button>
+                    </div>
                     {/* <button>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
