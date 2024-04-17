@@ -93,8 +93,8 @@ const MessagesPage = () => {
 
     return (
         <>
-            <div className="container mx-auto">
-                <div className="min-w-full border rounded md:grid md:grid-cols-3">
+            <div className="chat_area container mx-auto pb-[65px]   max-md:fixed md:pb-0">
+                <div className="min-w-full border rounded md:grid md:grid-cols-3 ">
 
                     <ChatList  />
 

@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ChatContext } from "../../_context/Chat";
 import { PostContext } from "../../_context/Post";
 import { socket } from "../../helpers/socket";
 import useResponsiveHook from "../../_components/common/ResponsiveHook";
+import SkeletonUser from "../../_components/common/SkeletonUser";
 
 const ChatList = () => {
     const layouts = useResponsiveHook();
     const { userData } = useContext(PostContext);
+    const [loading, setLoading] = useState(true);
     const { fetchDirectConversations, directChat, roomId } = useContext(ChatContext);
 
     useEffect(() => {
@@ -17,6 +19,7 @@ const ChatList = () => {
         socket?.emit("get_direct_conversations", { user_id: userData?._id }, (data) => {
             console.log("get_direct_conversations", data); // this data is the list of conversations
             // dispatch action
+            setLoading(false);
             fetchDirectConversations({ conversations: data, user_id: userData?._id });
         });
         // }
@@ -54,15 +57,22 @@ const ChatList = () => {
 </div>
 </div> */}
 
-                    <ul className="overflow-auto h-[80vh] bg-bg-card ">
-                        <div className="h-[65px] border-b border-gray-300 p-5 ">
-                            <h2 className=" text-xl font-medium ">Chats</h2>
-                        </div>
+                    <div className="h-[65px] border-b border-gray-300 p-5  bg-bg-card ">
+                        <h2 className=" text-xl font-medium ">Chats</h2>
+                    </div>
+                    <ul className="overflow-auto max-md:h-[calc(100vh-242px)]  md:h-[80vh] bg-bg-card ">
                         {/* {console.log(directChat.conversations)} */}
-                        {directChat?.conversations.length > 0 &&
+                        {directChat?.conversations.length > 0 && !loading ? (
                             directChat?.conversations.map((el, idx) => {
                                 return <ListItem key={idx} {...el} />;
-                            })}
+                            })
+                        ) : (
+                            <div className="flex flex-col gap-5 p-4">
+                                {[0, 1, 2, 3].map((_, i) => (
+                                    <SkeletonUser key={i} i={i} />
+                                ))}
+                            </div>
+                        )}
                     </ul>
                 </div>
             )}

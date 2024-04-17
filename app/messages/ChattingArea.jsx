@@ -17,13 +17,13 @@ const ChattingArea = () => {
     },[])
 
     return (
-        <div className="md:col-span-2 lg:block">
+        <div className="md:col-span-2 lg:block ">
             {chatType === "individual" && roomId !== null ? (
                 <ChatComponent />
             ) : layouts.isMobile ? (
                 ""
             ) : (
-                <div className="chat-container flex flex-col items-center justify-center h-[40rem] ">
+                <div className="chat-container flex flex-col items-center justify-center max-md:h-[calc(100vh - 312px)] ">
                     <NoChat />
 
                     <p className="text-center mt-4">

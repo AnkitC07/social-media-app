@@ -30,7 +30,7 @@ const ImageModal = () => {
                     role="dialog"
                     data-dialog="image-dialog"
                 >
-                    <div className="relative  flex h-screen  justify-center p-0 font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased">
+                    <div className="relative  flex   justify-center p-0 font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased">
                         {isImage(modalImage?.url) && (
                             <img
                                 alt="Image modal"

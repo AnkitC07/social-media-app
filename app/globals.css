@@ -48,6 +48,10 @@ body {
     top: 148px !important;
   } */
 
+/* .chat_area .border-gray-300 {
+    border-color:#d1d5db30 !important;
+} */
+
 .swiper-button-prev::after,
 .swiper-button-next::after {
     color: rgb(51 65 85 / var(--tw-bg-opacity));
@@ -72,6 +76,13 @@ body {
     display: none;
 }
 
+
+
+/*  */
+em-emoji-picker #root {
+    height: 353px;
+    width: 400px;
+}
 /*  */
 .box-on-hover:hover {
     box-shadow: 12px 12px 1px 1px rgb(255, 255, 255);

@@ -6,7 +6,7 @@ export default function Home() {
 
     const token = cookieStore.get('token')
 
-    console.log('cokkie=>',token)
+
     
     return (
         <>

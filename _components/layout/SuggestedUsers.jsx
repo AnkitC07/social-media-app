@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Card from "../common/Card";
 import SuggestedUser from "../common/SuggestedUser";
+import SkeletonUser from "../common/SkeletonUser";
 
 const SuggestedUsers = ({ suggestedUsers, loading, style }) => {
     return (
@@ -17,19 +18,7 @@ const SuggestedUsers = ({ suggestedUsers, loading, style }) => {
                     )} */}
                     {loading ? (
                         [0, 1, 2, 3].map((_, i) => (
-                            <div
-                                key={i}
-                                className="flex flex-row items-center justify-center h-full space-x-5 animate-pulse"
-                            >
-                                <div className="w-12 h-12 bg-gray-700 rounded-full "></div>
-                                <div className="flex flex-col space-y-3">
-                                    <div className="h-4 bg-gray-700 rounded-md w-20 "></div>
-                                    <div className="w-16 h-4 bg-gray-700 rounded-md "></div>
-                                </div>
-                                <div>
-                                    <div className="w-10 h-6 bg-gray-700 rounded-md "></div>
-                                </div>
-                            </div>
+                            <SkeletonUser key={i} i={i} button={true}/>
                         ))
                     ) : suggestedUsers && suggestedUsers.length > 0 ? (
                         suggestedUsers?.map((user, i) => <SuggestedUser key={i} user={user} />)
