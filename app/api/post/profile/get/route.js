@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Tweet from "../../../../../models/tweetModel.js";
-import User from "../../../../../models/userModel.js";
+import "../../../../../models/userModel.js";
+import "../../../../../models/replyModel.js";
 import { connect } from "../../../../../dbConfig/dbConfig.js";
 import mongoose from "mongoose";
 export const dynamic = 'force-dynamic'

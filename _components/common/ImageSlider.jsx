@@ -96,4 +96,6 @@ const ImageSlider = ({ filesRef, setFileRef, isFeed }) => {
     );
 };
 
+
+
 export default ImageSlider;

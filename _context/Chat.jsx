@@ -3,6 +3,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { PostContext } from "./Post";
 import { connectSocket, socket } from "../helpers/socket";
+import formatTimeDifference, { formatTime } from "../app/functions/getTIme";
 
 export const ChatContext = createContext();
 
@@ -46,8 +47,29 @@ const ChatContextProvider = ({ children }) => {
                         incoming: message.to === userData?._id,
                         outgoing: message.from === userData?._id,
                         img: message.file,
+                        date:message?.created_at
                     });
                 }
+
+                directChat?.conversations.forEach((conv,i) => { 
+
+                    if (conv.id === data.conversation_id) { 
+                        setDirectChat(state => {
+                            return {
+                                ...state,
+                                conversations: [{
+                                    ...state.conversations[i],
+                                    msg: message.text,
+                                    time: formatTime(Date.now())
+                                },...state?.conversations?.filter(con=>con.id!==data.conversation_id)] ,
+                            }
+                        })
+                    }
+
+                })
+
+                console.log("adding new msg to list",directChat.conversations, data.conversation_id)
+
             });
 
             socket?.on("start_chat", (data) => {
@@ -137,8 +159,8 @@ const ChatContextProvider = ({ children }) => {
                 name: `${user?.fullName}`,
                 online: user?.isActive,
                 img: `${user?.avatar}`,
-                msg: el.messages.length > 0 ? el.messages.slice(-1)[0].text : "",
-                time: "9:36",
+                msg: el?.lastMsg ? el?.lastMsg : "",
+                time: el?.lastMsgDate ? formatTime(el?.lastMsgDate) : "9:36",
                 unread: 0,
                 pinned: false,
                 // about: user?.about,
@@ -172,6 +194,7 @@ const ChatContextProvider = ({ children }) => {
             incoming: el.to === user_id,
             outgoing: el.from === user_id,
             img: el.file,
+            date:el?.created_at 
         }));
         //updated the state with current data
         // setDirectChat((state) => {
@@ -212,8 +235,8 @@ const ChatContextProvider = ({ children }) => {
                     name: `${user?.fullName}`,
                     online: user?.isActive,
                     img: `${user?.avatar}`,
-                    msg: el.messages.length > 0 ? el.messages.slice(-1)[0].text : "",
-                    time: "9:36",
+                    msg: el?.lastMsg ? el?.lastMsg : "",
+                    time: el?.lastMsgDate ? formatTime(el?.lastMsgDate) : "9:36",
                     unread: 0,
                     pinned: false,
                 };
@@ -236,7 +259,8 @@ const ChatContextProvider = ({ children }) => {
         });
     }
 
-    function addDirectConversation(conversation, user_id) {
+    function addDirectConversation({conversation, user_id}) {
+        console.log(conversation)
         const this_conversation = conversation;
         const user = this_conversation?.participants.find((elm) => elm?._id.toString() !== user_id);
 
@@ -246,8 +270,8 @@ const ChatContextProvider = ({ children }) => {
             name: `${user?.fullName}`,
             online: user?.isActive,
             img: `${user?.avatar}`,
-            msg: faker.music.songName(),
-            time: "9:36",
+            msg:  "",
+            time:  formatTime(Date.now()),
             unread: 0,
             pinned: false,
         };

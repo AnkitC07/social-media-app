@@ -43,8 +43,8 @@ async function getUserWithCount(userId, profileId) {
             followers:0,
             following:0,
             password: 0,
-            tweets: 0,
-            likedTweet:0,// Exclude tweets to avoid unnecessary data transfer
+            tweets: 0,// Exclude tweets to avoid unnecessary data transfer
+            likedTweet:0,
         };
 
         // Use aggregation framework for efficient retrieval and transformation
@@ -68,7 +68,7 @@ async function getUserWithCount(userId, profileId) {
         const user = await User.aggregate(pipeline);
 
         if (user.length === 0) {
-            return []; // Return null if no user found
+            return []; // Return null/[] if no user found
         }
 
         return user[0]; // Return the first (and expected) document from the aggregation result

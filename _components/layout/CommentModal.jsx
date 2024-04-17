@@ -12,12 +12,14 @@ import likeToggle from "../../app/functions/api/likeToggle";
 import PostSwiper from "../common/PostSwiper";
 import ProfileLink from "../common/ProfileLink";
 import formatTimeDifference from "../../app/functions/getTIme";
+import { collapseClasses } from "@mui/material";
 
 const CommentModal = () => {
     
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
     const { userData } = useContext(PostContext);
     const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));
+    const [commentsLoading,setCommentsLoading] = useState(true)
 
     const handleClose = () => {
         setCommentModal({
@@ -25,6 +27,32 @@ const CommentModal = () => {
             post: {},
         });
     };
+
+    const getData = async () => {
+        try {
+            setCommentsLoading(true)   
+            
+            const response = await axios.get(`/api/post/comment?id=${commentModal?.post?._id}`);
+            console.log("comment modal getdata api: ", response.data);
+            setCommentModal(state => {
+                return {
+                    ...state,
+                    post: {
+                        ...state.post,
+                        replies: response.data?.replies,
+                    }
+                }
+            })
+            setTimeout(() => {
+                setCommentsLoading(false)   
+            }, 1000);
+        } catch (error) {
+            console.log("Error at commment modal data get: ", error)
+        }
+    }
+    useEffect(() => {
+        getData();
+    }, [commentModal?.post?._id]);
 
 
     useEffect(() => {
@@ -169,7 +197,7 @@ const CommentModal = () => {
                                                         <path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path>
                                                     </g>
                                                 </svg>
-                                                {commentModal.post.replies.length}
+                                                {commentModal.post.replyCount}
                                             </div>
                                             {/* <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-green-400">
                                                 <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
@@ -204,7 +232,7 @@ const CommentModal = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <CommentArea commentModal={commentModal} comment={comment} setComment={setComment} />
+                                <CommentArea commentsLoading={commentsLoading} commentModal={commentModal} comment={comment} setComment={setComment} />
                             </div>
 
                             {/* <!--Modal footer--> */}

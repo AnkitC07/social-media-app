@@ -17,3 +17,18 @@ export default function formatTimeDifference(date) {
         return `${days} days ago`;
     }
 }
+
+export function formatTime(date) {
+    const newDate = new Date(date);
+    // const options = {
+    //   hour: 'numeric',
+    //   minute: 'numeric',
+    //   hour12: true,
+    // };
+    // return newDate.toLocaleTimeString('en-US', options);
+    const hours = newDate.getHours() % 12 || 12; // 12-hour format (adjust for 24-hour if needed)
+    const minutes = newDate.getMinutes().toString().padStart(2, "0");
+    const period = newDate.getHours() >= 12 ? "pm" : "am";
+
+    return `${hours}.${minutes} ${period}`;
+}

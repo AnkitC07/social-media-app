@@ -35,7 +35,6 @@ const Feed = ({ post, i, window, setPosts }) => {
 
     // useEffect(() => {
     //     console.log("when comment modal state updates=>", commentModal)
-        
     // },[commentModal])
 
     const handleLikeToggle = async () => {
@@ -82,7 +81,7 @@ const Feed = ({ post, i, window, setPosts }) => {
 
             <div className="pl-20">
                 <p className=" sm:px-4 pt-0 text-base width-auto mr-2 font-normal text-white flex-shrink break-words whitespace-pre-line">
-                    {post.text}
+                    {post?.text}  
                 </p>
 
                 {/* <div className="md:flex-shrink pr-6 pt-3">{postImages(post)}</div> */}
@@ -112,7 +111,7 @@ const Feed = ({ post, i, window, setPosts }) => {
                                     </g>
                                 </svg>
 
-                                {post?.replies.length}
+                                {post?.replyCount}
                             </div>
                             {/* <div className="duration-350 flex flex-1 items-center text-xs  text-white transition ease-in-out hover:text-green-400">
                                 <svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">

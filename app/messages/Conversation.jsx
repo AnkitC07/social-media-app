@@ -11,6 +11,7 @@ import { Timeline, MediaMsg, LinkMsg, DocMsg, ReplyMsg } from "../../_components
 import { Camera, File, Image, LinkSimple, PaperPlaneTilt, Smiley, Sticker, User, ArrowLeft } from "phosphor-react";
 import ImageSlider from "../../_components/common/ImageSlider";
 import useResponsiveHook from "../../_components/common/ResponsiveHook";
+import SmallImageViewer from "../../_components/common/SmallImageViewer";
 
 function linkify(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -106,7 +107,7 @@ export const Conversation = ({ messageListRef }) => {
 
     const handleSend = (e) => {
         e.preventDefault();
-        if (filesRef.length == 0) {
+        if (filesRef.length == 0 && value !== "") {
             socket?.emit("text_message", {
                 message: linkify(value),
                 conversation_id: roomId,
@@ -114,7 +115,7 @@ export const Conversation = ({ messageListRef }) => {
                 to: directChat.current_conversation.user_id,
                 type: containsUrl(value) ? "Link" : "Text",
             });
-        } else {
+        } else if (filesRef.length > 0) {
             console.log(filesRef);
             socket.emit(
                 "file_message",
@@ -122,9 +123,9 @@ export const Conversation = ({ messageListRef }) => {
                     message: linkify(value),
                     conversation_id: roomId,
                     from: userData?._id,
-                    to: directChat.current_conversation.user_id,
+                    to: directChat?.current_conversation?.user_id,
                     type: fileType,
-                    file:filesRef
+                    file: filesRef,
                 },
                 (status) => {
                     console.log(status);
@@ -155,53 +156,71 @@ export const Conversation = ({ messageListRef }) => {
                     )}
                 </div>
             </div>
-            <div ref={messageListRef} className="relative w-full p-6 overflow-y-auto h-[40rem]">
+            <div ref={messageListRef} className="relative w-full p-6 overflow-y-auto h-[calc(100vh-312px)] ">
                 <ul className="space-y-2">
                     {/* <Timeline /> */}
                     {directChat?.current_messages.map((el, idx) => {
                         const menu = true;
-                        switch (el.type) {
-                            case "divider":
-                                return (
-                                    // Timeline
-                                    <Timeline key={idx} el={el} />
-                                );
 
-                            case "msg":
-                                switch (el.subtype) {
-                                    case "img":
-                                        return (
-                                            // Media Message
-                                            <MediaMsg key={idx} el={el} menu={menu} />
-                                        );
+                        const switchFn = () => {
+                            switch (el.type) {
+                                case "divider":
+                                    return (
+                                        // Timeline
+                                        <Timeline key={idx} el={el} />
+                                    );
 
-                                    case "doc":
-                                        return (
-                                            // Doc Message
-                                            <DocMsg key={idx} el={el} menu={menu} />
-                                        );
-                                    case "Link":
-                                        return (
-                                            //  Link Message
-                                            <LinkMsg key={idx} el={el} menu={menu} />
-                                        );
+                                case "msg":
+                                    switch (el.subtype) {
+                                        case "img":
+                                            return (
+                                                // Media Message
+                                                <MediaMsg key={idx} el={el} menu={menu} />
+                                            );
 
-                                    case "reply":
-                                        return (
-                                            //  ReplyMessage
-                                            <ReplyMsg key={idx} el={el} menu={menu} />
-                                        );
+                                        case "doc":
+                                            return (
+                                                // Doc Message
+                                                <DocMsg key={idx} el={el} menu={menu} />
+                                            );
+                                        case "Link":
+                                            return (
+                                                //  Link Message
+                                                <LinkMsg key={idx} el={el} menu={menu} />
+                                            );
 
-                                    default:
-                                        return (
-                                            // Text Message
-                                            <TextMsg key={idx} el={el} menu={menu} />
-                                        );
-                                }
+                                        case "reply":
+                                            return (
+                                                //  ReplyMessage
+                                                <ReplyMsg key={idx} el={el} menu={menu} />
+                                            );
 
-                            default:
-                                return <></>;
-                        }
+                                        default:
+                                            return (
+                                                // Text Message
+                                                <TextMsg key={idx} el={el} menu={menu} />
+                                            );
+                                    }
+
+                                default:
+                                    return <></>;
+                            }
+                        };
+
+                        return (
+                            // <Stack width={'100%'} position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
+                                switchFn()
+                                // {/* <img
+                                //     className="object-cover w-10 h-10 rounded-full"
+                                //     src={""}
+                                //     onError={(e) => {
+                                //         e.target.src =
+                                //             "https://cdn.pixabay.com/photo/2018/09/12/12/14/man-3672010__340.jpg";
+                                //     }}
+                                //     alt="username"
+                                // /> */}
+                            // {/* </Stack> */}
+                        );
                     })}
 
                     {/* Moved to TextMsg component */}
@@ -221,7 +240,8 @@ export const Conversation = ({ messageListRef }) => {
             </div>
 
             <div className="border-t border-gray-300">
-                <ImageSlider filesRef={filesRef} setFileRef={setFileRef} isFeed={false} />
+                {/* <ImageSlider filesRef={filesRef} setFileRef={setFileRef} isFeed={false}  /> */}
+                <SmallImageViewer filesRef={filesRef} setFileRef={setFileRef} />
                 <form className="flex items-center justify-between w-full p-3 " onSubmit={handleSend}>
                     <Box
                         style={{
@@ -234,6 +254,8 @@ export const Conversation = ({ messageListRef }) => {
                     >
                         <Picker
                             // theme={theme.palette.mode}
+                                
+                            
                             data={data}
                             onEmojiSelect={(emoji) => {
                                 console.log(emoji);
@@ -241,7 +263,12 @@ export const Conversation = ({ messageListRef }) => {
                             }}
                         />
                     </Box>
-                    <button onClick={() => setOpenPicker(!openPicker)}>
+                    <div
+                        onClick={() => {
+                            console.log("enter");
+                            setOpenPicker(!openPicker);
+                        }}
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6 text-white"
@@ -256,7 +283,7 @@ export const Conversation = ({ messageListRef }) => {
                                 d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                         </svg>
-                    </button>
+                    </div>
                     {/* <button>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +324,7 @@ export const Conversation = ({ messageListRef }) => {
                             display: openActions ? "inline-block" : "none",
                         }}
                     >
-                        {Actions.map((el,idx) => (
+                        {Actions.map((el, idx) => (
                             <Tooltip key={idx} placement="right" title={el.title}>
                                 <Fab
                                     onClick={() => {
@@ -322,15 +349,15 @@ export const Conversation = ({ messageListRef }) => {
                         ))}
                     </Stack>
 
-                    <InputAdornment>
-                        <IconButton
-                            onClick={() => {
-                                setOpenActions(!openActions);
-                            }}
-                        >
-                            <LinkSimple className="text-white" />
-                        </IconButton>
-                    </InputAdornment>
+                    {/* <InputAdornment> */}
+                    <IconButton
+                        onClick={() => {
+                            setOpenActions(!openActions);
+                        }}
+                    >
+                        <LinkSimple className="text-white" />
+                    </IconButton>
+                    {/* </InputAdornment> */}
                     <input
                         ref={inputRef}
                         value={value}
