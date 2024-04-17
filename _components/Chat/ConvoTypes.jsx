@@ -117,6 +117,7 @@ const MediaMsg = ({ el, menu }) => {
             </Box>
             <span className={`absolute text-xs right-1 bottom-0`}>{formatTime(el?.date)}</span>
             {/* {menu && <MessageOption />} */}
+
         </Stack>
     );
 };
