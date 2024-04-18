@@ -15,11 +15,10 @@ import formatTimeDifference from "../../app/functions/getTIme";
 import { collapseClasses } from "@mui/material";
 
 const CommentModal = () => {
-    
     const { commentModal, setCommentModal, comment, setComment } = useContext(PostContext);
     const { userData } = useContext(PostContext);
     const [isLiked, setIsLiked] = useState(commentModal.post?.likes?.includes(userData._id));
-    const [commentsLoading,setCommentsLoading] = useState(true)
+    const [commentsLoading, setCommentsLoading] = useState(true);
 
     const handleClose = () => {
         setCommentModal({
@@ -30,30 +29,29 @@ const CommentModal = () => {
 
     const getData = async () => {
         try {
-            setCommentsLoading(true)   
-            
+            setCommentsLoading(true);
+
             const response = await axios.get(`/api/post/comment?id=${commentModal?.post?._id}`);
             console.log("comment modal getdata api: ", response.data);
-            setCommentModal(state => {
+            setCommentModal((state) => {
                 return {
                     ...state,
                     post: {
                         ...state.post,
                         replies: response.data?.replies,
-                    }
-                }
-            })
+                    },
+                };
+            });
             setTimeout(() => {
-                setCommentsLoading(false)   
+                setCommentsLoading(false);
             }, 1000);
         } catch (error) {
-            console.log("Error at commment modal data get: ", error)
+            console.log("Error at commment modal data get: ", error);
         }
-    }
+    };
     useEffect(() => {
-        getData();
+        if (commentModal.open) getData();
     }, [commentModal?.post?._id]);
-
 
     useEffect(() => {
         setIsLiked(commentModal.post?.likes?.includes(userData._id));
@@ -87,7 +85,7 @@ const CommentModal = () => {
     const handleLikeToggle = async () => {
         const action = isLiked ? "unlike" : "like";
 
-        const result = await commentModal.callback(commentModal.idx,isLiked,setIsLiked,commentModal.post)
+        const result = await commentModal.callback(commentModal.idx, isLiked, setIsLiked, commentModal.post);
 
         if (!result.error) {
             setCommentModal((prevPosts) => {
@@ -142,7 +140,10 @@ const CommentModal = () => {
                             </div>
 
                             {/* <!--Modal body--> */}
-                            <div className="relative sm:flex sm:divide-x divide-y divide-[#ffffff26] px-4 " data-te-modal-body-ref>
+                            <div
+                                className="relative sm:flex sm:divide-x divide-y divide-[#ffffff26] px-4 "
+                                data-te-modal-body-ref
+                            >
                                 <div className="sm:w-[60%] ">
                                     <div className="p-4 pl-0">
                                         <ProfileLink
@@ -161,7 +162,8 @@ const CommentModal = () => {
                                                                 {commentModal.post.user.fullName}
                                                             </span>
                                                             <span className="text-sm  leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
-                                                                @{commentModal.post.user.username} . {formatTimeDifference(commentModal.post?.createdAt)}
+                                                                @{commentModal.post.user.username} .{" "}
+                                                                {formatTimeDifference(commentModal.post?.createdAt)}
                                                             </span>
                                                         </p>
                                                         {/* <p>{commentModal?.post?.text}</p> */}
@@ -232,7 +234,12 @@ const CommentModal = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <CommentArea commentsLoading={commentsLoading} commentModal={commentModal} comment={comment} setComment={setComment} />
+                                <CommentArea
+                                    commentsLoading={commentsLoading}
+                                    commentModal={commentModal}
+                                    comment={comment}
+                                    setComment={setComment}
+                                />
                             </div>
 
                             {/* <!--Modal footer--> */}

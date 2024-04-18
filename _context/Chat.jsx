@@ -276,10 +276,13 @@ const ChatContextProvider = ({ children }) => {
             pinned: false,
         };
 
+
+
         setDirectChat((state) => {
             return {
                 ...state,
                 conversations: [...state.conversations.filter((el) => el?.id !== this_conversation._id), newConvo],
+                current_conversation: newConvo,
             };
         });
     }

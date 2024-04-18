@@ -86,6 +86,7 @@ export const Conversation = ({ messageListRef }) => {
     }
 
     useEffect(() => {
+        console.log("=======>",directChat.current_conversation)
         const current = directChat.conversations.find((el) => el?.id === roomId);
 
         socket?.emit("get_messages", { conversation_id: current?.id }, (data) => {
@@ -99,7 +100,7 @@ export const Conversation = ({ messageListRef }) => {
                 current_conversation: current,
             };
         });
-    }, [roomId]);
+    }, [roomId,directChat.current_conversation]);
 
     function getExtension(filename) {
         return filename.split(".").pop();
