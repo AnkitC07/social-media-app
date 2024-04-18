@@ -13,6 +13,7 @@ const Hashtags = ({ tag, count }) => {
             })}
             key={tag}
             className="flex flex-col gap-1 mb-3"
+            
         >
             <p className="font-bold hover:text-tweet-blue">#{tag}</p>
             <p className="text-[#6a6a6a] text-sm">{count} Tweets</p>

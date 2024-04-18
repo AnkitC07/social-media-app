@@ -106,7 +106,7 @@ export const Conversation = ({ messageListRef }) => {
         return filename.split(".").pop();
     }
 
-    const handleSend = (e) => {
+     const handleSend = (e) => {
         e.preventDefault();
         if (filesRef.length == 0 && value !== "") {
             socket?.emit("text_message", {
@@ -116,7 +116,9 @@ export const Conversation = ({ messageListRef }) => {
                 to: directChat.current_conversation.user_id,
                 type: containsUrl(value) ? "Link" : "Text",
             });
-        } else if (filesRef.length > 0) {
+
+        } else if(filesRef.length > 0){
+
             console.log(filesRef);
             socket.emit(
                 "file_message",
@@ -264,12 +266,13 @@ export const Conversation = ({ messageListRef }) => {
                             }}
                         />
                     </Box>
+
                     <div
                         onClick={() => {
-                            console.log("enter");
                             setOpenPicker(!openPicker);
                         }}
                     >
+
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6 text-white"
