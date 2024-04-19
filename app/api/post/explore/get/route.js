@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 import Tweet from "../../../../../models/tweetModel.js";
 import User from "../../../../../models/userModel.js";
@@ -13,7 +14,7 @@ export async function GET(request) {
         const requestHeaders = new Headers(request.headers);
         const userId = requestHeaders.get("x-user-_id");
         // Assuming userId is the ID of the currently logged-in user
-        const currentUser = await User.findById(userId).exec();
+        const currentUser = await User.findById(userId).select("following").exec();
         const page = request.nextUrl.searchParams.get("page");
 
         if (currentUser) {
@@ -34,8 +35,74 @@ export async function GET(request) {
 
             // console.log("page-explore", page, tweetsFromFollowingUsers);
 
+            const aggregation = [
+                {
+                    $match: {
+                        user: {
+                            $nin: [
+                                ...followingUserIds?.map((id) => new mongoose.Types.ObjectId(id)),
+                                new mongoose.Types.ObjectId(userId),
+                            ],
+                        },
+                    },
+                },
+                {
+                    $project: {
+                        text: 1,
+                        user: 1, // Include the entire user document for now
+                        createdAt: 1,
+                        likes: 1,
+                        images: 1,
+                        replies: 1,
+                        likeCount: { $size: "$likes" },
+                        replyCount: { $size: "$replies" },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "user",
+                        foreignField: "_id",
+                        as: "user",
+                    },
+                },
+                {
+                    $unwind: "$user", // Unwind user document from the lookup
+                },
+                {
+                    $project: {
+                        // Second project stage for user projection
+                        text: 1,
+                        user: {
+                            // Project desired user fields here
+                            _id: 1,
+                            username: 1,
+                            fullName: 1,
+                            avatar: 1,
+                        },
+                        createdAt: 1,
+                        likes: 1,
+                        replies: 1,
+                        images: 1,
+                        likeCount: 1,
+                        replyCount: 1,
+                    },
+                },
+                {
+                    $sort: { createdAt: -1 },
+                },
+                {
+                    $skip: (page - 1) * limit,
+                },
+                {
+                    $limit: limit,
+                },
+            ];
+            const result = await Tweet.aggregate(aggregation);
+            console.log("testing aggrigation=> explore", result );
+
             // console.log("Tweets from non-following users:", tweetsFromFollowingUsers);
-            return NextResponse.json(tweetsFromFollowingUsers);
+            return NextResponse.json(result);
         } else {
             console.log("User not found");
             return NextResponse.json(

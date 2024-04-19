@@ -44,7 +44,7 @@ const CommentModal = () => {
             });
             setTimeout(() => {
                 setCommentsLoading(false);
-            }, 1000);
+            }, 500);
         } catch (error) {
             console.log("Error at commment modal data get: ", error);
         }
@@ -153,16 +153,16 @@ const CommentModal = () => {
                                         >
                                             <div className="flex items-start">
                                                 <div>
-                                                    <Profile src={commentModal.post.user.avatar} w={42} h={100} />
+                                                    <Profile src={commentModal?.post?.user?.avatar} w={42} h={100} />
                                                 </div>
                                                 <div className="ml-4">
                                                     <div className="mb-3">
                                                         <p className=" flex flex-wrap items-baseline  text-base font-medium leading-6 text-white">
                                                             <span className="mr-2">
-                                                                {commentModal.post.user.fullName}
+                                                                {commentModal?.post?.user?.fullName}
                                                             </span>
                                                             <span className="text-sm  leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
-                                                                @{commentModal.post.user.username} .{" "}
+                                                                @{commentModal?.post?.user?.username} .{" "}
                                                                 {formatTimeDifference(commentModal.post?.createdAt)}
                                                             </span>
                                                         </p>
@@ -171,7 +171,7 @@ const CommentModal = () => {
                                                     <p className="text-sm leading-8 tracking-wide	">
                                                         <span className="text-gray-400 ">Replying to </span>
                                                         <span className="text-blue-600">
-                                                            @{commentModal.post.user.username}
+                                                            @{commentModal?.post?.user?.username}
                                                         </span>
                                                     </p>
                                                 </div>
@@ -180,14 +180,14 @@ const CommentModal = () => {
                                     </div>
                                     <div className="pl-[60px] pr-5">
                                         <p className="width-auto flex-shrink text-base font-medium text-white whitespace-pre-line">
-                                            {commentModal.post.text}
+                                            {commentModal?.post?.text}
                                         </p>
 
                                         {/* <div className="pr-6 pt-3 md:flex-shrink">{postImages(commentModal.post)}</div> */}
                                         <div className="md:flex-shrink pr-6 pt-3">
-                                            {commentModal.post.images?.length > 0 && (
+                                            {commentModal?.post?.images?.length > 0 && (
                                                 <div className="relative w-full h-[22rem] px-4">
-                                                    <PostSwiper posts={commentModal.post.images} />
+                                                    <PostSwiper posts={commentModal?.post?.images} />
                                                 </div>
                                             )}
                                         </div>

@@ -61,7 +61,7 @@ const ChatList = () => {
                     <div className="h-[65px] border-b border-gray-300 p-5  bg-bg-card ">
                         <h2 className=" text-xl font-medium ">Chats</h2>
                     </div>
-                        <ul className="overflow-auto max-md:h-[calc(100vh-242px)]  md:h-[80vh] bg-bg-card ">
+                        <ul className="overflow-auto max-md:h-[calc(100vh-242px)]  md:h-[60vh] bg-bg-card ">
                             
                         {/* {console.log(directChat.conversations)} */}
                         {directChat?.conversations.length > 0 && !loading ? (

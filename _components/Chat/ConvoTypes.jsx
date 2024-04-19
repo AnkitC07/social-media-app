@@ -1,12 +1,13 @@
 import React from "react";
 import { Stack, Box, Typography, Menu, MenuItem, IconButton, Divider } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
-import { DotsThreeVertical, DownloadSimple, Image } from "phosphor-react";
+import { DotsThreeVertical, DownloadSimple, Image as ImageIcon } from "phosphor-react";
 // import { Message_options } from "../../data";
 // import { Link } from "react-router-dom";
 // import truncateString from "../../utils/truncate";
 // import { LinkPreview } from "@dhaiwat10/react-link-preview";
 import Embed from "react-embed";
+import Image from "next/image"; 
 import { formatTime } from "../../app/functions/getTIme";
 
 // const theme = {
@@ -16,41 +17,41 @@ import { formatTime } from "../../app/functions/getTIme";
 // }
 
 const MessageOption = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <>
-      <DotsThreeVertical
-        size={20}
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-      />
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <Stack spacing={1} px={1}>
-          {/* {Message_options.map((el) => (
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    return (
+        <>
+            <DotsThreeVertical
+                size={20}
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+            />
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                }}
+            >
+                <Stack spacing={1} px={1}>
+                    {/* {Message_options.map((el) => (
             <MenuItem onClick={handleClose}>{el.title}</MenuItem>
           ))} */}
-        </Stack>
-      </Menu>
-    </>
-  );
+                </Stack>
+            </Menu>
+        </>
+    );
 };
 
 const TextMsg = ({ el, menu }) => {
@@ -84,9 +85,7 @@ const MediaMsg = ({ el, menu }) => {
                 px={1.5}
                 py={1.5}
                 sx={{
-                    backgroundColor: el.incoming
-                        ? '#1b2730'
-                        : "white",
+                    backgroundColor: el.incoming ? "#1b2730" : "white",
                     borderRadius: 1.5,
                     width: "max-content",
                 }}
@@ -102,6 +101,16 @@ const MediaMsg = ({ el, menu }) => {
                                 overflow: "hidden",
                             }}
                         >
+{/*                             <Image
+                                src={img}
+                                sizes="100vw"
+                                style={{
+                                    width: "150px",
+                                    height: "auto",
+                                }}
+                                width={500}
+                                height={300}
+                            /> */}
                             <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} />
                         </Box>
                     ))}
@@ -110,21 +119,20 @@ const MediaMsg = ({ el, menu }) => {
             alt={el.message}
             style={{ maxHeight: 210, borderRadius: "10px" }}
           /> */}
-                    <Typography variant="body2" color={el.incoming ? "#fff" : '#000'}>
+                    <Typography variant="body2" color={el.incoming ? "#fff" : "#000"}>
                         {el.message}
                     </Typography>
                 </Stack>
             </Box>
             <span className={`absolute text-xs right-1 bottom-0`}>{formatTime(el?.date)}</span>
             {/* {menu && <MessageOption />} */}
-
         </Stack>
     );
 };
 const DocMsg = ({ el, menu }) => {
     const theme = useTheme();
     return (
-        <Stack position={'relative'} direction="row" justifyContent={el.incoming ? "start" : "end"}>
+        <Stack position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
             <Box
                 px={1.5}
                 py={1.5}
@@ -147,7 +155,7 @@ const DocMsg = ({ el, menu }) => {
                             borderRadius: 1,
                         }}
                     >
-                        <Image size={48} />
+                        <ImageIcon size={48} />
                         <Typography variant="caption">Abstract.png</Typography>
                         <IconButton>
                             <DownloadSimple />
@@ -157,8 +165,8 @@ const DocMsg = ({ el, menu }) => {
                         {el.message}
                     </Typography>
                 </Stack>
-        </Box>
-        <span className={`absolute text-xs right-1 bottom-0`}>{formatTime(el?.date)}</span>
+            </Box>
+            <span className={`absolute text-xs right-1 bottom-0`}>{formatTime(el?.date)}</span>
             {/* {menu && <MessageOption />} */}
         </Stack>
     );
