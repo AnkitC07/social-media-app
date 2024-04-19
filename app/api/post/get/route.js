@@ -95,7 +95,7 @@ export async function GET(request, { params, query }) {
                 },
             ];
             const result = await Tweet.aggregate(aggregation);
-            console.log("testing aggrigation=>", await Tweet.aggregate(aggregation), );
+            // console.log("testing aggrigation=>", await Tweet.aggregate(aggregation), );
             return NextResponse.json(result);
         } else {
             console.log("User not found");

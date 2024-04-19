@@ -143,6 +143,7 @@ export const Conversation = ({ messageListRef }) => {
             <div className=" flex items-center  border-b border-gray-300 bg-bg-card">
                 {layouts.isMobile && <ArrowLeft size={24} className="mx-2" onClick={() => setRoomId(null)} />}
                 <div className="relative flex items-center p-3 ">
+                    {console.log(directChat?.current_conversation)}
                     <img
                         className="object-cover w-10 h-10 rounded-full"
                         src={directChat?.current_conversation?.img}
