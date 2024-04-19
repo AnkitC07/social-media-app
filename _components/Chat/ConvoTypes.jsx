@@ -101,7 +101,7 @@ const MediaMsg = ({ el, menu }) => {
                                 overflow: "hidden",
                             }}
                         >
-                            <Image
+{/*                             <Image
                                 src={img}
                                 sizes="100vw"
                                 style={{
@@ -110,7 +110,7 @@ const MediaMsg = ({ el, menu }) => {
                                 }}
                                 width={500}
                                 height={300}
-                            />
+                            /> */}
                             <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} />
                         </Box>
                     ))}
