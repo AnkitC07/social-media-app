@@ -102,7 +102,7 @@ const MediaMsg = ({ el, menu }) => {
                                 overflow: "hidden",
                             }}
                         >
-                            <Image
+{/*                             <Image
                                 src={img}
                                 sizes="100vw"
                                 style={{
