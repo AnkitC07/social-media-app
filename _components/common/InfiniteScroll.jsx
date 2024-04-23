@@ -27,7 +27,7 @@ const InfiniteScroll = ({ loadMoreRef, setPage, children, }) => {
     useEffect(() => {
         const observer = new IntersectionObserver(observerCallback, {
             root: null,
-            threshold: 1.0,
+            threshold: 0.1,
         });
 
         if (loadMoreRef.current) {

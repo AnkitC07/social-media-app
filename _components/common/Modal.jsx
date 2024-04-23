@@ -2,7 +2,6 @@
 import React, { useContext } from "react";
 // import Link from "next/link";
 // import Profile from "./Profile";
-// import EmojiPicker from "emoji-picker-react";
 // import { PostContext } from "../../_context/Post";
 
 const Modal = ({ children, style = "", width }) => {
@@ -141,12 +140,7 @@ const Modal = ({ children, style = "", width }) => {
 //                             {/* <!--Modal footer--> */}
 //                 <div className="flex relative flex-shrink-0 flex-wrap items-center justify-end rounded-b-md  border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50 justify-between">
 //                   <div>
-//                     <EmojiPicker
-//                       height={360}
-//                       theme="dark"
-//                       reactionsDefaultOpen={true}
-//                       // className="!absolute top-0"
-//                     />
+                    // // emoji picker
 //                   </div>
 //                                 <button
 //                                     onClick={handleClose}

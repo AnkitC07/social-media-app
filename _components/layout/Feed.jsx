@@ -45,8 +45,10 @@ const Feed = ({ post, i, window, setPosts }) => {
             setPosts((prevPosts) => {
                 const newPosts = [...prevPosts];
                 newPosts[i].likes = result.likes;
+                newPosts[i].likeCount = result.likes.length;
                 return newPosts;
             });
+
 
             setIsLiked(!isLiked);
         } else {

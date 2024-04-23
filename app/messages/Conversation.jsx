@@ -6,8 +6,8 @@ import { socket } from "../../helpers/socket";
 import { PostContext } from "../../_context/Post";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import TextMsg from "../../_components/Chat/TextMsg";
-import { Timeline, MediaMsg, LinkMsg, DocMsg, ReplyMsg } from "../../_components/Chat/ConvoTypes";
+// import TextMsg from "../../_components/Chat/TextMsg";
+import TextMsg, { Timeline, MediaMsg, LinkMsg, DocMsg, ReplyMsg } from "../../_components/Chat/ConvoTypes";
 import { Camera, File, Image, LinkSimple, PaperPlaneTilt, Smiley, Sticker, User, ArrowLeft } from "phosphor-react";
 import ImageSlider from "../../_components/common/ImageSlider";
 import useResponsiveHook from "../../_components/common/ResponsiveHook";
@@ -56,7 +56,7 @@ const Actions = [
     },
 ];
 
-export const Conversation = ({ messageListRef }) => {
+export const Conversation = ({ messageListRef, setChatOpen }) => {
     const layouts = useResponsiveHook();
     const { roomId, setRoomId, directChat, setDirectChat, fetchCurrentMessages } = useContext(ChatContext);
     const { userData } = useContext(PostContext);
@@ -86,7 +86,8 @@ export const Conversation = ({ messageListRef }) => {
     }
 
     useEffect(() => {
-        console.log("=======>",directChat.current_conversation)
+        console.log("=======>", directChat.current_conversation);
+
         const current = directChat.conversations.find((el) => el?.id === roomId);
 
         socket?.emit("get_messages", { conversation_id: current?.id }, (data) => {
@@ -94,20 +95,25 @@ export const Conversation = ({ messageListRef }) => {
             console.log(data, "List of messages");
             fetchCurrentMessages({ messages: data, user_id: userData?._id });
         });
-        setDirectChat((state) => {
-            return {
-                ...state,
-                current_conversation: current,
-            };
-        });
-    }, [roomId,directChat.current_conversation]);
+        if (current) {
+            console.log("testing-----------");
+            setDirectChat((state) => {
+                return {
+                    ...state,
+                    current_conversation: current,
+                };
+            });
+        }
+    }, [roomId, directChat.current_conversation]);
 
     function getExtension(filename) {
         return filename.split(".").pop();
     }
 
-     const handleSend = (e) => {
+    const handleSend = (e) => {
         e.preventDefault();
+
+        // console.log(directChat.current_conversation, "Send",roomId);
         if (filesRef.length == 0 && value !== "") {
             socket?.emit("text_message", {
                 message: linkify(value),
@@ -116,9 +122,7 @@ export const Conversation = ({ messageListRef }) => {
                 to: directChat.current_conversation.user_id,
                 type: containsUrl(value) ? "Link" : "Text",
             });
-
-        } else if(filesRef.length > 0){
-
+        } else if (filesRef.length > 0) {
             console.log(filesRef);
             socket.emit(
                 "file_message",
@@ -139,11 +143,21 @@ export const Conversation = ({ messageListRef }) => {
         setValue("");
     };
     return (
-        <div className="w-full">
+        <div className="w-full h-full">
             <div className=" flex items-center  border-b border-gray-300 bg-bg-card">
-                {layouts.isMobile && <ArrowLeft size={24} className="mx-2" onClick={() => setRoomId(null)} />}
+                {layouts.isMobile && (
+                    <ArrowLeft
+                        size={24}
+                        className="mx-2"
+                        onClick={() => {
+                            setChatOpen(false);
+                            setTimeout(() => {
+                                setRoomId(null);
+                            }, 250);
+                        }}
+                    />
+                )}
                 <div className="relative flex items-center p-3 ">
-                    {console.log(directChat?.current_conversation)}
                     <img
                         className="object-cover w-10 h-10 rounded-full"
                         src={directChat?.current_conversation?.img}
@@ -160,7 +174,12 @@ export const Conversation = ({ messageListRef }) => {
                     )}
                 </div>
             </div>
-            <div ref={messageListRef} className="relative w-full p-6 overflow-y-auto h-[calc(100vh-312px)] ">
+            <div
+                ref={messageListRef}
+                className={`relative w-full p-6 md:mb-[70px] md:max-h-[60vh] overflow-y-auto ${
+                    filesRef.length > 0 ? "max-md:h-[calc(100vh-207px)]" : "max-md:h-[calc(100vh-137px)] "
+                } ${filesRef.length > 0 ? "md:pb-[80px] " : " "}  `}
+            >
                 <ul className="space-y-2">
                     {/* <Timeline /> */}
                     {directChat?.current_messages.map((el, idx) => {
@@ -213,16 +232,16 @@ export const Conversation = ({ messageListRef }) => {
 
                         return (
                             // <Stack width={'100%'} position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
-                                switchFn()
-                                // {/* <img
-                                //     className="object-cover w-10 h-10 rounded-full"
-                                //     src={""}
-                                //     onError={(e) => {
-                                //         e.target.src =
-                                //             "https://cdn.pixabay.com/photo/2018/09/12/12/14/man-3672010__340.jpg";
-                                //     }}
-                                //     alt="username"
-                                // /> */}
+                            switchFn()
+                            // {/* <img
+                            //     className="object-cover w-10 h-10 rounded-full"
+                            //     src={""}
+                            //     onError={(e) => {
+                            //         e.target.src =
+                            //             "https://cdn.pixabay.com/photo/2018/09/12/12/14/man-3672010__340.jpg";
+                            //     }}
+                            //     alt="username"
+                            // /> */}
                             // {/* </Stack> */}
                         );
                     })}
@@ -243,23 +262,23 @@ export const Conversation = ({ messageListRef }) => {
                 </ul>
             </div>
 
-            <div className="border-t border-gray-300">
+            <div className="border-t border-gray-300 md:absolute md:bottom-0 md:w-full bg-bg-purple">
                 {/* <ImageSlider filesRef={filesRef} setFileRef={setFileRef} isFeed={false}  /> */}
                 <SmallImageViewer filesRef={filesRef} setFileRef={setFileRef} />
-                <form className="flex items-center justify-between w-full p-3 " onSubmit={handleSend}>
+                <form className="chat_input_area  flex items-center justify-between w-full p-3 " onSubmit={handleSend}>
                     <Box
                         style={{
                             zIndex: 10,
-                            position: "fixed",
+                            position: "absolute",
                             display: openPicker ? "inline" : "none",
-                            bottom: 155,
+                            bottom: 72,
                             // right: isMobile ? 20 : sideBar.open ? 420 : 100,
                         }}
                     >
                         <Picker
+                            className="pickerr"
                             // theme={theme.palette.mode}
-                                
-                            
+                            width={50}
                             data={data}
                             onEmojiSelect={(emoji) => {
                                 console.log(emoji);
@@ -273,7 +292,6 @@ export const Conversation = ({ messageListRef }) => {
                             setOpenPicker(!openPicker);
                         }}
                     >
-
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6 text-white"
@@ -420,7 +438,7 @@ export const Conversation = ({ messageListRef }) => {
     );
 };
 
-const ChatComponent = () => {
+const ChatComponent = ({ setChatOpen }) => {
     const { directChat } = useContext(ChatContext);
     // const isMobile = useResponsive("between", "md", "xs", "sm");
     // const theme = useTheme();
@@ -435,12 +453,12 @@ const ChatComponent = () => {
     }, [directChat.current_messages]);
 
     return (
-        <Stack height={"100%"} maxHeight={"100vh"} width={false ? "100vw" : "auto"}>
+        <Stack height={"100%"} position={"relative"} width={false ? "100vw" : "auto"}>
             {/*  */}
             {/* <ChatHeader /> */}
 
             {/* <SimpleBarStyle timeout={500} clickOnTrack={false}> */}
-            <Conversation messageListRef={messageListRef} isMobile={false} />
+            <Conversation messageListRef={messageListRef} isMobile={false} setChatOpen={setChatOpen} />
             {/* </SimpleBarStyle> */}
 
             {/*  */}

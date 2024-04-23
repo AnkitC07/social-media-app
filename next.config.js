@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')()
 const nextConfig = {
     // eslint: {
     //     ignoreDuringBuilds: true,
@@ -32,4 +34,8 @@ const nextConfig = {
    
 };
 
-module.exports = nextConfig;
+
+module.exports =
+  process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig
+
+// module.exports = nextConfig;

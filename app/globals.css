@@ -79,9 +79,13 @@ body {
 
 
 /*  */
-em-emoji-picker #root {
-    height: 353px;
-    width: 400px;
+.chat_input_area section#root {
+    /* height: 353px;
+    width: 400px; */
+    width: 296px;
+    height: 260px;
+    position: absolute;
+    bottom: -80px;
 }
 /*  */
 .box-on-hover:hover {

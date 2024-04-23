@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Profile from "../common/Profile";
-import EmojiPicker from "emoji-picker-react";
 import CommentArea from "../common/CommentArea";
 import axios from "axios";
 import { PostContext } from "../../_context/Post";
@@ -186,7 +185,7 @@ const CommentModal = () => {
                                         {/* <div className="pr-6 pt-3 md:flex-shrink">{postImages(commentModal.post)}</div> */}
                                         <div className="md:flex-shrink pr-6 pt-3">
                                             {commentModal?.post?.images?.length > 0 && (
-                                                <div className="relative w-full h-[22rem] px-4">
+                                                <div className="relative w-full  px-4 h-[calc(30vw*1.5)] sm:h-[calc(30vw*1.5)]  md:h-[calc(16vw*1.5)] md:w-[37vw]   lg:w-full  lg:h-[22rem]">
                                                     <PostSwiper posts={commentModal?.post?.images} />
                                                 </div>
                                             )}
@@ -248,13 +247,7 @@ const CommentModal = () => {
                             pacity-50 justify-between"
                             >
                                 <div>
-                                    {/* <EmojiPicker
-                                        // open={openEmoji}
-                                        height={360}
-                                        theme="dark"
-                                        reactionsDefaultOpen={true}
-                                        // className="!absolute top-0"
-                                    /> */}
+{/* emoji picker */}
                                 </div>
                                 <button
                                     onClick={handleComment}
