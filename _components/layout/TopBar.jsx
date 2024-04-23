@@ -15,7 +15,9 @@ const TopBar = () => {
     const { isMobile } = ResponsiveHook();
     return (
         <>
-            {!isPublicPath ? (
+            {!isPublicPath   ?
+            pathname === '/messages' && isMobile?"":
+                (
                 <>
                     <div className="flex justify-between gap-4 py-6 sticky top-0 bg-[#06141d8f] backdrop-blur-[2px] z-[1] max-[660px]:px-2 ">
                         <TopLeft />

@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 // import { PostContext } from "../../_context/Post";
 // import { ChatContext } from "../../_context/Chat";
 
-const PageWrapper = ({ token }) => {
+const PageWrapper = () => {
     const layouts = useResponsiveHook();
 
     ////  Socket connection code  /////

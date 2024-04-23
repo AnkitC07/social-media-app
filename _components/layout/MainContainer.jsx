@@ -14,11 +14,11 @@ const MainContainer = ({ window: windoww, style = "" }) => {
     // console.log("homepost", homePage);
     console.log("homePage", homePage);
 
-    const getData = (index) => {
+    const getData = (index,signal) => {
         try {
             // setLoading(true);
             console.log("hitting getdata", homePage);
-            const request = axios("/api/post/get?page=" + index);
+            const request = axios("/api/post/get?page=" + index,{signal:signal});
             request
                 .then((res) => {
                     console.log("Post Data=>", homePage, res.data);
@@ -38,10 +38,18 @@ const MainContainer = ({ window: windoww, style = "" }) => {
     };
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+             
         console.log("use", homePage);
         if (homePage !== page) {
-            getData(homePage);
+            getData(homePage,signal);
         }
+
+        return () => {
+            controller.abort();
+        };
+
     }, [homePage]);
 
     return (
@@ -63,9 +71,9 @@ const MainContainer = ({ window: windoww, style = "" }) => {
                     <Feed key={idx} i={idx} window={windoww} post={post} posts={homePosts} setPosts={setHomePosts} />
                 ))}
 
-                {/* {loading &&
-                [0, 1].map((_, idx) => (
-                    <div key={idx} className="w-full ">
+                {loading &&
+                [0].map((_, idx) => (
+                    <div key={idx} ref={loadMoreRef} className="w-full ">
                         <div className="mx-auto max-w-lg">
                             <div className="flex gap-1 items-center animate-pulse mb-2">
                                 <div className="h-12 w-12 rounded-full bg-gray-700"></div>
@@ -102,10 +110,10 @@ const MainContainer = ({ window: windoww, style = "" }) => {
                             </div>
                         </div>
                     </div>
-                ))} */}
+                ))}
 
-                {loading && (
-                    <div id="load-more" ref={loadMoreRef} role="status" className="text-center">
+                {/* {loading && (
+                    <div id="load-more"  role="status" className="text-center">
                         <svg
                             aria-hidden="true"
                             className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
@@ -124,7 +132,7 @@ const MainContainer = ({ window: windoww, style = "" }) => {
                         </svg>
                         <span className="sr-only">Loading...</span>
                     </div>
-                )}
+                )} */}
             </div>
         </InfiniteScroll>
     );

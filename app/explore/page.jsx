@@ -103,7 +103,7 @@ const Explore = () => {
                 </div> */}
                 <RightSideTrend style={"max-md:hidden sticky top-[140px] lg:w-[23.3%] md:!w-[30%]"} />
 
-                <div className="flex flex-col items-center pb-[69px] md:pb-0 gap-2  w-full lg:!w-[51%] md:!w-[69%]">
+                <div className="flex flex-col items-center pb-[69px] md:pb-2 gap-2  w-full lg:!w-[51%] md:!w-[69%]">
                     {showTrendingPost.open && <TrendingPosts />}
                     <InfiniteScroll setPage={setExplorePage} loadMoreRef={loadMoreRef}>
                         {explorePosts.map((post, idx) => (
@@ -117,9 +117,9 @@ const Explore = () => {
                             />
                         ))}
 
-                        {/* {loading &&
-                        [0, 1].map((_, idx) => (
-                            <div key={idx} className="w-full ">
+                        {loading &&
+                        [0].map((_, idx) => (
+                            <div key={idx} ref={loadMoreRef} className="w-full ">
                                 <div className="mx-auto max-w-lg">
                                     <div className="flex gap-1 items-center animate-pulse mb-2">
                                         <div className="h-12 w-12 rounded-full bg-gray-700"></div>
@@ -156,10 +156,10 @@ const Explore = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))} */}
+                        ))}
 
-                        {loading && (
-                            <div id="#load-more-explore" ref={loadMoreRef} role="status" className="text-center">
+                        {/* {loading && (
+                            <div id="#load-more-explore"  role="status" className="text-center">
                                 <svg
                                     aria-hidden="true"
                                     className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
@@ -178,7 +178,7 @@ const Explore = () => {
                                 </svg>
                                 <span className="sr-only">Loading...</span>
                             </div>
-                        )}
+                        )} */}
                     </InfiniteScroll>
                 </div>
                 {/* <div className="sticky top-[140px]">

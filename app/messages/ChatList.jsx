@@ -6,10 +6,13 @@ import { PostContext } from "../../_context/Post";
 import { socket } from "../../helpers/socket";
 import useResponsiveHook from "../../_components/common/ResponsiveHook";
 import SkeletonUser from "../../_components/common/SkeletonUser";
-import NoChatList from './NoChatList'
+import NoChatList from "./NoChatList";
+import { ArrowLeft } from "phosphor-react";
+import { useRouter } from "next/navigation";
 
-const ChatList = () => {
+const ChatList = ({ setOpen,setChatOpen={setChatOpen} }) => {
     const layouts = useResponsiveHook();
+    const router = useRouter();
     const { userData } = useContext(PostContext);
     const [loading, setLoading] = useState(true);
     const { fetchDirectConversations, directChat, roomId } = useContext(ChatContext);
@@ -31,42 +34,53 @@ const ChatList = () => {
             {layouts.isMobile && roomId != null ? (
                 ""
             ) : (
-                <div className="border-r border-gray-300 lg:col-span-1">
+                <div className="md:border-r overflow-hidden border-gray-300 lg:col-span-1">
                     {/* Search Area */}
                     {/* <div className="mx-3 my-3 searchArea">
-<div className="relative text-gray-600">
-    <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-        <svg
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            className="w-6 h-6 text-gray-300"
-        >
-            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-    </span>
-    <input
-        type="search"
-        className="block w-full py-2 pl-10 bg-gray-100 rounded outline-none"
-        name="search"
-        placeholder="Search"
-        required
-    />
-</div>
-</div> */}
+                        <div className="relative text-gray-600">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    viewBox="0 0 24 24"
+                                    className="w-6 h-6 text-gray-300"
+                                >
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </span>
+                            <input
+                                type="search"
+                                className="block w-full py-2 pl-10 bg-gray-100 rounded outline-none"
+                                name="search"
+                                placeholder="Search"
+                                required
+                            />
+                        </div>
+                        </div> */}
 
-                    <div className="h-[65px] border-b border-gray-300 p-5  bg-bg-card ">
+                    <div className="h-[65px] border-b border-gray-300 p-5 pl-1  bg-bg-card flex ">
+                        {layouts.isMobile && (
+                            <ArrowLeft
+                                size={20}
+                                className=" mt-1"
+                                onClick={() => {
+                                    setOpen(false);
+                                    setTimeout(() => {
+                                        router.push("/");
+                                    }, [200]);
+                                }}
+                            />
+                        )}
                         <h2 className=" text-xl font-medium ">Chats</h2>
                     </div>
-                        <ul className="overflow-auto max-md:h-[calc(100vh-242px)]  md:h-[60vh] bg-bg-card ">
-                            
+                    <ul className="overflow-auto max-md:h-[calc(100vh-67px)]  md:h-full bg-bg-card ">
                         {/* {console.log(directChat.conversations)} */}
                         {directChat?.conversations.length > 0 && !loading ? (
                             directChat?.conversations.map((el, idx) => {
-                                return <ListItem key={idx} {...el} />;
+                                return <ListItem key={idx} {...el} setChatOpen={setChatOpen} />;
                             })
                         ) : loading ? (
                             <div className="flex flex-col gap-5 p-4">
@@ -75,7 +89,7 @@ const ChatList = () => {
                                 ))}
                             </div>
                         ) : (
-                            <NoChatList/>
+                            <NoChatList />
                         )}
                     </ul>
                 </div>
@@ -84,26 +98,29 @@ const ChatList = () => {
     );
 };
 
-const ListItem = ({ img, name, msg, time, unread, online, id }) => {
+const ListItem = ({ img, name, msg, time, unread, online, id ,setChatOpen}) => {
     const truncateText = (string, n) => {
         return string?.length > n ? `${string?.slice(0, n)}...` : string;
     };
-    const { roomId, setRoomId, setChatType } = useContext(ChatContext);
+    const { roomId, setRoomId, setChatType, directChat } = useContext(ChatContext);
     const selectedChatId = roomId?.toString();
     let isSelected = +selectedChatId === id;
 
     if (!selectedChatId) {
         isSelected = false;
     }
-    // console.log(isSelected);
+    console.log(roomId, id);
     return (
         <li>
             <div
                 onClick={() => {
                     setRoomId(id);
                     setChatType("individual");
+                    setChatOpen(true)
                 }}
-                className=" relative flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:text-black hover:bg-gray-100 focus:outline-none"
+                className={` ${
+                    roomId === id ? " bg-gray-200 text-black " : ""
+                } relative flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:text-black hover:bg-gray-400 focus:outline-none`}
             >
                 <img
                     className="object-cover w-10 h-10 rounded-full"

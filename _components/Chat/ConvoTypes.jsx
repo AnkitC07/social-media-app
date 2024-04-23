@@ -57,22 +57,23 @@ const MessageOption = () => {
 const TextMsg = ({ el, menu }) => {
     const theme = useTheme();
     return (
-        <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+        <Stack position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
             <Box
                 px={1.5}
                 py={1.5}
                 sx={{
-                    backgroundColor: el.incoming
-                        ? alpha(theme.palette.background.default, 1)
-                        : theme.palette.primary.main,
+                    backgroundColor: el.incoming ? "#1b2730" : "#fffff8",
                     borderRadius: 1.5,
                     width: "max-content",
+                    maxWidth: '55%',
+                    minWidth:'55px'
                 }}
             >
-                <Typography variant="body2" color={el.incoming ? theme.palette.text : "#fff"}>
+                <Typography variant="body2" color={el.incoming ? "#fff" : "#000"} className="break-words text-pretty">
                     {el.message}
                 </Typography>
             </Box>
+            <span className={`absolute text-[11px] right-1 bottom-0 text-gray-600`}>{formatTime(el?.date)}</span>
             {/* {menu && <MessageOption />} */}
         </Stack>
     );
@@ -85,7 +86,7 @@ const MediaMsg = ({ el, menu }) => {
                 px={1.5}
                 py={1.5}
                 sx={{
-                    backgroundColor: el.incoming ? "#1b2730" : "white",
+                    backgroundColor: el.incoming ? "#1b2730" : "#fffff8",
                     borderRadius: 1.5,
                     width: "max-content",
                 }}
@@ -110,8 +111,8 @@ const MediaMsg = ({ el, menu }) => {
                                 }}
                                 width={500}
                                 height={300}
-                            /> */}
-                            <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} />
+                            />
+                            {/* <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} /> */}
                         </Box>
                     ))}
                     {/* <img

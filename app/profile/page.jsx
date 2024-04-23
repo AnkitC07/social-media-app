@@ -1,6 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EditProfileModal from "../../_components/layout/EditProfileModal";
@@ -16,6 +17,8 @@ import FeedPost from "../../_components/common/FeedPost.jsx";
 import likeToggle from "../functions/api/likeToggle";
 import InfiniteScroll from "../../_components/common/InfiniteScroll";
 import { socket } from "../../helpers/socket";
+import { ChatContext } from "../../_context/Chat";
+import { formatTime } from "../functions/getTIme";
 
 const ProfilePage = ({ params }) => {
     const {
@@ -31,9 +34,14 @@ const ProfilePage = ({ params }) => {
         setUnknownProfilePage,
         token,
     } = useContext(PostContext);
+    const { directChat,setDirectChat,setChatType,setRoomId } = useContext(ChatContext);
+
     const selectPage = () => {
         return params?.id === undefined ? profilePage : unKnownProfilePage;
     };
+
+    const router = useRouter();
+
     const [loading, setLoading] = useState(true);
     const loadMoreRef = useRef();
     const [page, setPage] = useState(selectPage());
@@ -155,6 +163,7 @@ const ProfilePage = ({ params }) => {
                 // console.log("profile state=", prevPosts);
                 const newPofile = { ...prevPosts };
                 newPofile.tweets[idx].likes = result.likes;
+                newPofile.tweets[idx].likeCount = result.likes.length;
                 return newPofile;
             });
             setIsLiked(!isLiked);
@@ -265,6 +274,11 @@ const ProfilePage = ({ params }) => {
         };
     }, []);
 
+    useEffect(() => {
+        console.log(directChat.current_conversation);
+        // router.push('/messages')
+    }, [directChat.current_conversation]);
+
     return (
         <>
             <section className="border border-y-0 border-gray-800 mx-auto" style={{ maxWidth: "600px" }}>
@@ -332,19 +346,40 @@ const ProfilePage = ({ params }) => {
                                 )}
                                 {params?.id && isFollowed ? (
                                     <Link href={"/messages"}>
-                                    <ChatBubbleOutlineIcon
-                                        sx={{
-                                            fontSize: "25px",
-                                            marginLeft: "10px",
-                                        }}
-                                        onClick={() => {
-                                            console.log({to:params?.id, from:userData?._id})
-                                            socket?.emit("start_conversation", { to: params?.id, from: userData?._id })
-                                            
-                                        }}
-                                        // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
+                                        <ChatBubbleOutlineIcon
+                                            sx={{
+                                                fontSize: "25px",
+                                                marginLeft: "10px",
+                                            }}
+                                            onClick={() => {
+                                                console.log({ to: params?.id, from: userData?._id });
+                                                socket?.emit("start_conversation", {
+                                                    to: params?.id,
+                                                    from: userData?._id,
+                                                });
+                                                setChatType("individual");
+                                                setRoomId('new')
+                                                const newConvo = {
+                                                    id: 'new',
+                                                    user_id: params?.id,
+                                                    name: `${leftProfileData?.fullName}`,
+                                                    online: false,
+                                                    img: `${leftProfileData?.avatar}`,
+                                                    msg:  "",
+                                                    time:  formatTime(Date.now()),
+                                                    unread: 0,
+                                                    pinned: false,
+                                                };
+                                                setDirectChat((state) => {
+                                                    return {
+                                                        ...state,
+                                                        current_conversation: newConvo,
+                                                    };
+                                                });
+                                            }}
+                                            // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
                                         />
-                                        </Link>
+                                    </Link>
                                 ) : (
                                     ""
                                 )}

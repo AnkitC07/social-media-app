@@ -38,14 +38,16 @@ export default function PostSwiper({ posts }) {
                     src={post}
                     alt='Picture of the author'
                     fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading='lazy'
+                    placeholder='empty'
                   />
                 </div>
               )}
 
               {isVideo && (
                 <video
-                  className='block w-full h-full object-center absolute right-0 animate-parallax [animation-timeline:view(x)] mb-2'
+                  className='block w-full h-full object-center absolute right-0  [animation-timeline:view(x)] mb-2'
                   autoPlay={true}
                   loop={true}
                   src={post}

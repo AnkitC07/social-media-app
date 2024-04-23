@@ -24,17 +24,17 @@ export async function GET(request, { params, query }) {
             const followingUserIds = [...currentUser.following];
 
             // Use these IDs to retrieve tweets from the users the current user is following
-            const tweetsFromFollowingUsers = await Tweet.find({ user: { $in: followingUserIds } })
-                .select("text user createdAt likes replies ")
-                .limit(limit * 1)
-                .skip((page - 1) * limit)
-                .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
-                .populate({
-                    path: "replies",
-                    populate: { path: "user" },
-                }) // Populate the replies field with  comments on the post
-                .populate("user") // Populate the 'user' field with user details
-                .exec();
+            // const tweetsFromFollowingUsers = await Tweet.find({ user: { $in: followingUserIds } })
+            //     .select("text user createdAt likes replies ")
+            //     .limit(limit * 1)
+            //     .skip((page - 1) * limit)
+            //     .sort("-createdAt") // Sort by createdAt in descending order to get the latest tweets first
+            //     .populate({
+            //         path: "replies",
+            //         populate: { path: "user" },
+            //     }) // Populate the replies field with  comments on the post
+            //     .populate("user") // Populate the 'user' field with user details
+            //     .exec();
 
             const aggregation = [
                 {

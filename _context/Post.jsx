@@ -25,6 +25,8 @@ const PostContextProvider = ({ children }) => {
     });
 
     useEffect(() => {
+        console.log('post context')
+
         // Validate if the data id present in the state.
         if (!userData?._id) {
             (async () => {

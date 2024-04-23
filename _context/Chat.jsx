@@ -23,6 +23,7 @@ const ChatContextProvider = ({ children }) => {
     const { userData, isLoggedIn, setToken, setNotificationsArr, setSocketData } = useContext(PostContext);
 
     useEffect(() => {
+        console.log('chat context')
         setToken(token);
         if (isLoggedIn || token) {
             console.log(">>>>>>>>>>>>>", userData, socket);
@@ -51,22 +52,58 @@ const ChatContextProvider = ({ children }) => {
                     });
                 }
 
-                directChat?.conversations.forEach((conv,i) => { 
-
-                    if (conv.id === data.conversation_id) { 
-                        setDirectChat(state => {
-                            return {
-                                ...state,
-                                conversations: [{
-                                    ...state.conversations[i],
-                                    msg: message.text,
-                                    time: formatTime(Date.now())
-                                },...state?.conversations?.filter(con=>con.id!==data.conversation_id)] ,
+                if (directChat.current_messages.length <= 0) {
+                    setDirectChat(state => {
+                        return {
+                            ...state,
+                            conversations: [{
+                                id: data.conversation_id,
+                                user_id: state?.current_conversation?.user_id,
+                                name: `${state?.current_conversation?.name}`,
+                                online: state?.current_conversation?.online,
+                                img: `${state?.current_conversation?.img}`,
+                                msg:  message.text,
+                                time:  formatTime(Date.now()),
+                                unread: 0,
+                                pinned: false,
+                            }, ...state?.conversations],
+                            current_conversation: {
+                                ...state.current_conversation,
+                                id:data.conversation_id
                             }
-                        })
-                    }
-
-                })
+                        }
+                    })
+                    setRoomId(data.conversation_id)
+                } else {
+                    // {
+                    //     "id": "6616677e3ff23d59227dd11b",
+                    //     "user_id": "65af8c48cbe8a144fe3a2d6c",
+                    //     "name": "Abhishake A Patel",
+                    //     "online": true,
+                    //     "img": "https://res.cloudinary.com/deyq54d8b/image/upload/v1707382780/Social-Media-App/Avatars/gjetp28ttftsrwfbjsk4.jpg",
+                    //     "msg": "on top",
+                    //     "time": "12.33 pm",
+                    //     "unread": 0,
+                    //     "pinned": false
+                    // }
+                    
+                    directChat?.conversations.forEach((conv,i) => { 
+                        
+                        if (conv.id === data.conversation_id) { 
+                            setDirectChat(state => {
+                                return {
+                                    ...state,
+                                    conversations: [{
+                                        ...state.conversations[i],
+                                        msg: message.text,
+                                        time: formatTime(Date.now())
+                                    },...state?.conversations?.filter(con=>con.id!==data.conversation_id)] ,
+                                }
+                            })
+                        }
+                        
+                    })
+                }
 
                 console.log("adding new msg to list",directChat.conversations, data.conversation_id)
 
