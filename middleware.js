@@ -40,6 +40,7 @@ export async function middleware(request) {
 
     // // Authenticate non-API calls
     if (!path.startsWith("/api/")) {
+        
         console.log('path1', path)
         if (isPublicPath && token) {
             console.log('path2', path)
