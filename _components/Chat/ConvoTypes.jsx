@@ -55,25 +55,28 @@ const MessageOption = () => {
 };
 
 const TextMsg = ({ el, menu }) => {
+    console.log("is sent =>",el?.sent)
     const theme = useTheme();
     return (
         <Stack position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
+
             <Box
                 px={1.5}
                 py={1.5}
                 sx={{
+                    position:'relative',
                     backgroundColor: el.incoming ? "#1b2730" : "#fffff8",
                     borderRadius: 1.5,
-                    width: "max-content",
+                    minWidth:'50px',
                     maxWidth: '55%',
-                    minWidth:'55px'
+                    width: "max-content",
                 }}
             >
                 <Typography variant="body2" color={el.incoming ? "#fff" : "#000"} className="break-words text-pretty">
                     {el.message}
                 </Typography>
+            <span className={`absolute text-[11px] right-1 bottom-0 ${el.incoming ?"text-gray-300":"text-gray-600"} `}>{formatTime(el?.date)}</span>
             </Box>
-            <span className={`absolute text-[11px] right-1 bottom-0 text-gray-600`}>{formatTime(el?.date)}</span>
             {/* {menu && <MessageOption />} */}
         </Stack>
     );
@@ -86,8 +89,12 @@ const MediaMsg = ({ el, menu }) => {
                 px={1.5}
                 py={1.5}
                 sx={{
+                    position:'relative',
                     backgroundColor: el.incoming ? "#1b2730" : "#fffff8",
                     borderRadius: 1.5,
+                    width: "max-content",
+                    minWidth:'50px',
+                    maxWidth: '55%',
                     width: "max-content",
                 }}
             >
@@ -102,7 +109,7 @@ const MediaMsg = ({ el, menu }) => {
                                 overflow: "hidden",
                             }}
                         >
-{/*                             <Image
+                            <Image
                                 src={img}
                                 sizes="100vw"
                                 style={{
@@ -112,7 +119,7 @@ const MediaMsg = ({ el, menu }) => {
                                 width={500}
                                 height={300}
                             />
-                            {/* <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} /> */}
+                             {/* <img src={img} alt={el.message} style={{ width: "150px", height: "100%" }} /> */}
                         </Box>
                     ))}
                     {/* <img
@@ -124,8 +131,8 @@ const MediaMsg = ({ el, menu }) => {
                         {el.message}
                     </Typography>
                 </Stack>
-            </Box>
             <span className={`absolute text-xs right-1 bottom-0`}>{formatTime(el?.date)}</span>
+            </Box>
             {/* {menu && <MessageOption />} */}
         </Stack>
     );
@@ -199,7 +206,7 @@ const LinkMsg = ({ el, menu }) => {
                         }}
                     >
                         <Stack direction={"column"} spacing={2}>
-                            <Embed width="300px" isDark url={`https://youtu.be/xoWxBR34qLE`} />
+                            <Embed width="300px" isDark url={el.message} />
                         </Stack>
                     </Stack>
                     <Typography variant="body2" color={el.incoming ? theme.palette.text : "#fff"}>

@@ -8,7 +8,7 @@ const middleware1 = async (request) => {
 
 export async function middleware(request) {
     const path = request.nextUrl.pathname;
-    console.log(path);
+    console.log('---',path);
     const token = request.cookies.get("token")?.value;
     const isPublicPath = path === "/login" || path === "/signup";
     // const isPublicApiPath = path == "/api/users/login" || path == "/api/users/signup";
@@ -22,7 +22,7 @@ export async function middleware(request) {
         !path.endsWith("signup") &&
         !path.endsWith("auth")
     ) {
-        const isAuth = await isAuthenticated(request);
+        const isAuth = await isAuthenticated(request);  
         if (!isAuth) {
             // Respond with JSON indicating an error message
             return Response.json({ success: false, message: "authentication failed" }, { status: 401 });
@@ -40,11 +40,14 @@ export async function middleware(request) {
 
     // // Authenticate non-API calls
     if (!path.startsWith("/api/")) {
+        console.log('path1', path)
         if (isPublicPath && token) {
+            console.log('path2', path)
             return NextResponse.redirect(new URL("/", request.nextUrl));
         }
-
+        
         if (!isPublicPath && !token && token !== "") {
+            console.log('path3', path)
             return NextResponse.redirect(new URL("/login", request.nextUrl));
         }
     }

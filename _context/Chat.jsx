@@ -3,6 +3,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { PostContext } from "./Post";
 import { connectSocket, socket } from "../helpers/socket";
+import toast from 'react-hot-toast'
 import formatTimeDifference, { formatTime } from "../app/functions/getTIme";
 
 export const ChatContext = createContext();
@@ -11,11 +12,13 @@ const ChatContextProvider = ({ children }) => {
     const [socketState, setSocketState] = useState(null);
     const [chatType, setChatType] = useState(null);
     const [roomId, setRoomId] = useState(null);
+    const [ conversations, setConversations ] = useState(null)
     const [directChat, setDirectChat] = useState({
         conversations: [],
         current_conversation: null,
         current_messages: [],
     });
+    const [isSent,setIsSent] = useState(false)
 
     let token;
     if (typeof window !== "undefined") token = window.localStorage.getItem("token");
@@ -26,7 +29,7 @@ const ChatContextProvider = ({ children }) => {
         console.log('chat context')
         setToken(token);
         if (isLoggedIn || token) {
-            console.log(">>>>>>>>>>>>>", userData, socket);
+            // console.log(">>>>>>>>>>>>>", userData, socket);
             if (!socket && userData?._id) {
                 console.log(">>>>>inside socket connection");
                 setSocketState(connectSocket(userData._id, setSocketData));
@@ -48,7 +51,8 @@ const ChatContextProvider = ({ children }) => {
                         incoming: message.to === userData?._id,
                         outgoing: message.from === userData?._id,
                         img: message.file,
-                        date:message?.created_at
+                        date: message?.created_at,
+                        sent:data.sent
                     });
                 }
 
@@ -74,19 +78,7 @@ const ChatContextProvider = ({ children }) => {
                         }
                     })
                     setRoomId(data.conversation_id)
-                } else {
-                    // {
-                    //     "id": "6616677e3ff23d59227dd11b",
-                    //     "user_id": "65af8c48cbe8a144fe3a2d6c",
-                    //     "name": "Abhishake A Patel",
-                    //     "online": true,
-                    //     "img": "https://res.cloudinary.com/deyq54d8b/image/upload/v1707382780/Social-Media-App/Avatars/gjetp28ttftsrwfbjsk4.jpg",
-                    //     "msg": "on top",
-                    //     "time": "12.33 pm",
-                    //     "unread": 0,
-                    //     "pinned": false
-                    // }
-                    
+                } else {          
                     directChat?.conversations.forEach((conv,i) => { 
                         
                         if (conv.id === data.conversation_id) { 
@@ -340,6 +332,9 @@ const ChatContextProvider = ({ children }) => {
                 setSocketState,
                 updateDirectConversation,
                 addDirectConversation,
+                isSent, setIsSent,
+                conversations, setConversations
+                
             }}
         >
             {children}

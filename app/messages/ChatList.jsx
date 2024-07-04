@@ -109,7 +109,6 @@ const ListItem = ({ img, name, msg, time, unread, online, id ,setChatOpen}) => {
     if (!selectedChatId) {
         isSelected = false;
     }
-    console.log(roomId, id);
     return (
         <li>
             <div

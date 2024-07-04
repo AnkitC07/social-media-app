@@ -19,6 +19,7 @@ const Logout = () => {
                         socket.emit("end",{user_id:userData?._id})
                         router.push("/login");
                         setUserData({})
+                        location.reload();
                     } else {
                         throw new Error("Logout Failed")
                     }

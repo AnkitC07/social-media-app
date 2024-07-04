@@ -26,7 +26,6 @@ const AddTweet = ({ setPosts }) => {
     const text = "What is on your mind ?"; // Replace with your email
     const typingSpeed = 100; // Adjust typing speed if desired
 
-
     // Placeholder animation
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -37,14 +36,13 @@ const AddTweet = ({ setPosts }) => {
         }, typingSpeed);
 
         return () => clearTimeout(timeoutId); // Clear timeout on cleanup
-    }, [currentChar,typingSpeed, text]);
+    }, [currentChar, typingSpeed, text]);
 
     // auto grow input field
     function auto_grow(element) {
         element.target.style.height = "5px";
         element.target.style.height = element.target.scrollHeight + "px";
-    }
-
+    };
 
     // add post function
     const addPost = async () => {
@@ -61,7 +59,14 @@ const AddTweet = ({ setPosts }) => {
                     },
                 })
                 .then((response) => {
-                    setPosts((posts) => [response.data.tweet, ...posts]);
+                    setPosts((posts) => [
+                        {
+                            ...response.data.tweet,
+                            likeCount: response.data.tweet.likes.length,
+                            replyCount: response.data.tweet.replies.length,
+                        },
+                        ...posts,
+                    ]);
                     // clearing reseting Add post area.
                     setFileRef([]);
                     setPostText("");
@@ -92,14 +97,13 @@ const AddTweet = ({ setPosts }) => {
     };
 
     useEffect(() => {
-
-        console.log(filesRef,'testing')
-        if (postText.length > 0 || filesRef.length > 0)  { 
-            setIsDisabled(false)
+        console.log(filesRef, "testing");
+        if (postText.length > 0 || filesRef.length > 0) {
+            setIsDisabled(false);
         } else {
-            setIsDisabled(true)
+            setIsDisabled(true);
         }
-    },[postText,filesRef]);
+    }, [postText, filesRef]);
 
     return (
         <Card>
@@ -136,20 +140,19 @@ const AddTweet = ({ setPosts }) => {
                                 >
                                     {filesRef.length > 0
                                         ? filesRef.map((file, idx) => (
-                                              <FilePreview
-                                                  key={file?.name}
-                                                  i={idx}
-                                                  filesRef={filesRef}
-                                                  file={file}
-                                                  setFileRef={setFileRef}
-                                              />
-                                          ))
+                                                <FilePreview
+                                                    key={file?.name}
+                                                    i={idx}
+                                                    filesRef={filesRef}
+                                                    file={file}
+                                                    setFileRef={setFileRef}
+                                                />
+                                            ))
                                         : ""}
                                 </div>
 
                                 {filesRef?.length > 2 ? (
-                                    <>
-                                      
+                                    <> 
                                         <div className="absolute  -left-4  top-1/2 items-center hidden md:flex">
                                             <button
                                                 ref={prevButtonRef}
@@ -240,7 +243,14 @@ const AddTweet = ({ setPosts }) => {
                                     className="text-[#FB6E6E]"
                                 /> */}
                             </div>
-                            <button disabled={isDisabled} onClick={addPost} className={"py-1 px-4 bg-[#03a8f4] text-sm rounded-2xl " + (isDisabled?" cursor-not-allowed":' hover:bg-[#03a8f4c9]')}>
+                            <button
+                                disabled={isDisabled}
+                                onClick={addPost}
+                                className={
+                                    "py-1 px-4 bg-[#03a8f4] text-sm rounded-2xl " +
+                                    (isDisabled ? " cursor-not-allowed" : " hover:bg-[#03a8f4c9]")
+                                }
+                            >
                                 {loading ? (
                                     <>
                                         <svg

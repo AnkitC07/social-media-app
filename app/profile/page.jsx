@@ -34,7 +34,7 @@ const ProfilePage = ({ params }) => {
         setUnknownProfilePage,
         token,
     } = useContext(PostContext);
-    const { directChat,setDirectChat,setChatType,setRoomId } = useContext(ChatContext);
+    const { directChat, setDirectChat, setChatType, setRoomId } = useContext(ChatContext);
 
     const selectPage = () => {
         return params?.id === undefined ? profilePage : unKnownProfilePage;
@@ -337,12 +337,21 @@ const ProfilePage = ({ params }) => {
                                         handleFollowToggle={handleFollowToggle}
                                     />
                                 ) : (
-                                    <button
-                                        onClick={() => setOpenModal(!openModal)}
-                                        className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-transparent px-4 py-2 font-bold text-blue-500  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
-                                    >
-                                        Edit Profile
-                                    </button>
+                                    <>
+                                        <button
+                                            onClick={() => setOpenModal(!openModal)}
+                                            className="ml-auto mr-0  flex max-h-max max-w-max items-center justify-center whitespace-nowrap rounded-full border border-blue-500 bg-transparent px-4 py-2 font-bold text-blue-500  hover:border-blue-800 hover:shadow-lg focus:outline-none focus:ring"
+                                        >
+                                            Edit Profile
+                                        </button>
+                                        <MoreVertIcon
+                                            sx={{
+                                                fontSize: "30px",
+                                            }}
+                                            onClick={() => setShow(!show)}
+                                            // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
+                                        />
+                                    </>
                                 )}
                                 {params?.id && isFollowed ? (
                                     <Link href={"/messages"}>
@@ -358,15 +367,15 @@ const ProfilePage = ({ params }) => {
                                                     from: userData?._id,
                                                 });
                                                 setChatType("individual");
-                                                setRoomId('new')
+                                                setRoomId("new");
                                                 const newConvo = {
-                                                    id: 'new',
+                                                    id: "new",
                                                     user_id: params?.id,
                                                     name: `${leftProfileData?.fullName}`,
                                                     online: false,
                                                     img: `${leftProfileData?.avatar}`,
-                                                    msg:  "",
-                                                    time:  formatTime(Date.now()),
+                                                    msg: "",
+                                                    time: formatTime(Date.now()),
                                                     unread: 0,
                                                     pinned: false,
                                                 };
@@ -383,13 +392,7 @@ const ProfilePage = ({ params }) => {
                                 ) : (
                                     ""
                                 )}
-                                <MoreVertIcon
-                                    sx={{
-                                        fontSize: "30px",
-                                    }}
-                                    onClick={() => setShow(!show)}
-                                    // className=" absolute right-3 top-2 px-2 py-2 rounded-full text-[35px] bg-[#1d1d3d47] text-white group cursor-pointer backdrop-blur-[2px]"
-                                />
+
                                 {show && (
                                     <Modal width={" !z-[999] w-fit bottom-[-75px] lg:right-[-70px] !py-2 !pb-1 "}>
                                         <p className="flex flex-col text-[16px]">

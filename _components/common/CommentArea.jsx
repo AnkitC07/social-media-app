@@ -16,10 +16,10 @@ const CommentArea = ({ commentsLoading, commentModal, comment, setComment }) => 
         console.log(comment);
         return (
             <div key={comment?._id} className="flex items-start pt-4 pb-2">
-                <div>
+                <div className="w-[12%]">
                     <Profile src={comment?.user?.avatar} w={60} h={100} />
                 </div>
-                <div className="ml-4 ">
+                <div className="ml-4 w-[78%]">
                     <div className="mb-3 break-words">
                         <p className=" flex flex-wrap items-baseline  text-base font-medium leading-6 text-white">
                             <span className="mr-2">{comment?.user?.fullName}</span>

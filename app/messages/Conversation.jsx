@@ -58,7 +58,8 @@ const Actions = [
 
 export const Conversation = ({ messageListRef, setChatOpen }) => {
     const layouts = useResponsiveHook();
-    const { roomId, setRoomId, directChat, setDirectChat, fetchCurrentMessages } = useContext(ChatContext);
+
+    const { roomId, setRoomId, directChat, setDirectChat, fetchCurrentMessages,conversations, setConversations } = useContext(ChatContext);
     const { userData } = useContext(PostContext);
 
     const [openPicker, setOpenPicker] = useState(false);
@@ -86,17 +87,20 @@ export const Conversation = ({ messageListRef, setChatOpen }) => {
     }
 
     useEffect(() => {
-        console.log("=======>", directChat.current_conversation);
+        // console.log("=======>", directChat.current_conversation);    
 
         const current = directChat.conversations.find((el) => el?.id === roomId);
 
-        socket?.emit("get_messages", { conversation_id: current?.id }, (data) => {
-            // data => list of messages
-            console.log(data, "List of messages");
-            fetchCurrentMessages({ messages: data, user_id: userData?._id });
-        });
-        if (current) {
-            console.log("testing-----------");
+        // if (!conversations?.includes(roomId)) {
+            socket?.emit("get_messages", { conversation_id: current?.id }, (data) => {
+                // data => list of messages
+                console.log(data, "List of messages");
+                fetchCurrentMessages({ messages: data, user_id: userData?._id });
+            });
+            // setConversations(state=>state?[...state,current?.id]:[current?.id])
+        // }
+        if (current) {      
+            // console.log("testing-----------");
             setDirectChat((state) => {
                 return {
                     ...state,
@@ -104,7 +108,7 @@ export const Conversation = ({ messageListRef, setChatOpen }) => {
                 };
             });
         }
-    }, [roomId, directChat.current_conversation]);
+    }, [roomId,]);
 
     function getExtension(filename) {
         return filename.split(".").pop();
@@ -121,9 +125,28 @@ export const Conversation = ({ messageListRef, setChatOpen }) => {
                 from: userData?._id,
                 to: directChat.current_conversation.user_id,
                 type: containsUrl(value) ? "Link" : "Text",
+                sent: false,
             });
+            // setDirectChat((state) => {
+            //     return {
+            //         ...state,
+            //         current_messages: [
+            //             ...state.current_messages,
+            //             {
+            //                 id: "new",
+            //                 type: "msg",
+            //                 subtype: containsUrl(value) ? "Link" : "Text",
+            //                 message: linkify(value),
+            //                 incoming: false,
+            //                 outgoing: true,
+            //                 date: Date.now(),
+            //                 sent: false,
+            //             },
+            //         ],
+            //     };
+            // });
         } else if (filesRef.length > 0) {
-            console.log(filesRef);
+            // console.log(filesRef);
             socket.emit(
                 "file_message",
                 {
@@ -133,11 +156,31 @@ export const Conversation = ({ messageListRef, setChatOpen }) => {
                     to: directChat?.current_conversation?.user_id,
                     type: fileType,
                     file: filesRef,
+                    sent: false,
                 },
                 (status) => {
-                    console.log(status);
+                    // console.log(status);
                 }
             );
+            // setDirectChat((state) => {
+            //     return {
+            //         ...state,
+            //         current_messages: [
+            //             ...state.current_messages,
+            //             {
+            //                 id: "new",
+            //                 type: "msg",
+            //                 subtype: fileType,
+            //                 message: linkify(value),
+            //                 incoming: false,
+            //                 outgoing: true,
+            //                 img: filesRef,
+            //                 date: Date.now(),
+            //                 sent: false,
+            //             },
+            //         ],
+            //     };
+            // });
         }
         setFileRef([]);
         setValue("");
