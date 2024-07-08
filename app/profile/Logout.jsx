@@ -11,19 +11,22 @@ const Logout = () => {
 
     const logout = async () => {
         try {
-            await axios.get("/api/users/logout")
-                .then((data) => {
-                    if (data?.data?.success) {
-                        window.localStorage.removeItem("token")
-                        toast.success("Logged Out Successfull");
-                        socket.emit("end",{user_id:userData?._id})
-                        router.push("/login");
-                        setUserData({})
-                        location.reload();
-                    } else {
-                        throw new Error("Logout Failed")
+                const response = await axios.get("/api/users/logout", {
+                    headers: {
+                        'Cache-Control': 'no-cache'
                     }
                 });
+                const data = response.data;
+                if (data.success) {
+                    window.localStorage.removeItem("token");
+                    toast.success("Logged Out Successfully");
+                    socket.emit("end", { user_id: userData?._id });
+                    setUserData({});
+                    router.push("/login");
+                    location.reload();
+                } else {
+                    throw new Error("Logout Failed");
+                }
         } catch (error) {
             console.log("logout failed", error);
             toast.error("Logout Failed");

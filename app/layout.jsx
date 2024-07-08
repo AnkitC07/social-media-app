@@ -15,6 +15,7 @@ import SocketConnect from "../_components/layout/SocketConnect";
 // };
 
 export default function RootLayout({ children }) {
+
     return (
         <html lang="en">
             <head></head>

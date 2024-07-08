@@ -55,7 +55,7 @@ const MessageOption = () => {
 };
 
 const TextMsg = ({ el, menu }) => {
-    console.log("is sent =>",el?.sent)
+    console.log("is sent =>",el)
     const theme = useTheme();
     return (
         <Stack position={"relative"} direction="row" justifyContent={el.incoming ? "start" : "end"}>
